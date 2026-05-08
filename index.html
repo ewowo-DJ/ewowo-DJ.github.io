@@ -1,11 +1,466 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <title>Mijn Website</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ewowo — DJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --accent: #00f0ff;
+    --accent2: #ff2d78;
+    --dark: #08080f;
+    --mid: #12121e;
+    --card: #1a1a2e;
+    --text: #e8e8f0;
+    --muted: #888899;
+  }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    background: rgba(8,8,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,240,255,0.1);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-shadow: 0 0 20px rgba(0,240,255,0.4);
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+    padding: 6rem 2rem 4rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 60%, rgba(0,240,255,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 20% 30%, rgba(255,45,120,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-size: 0.75rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.2rem;
+    opacity: 0.8;
+    position: relative;
+  }
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 18vw, 11rem);
+    line-height: 0.9;
+    letter-spacing: 8px;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .hero-genres {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+  .genre-pill {
+    padding: 0.4rem 1.2rem;
+    border: 1px solid rgba(0,240,255,0.3);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(0,240,255,0.05);
+  }
+  .hero-desc {
+    max-width: 500px;
+    color: var(--muted);
+    line-height: 1.8;
+    font-size: 1rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    position: relative;
+  }
+  .btn-primary {
+    padding: 0.9rem 2.5rem;
+    background: var(--accent);
+    color: var(--dark);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+  .btn-outline {
+    padding: 0.9rem 2.5rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .waveform {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    height: 40px;
+    margin: 2rem auto;
+    position: relative;
+  }
+  .bar {
+    width: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+    animation: wave 1.2s ease-in-out infinite;
+    opacity: 0.6;
+  }
+  .bar:nth-child(2) { animation-delay: 0.1s; }
+  .bar:nth-child(3) { animation-delay: 0.2s; }
+  .bar:nth-child(4) { animation-delay: 0.3s; }
+  .bar:nth-child(5) { animation-delay: 0.4s; }
+  .bar:nth-child(6) { animation-delay: 0.3s; }
+  .bar:nth-child(7) { animation-delay: 0.2s; }
+  .bar:nth-child(8) { animation-delay: 0.1s; }
+  .bar:nth-child(9) { animation-delay: 0s; }
+  @keyframes wave {
+    0%, 100% { height: 6px; }
+    50% { height: 36px; }
+  }
+
+  section {
+    padding: 6rem 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    letter-spacing: 3px;
+    margin-bottom: 3rem;
+    color: #fff;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; gap: 2rem; } }
+  .about-text p {
+    color: var(--muted);
+    line-height: 1.9;
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid rgba(0,240,255,0.1);
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--accent);
+    letter-spacing: 2px;
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  .genres-full { padding: 6rem 2rem; background: var(--mid); }
+  .genres-inner { max-width: 1100px; margin: 0 auto; }
+  .genre-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+  .genre-card {
+    background: var(--dark);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .genre-card:hover { border-color: var(--accent); }
+  .genre-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+  .genre-card.dnb::before { background: var(--accent); }
+  .genre-card.trance::before { background: var(--accent2); }
+  .genre-card.commercial::before { background: linear-gradient(90deg, var(--accent), var(--accent2)); }
+  .genre-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .genre-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+    color: #fff;
+  }
+  .genre-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+  .contact-box {
+    background: var(--card);
+    border: 1px solid rgba(0,240,255,0.15);
+    padding: 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+  }
+  .contact-box p {
+    color: var(--muted);
+    max-width: 500px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.8;
+  }
+  .contact-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .social-link {
+    padding: 0.6rem 1.5rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .social-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    color: var(--muted);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+  }
+  footer span { color: var(--accent); }
+
+  html { scroll-behavior: smooth; }
+</style>
 </head>
 <body>
-  <h1>Hallo! Dit is mijn website.</h1>
-  <p>Welkom op mijn eerste website.</p>
+
+<nav>
+  <div class="nav-logo">ewowo</div>
+  <ul class="nav-links">
+    <li><a href="#over">Over</a></li>
+    <li><a href="#genres">Genres</a></li>
+    <li><a href="#contact">Boek mij</a></li>
+  </ul>
+</nav>
+
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <p class="hero-tag">DJ &amp; Artiest</p>
+  <h1 class="hero-name">ewowo</h1>
+  <div class="hero-genres">
+    <span class="genre-pill">Drum &amp; Bass</span>
+    <span class="genre-pill">Trance</span>
+    <span class="genre-pill">Commercieel</span>
+  </div>
+  <p class="hero-desc">Van rollende basslines tot epische synths — ewowo brengt energie die je voelt in je borst en je voeten in beweging houdt.</p>
+  <div class="hero-btns">
+    <a href="#contact" class="btn-primary">Boek ewowo</a>
+    <a href="#over" class="btn-outline">Meer info</a>
+  </div>
+  <div class="waveform" aria-hidden="true">
+    <div class="bar" style="height:10px"></div>
+    <div class="bar" style="height:22px"></div>
+    <div class="bar" style="height:30px"></div>
+    <div class="bar" style="height:18px"></div>
+    <div class="bar" style="height:36px"></div>
+    <div class="bar" style="height:18px"></div>
+    <div class="bar" style="height:30px"></div>
+    <div class="bar" style="height:22px"></div>
+    <div class="bar" style="height:10px"></div>
+  </div>
+</div>
+
+<section id="over">
+  <p class="section-label">Over</p>
+  <h2 class="section-title">Wie is ewowo?</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>ewowo is een veelzijdige DJ die thuis is in meerdere genres. Of het nu gaat om de raw energie van Drum &amp; Bass, de emotionele kracht van Trance, of een commerciële set die iedereen op de vloer krijgt — ewowo past zich aan en levert altijd een onvergetelijke ervaring.</p>
+      <p>Met een scherp gevoel voor sfeer en crowd-reading bouwt ewowo elke set op als een verhaal: van warm-up tot peak-time, van eerste noot tot laatste drop.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <span class="stat-number">3</span>
+        <span class="stat-label">Genres</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">∞</span>
+        <span class="stat-label">Energie</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">BE</span>
+        <span class="stat-label">Based</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number">24/7</span>
+        <span class="stat-label">Muziek</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="genres-full" id="genres">
+  <div class="genres-inner">
+    <p class="section-label">Stijlen</p>
+    <h2 class="section-title">Genres</h2>
+    <div class="genre-cards">
+      <div class="genre-card dnb">
+        <span class="genre-icon">🥁</span>
+        <h3>Drum &amp; Bass</h3>
+        <p>Razendsnel, ritmisch en rauw. Van liquid rollers tot heavy neuro — ewowo navigeert het volledige DnB-spectrum met precisie.</p>
+      </div>
+      <div class="genre-card trance">
+        <span class="genre-icon">🌊</span>
+        <h3>Trance</h3>
+        <p>Epische melodieën, hypnotische synths en builds die je meenemen op een reis. Pure emotie omgezet in geluid.</p>
+      </div>
+      <div class="genre-card commercial">
+        <span class="genre-icon">🎉</span>
+        <h3>Commercieel</h3>
+        <p>Iedereen op de dansvloer, van kenner tot casual bezoeker. De hits die iedereen kent, gemixt met vakmanschap.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="contact">
+  <p class="section-label">Contact</p>
+  <h2 class="section-title">Boek ewowo</h2>
+  <div class="contact-box">
+    <p>Klaar om jouw event naar het volgende niveau te tillen? Of het nu gaat om een club-nacht, festival, privéfeest of bedrijfsevenement — neem contact op voor beschikbaarheid en tarieven.</p>
+    <a href="mailto:info@ewowo.be" class="btn-primary">Stuur een e-mail</a>
+    <div class="contact-links">
+      <a href="#" class="social-link">Instagram</a>
+      <a href="#" class="social-link">SoundCloud</a>
+      <a href="#" class="social-link">Facebook</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2026 <span>ewowo</span> — Alle rechten voorbehouden</p>
+</footer>
+
 </body>
 </html>
