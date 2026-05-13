@@ -56,22 +56,63 @@
     @keyframes slide { 0% { left: -100%; } 100% { left: 100%; } }
     .loader-text { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
 
+    /* HERO HEADER */
     .site-header {
       position: relative;
       padding: 80px 40px 60px;
       text-align: center;
       border-bottom: 1px solid var(--border);
       overflow: hidden;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
-    .site-header::before {
-      content: '';
+
+    .hero-bg {
       position: absolute;
-      top: -60px; left: 50%;
-      transform: translateX(-50%);
-      width: 600px; height: 300px;
-      background: radial-gradient(ellipse, rgba(232,255,0,0.08) 0%, transparent 70%);
-      pointer-events: none;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.35;
     }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%);
+      z-index: 1;
+    }
+
+    .hero-upload-btn {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid #333;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .hero-upload-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .hero-upload-btn svg { width: 12px; height: 12px; stroke: currentColor; }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
     .header-label { font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
     .site-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(64px, 12vw, 140px); line-height: 0.9; letter-spacing: 4px; }
     .site-header h1 span { color: var(--accent); }
@@ -115,7 +156,6 @@
     .breadcrumb span { color: #555; }
 
     .detail-body { max-width: 960px; margin: 0 auto; padding: 56px 24px 100px; }
-
     .detail-top { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 56px; align-items: start; }
 
     .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
@@ -181,7 +221,7 @@
       .detail-body { padding: 36px 16px 80px; }
       .contact-col { border-right: none; border-bottom: 1px solid var(--border); }
       .contact-col:last-child { border-bottom: none; }
-      .site-header { padding: 50px 20px 40px; }
+      .site-header { padding: 50px 20px 40px; min-height: 260px; }
       .gallery-inner { grid-template-columns: repeat(2, 1fr); padding: 16px; }
       .gallery-toggle { padding: 18px 20px; }
     }
@@ -196,10 +236,19 @@
 </div>
 
 <div class="page active" id="page-home">
-  <header class="site-header">
-    <p class="header-label">Het collectief</p>
-    <h1>DJ<span>LINE</span>UP</h1>
-    <p>Klik op een DJ voor meer info & booking</p>
+  <header class="site-header" id="site-header">
+    <img class="hero-bg" id="hero-img" src="" alt="" style="display:none;">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="header-label">Het collectief</p>
+      <h1>DJ<span>LINE</span>UP</h1>
+      <p>Klik op een DJ voor meer info & booking</p>
+    </div>
+    <button class="hero-upload-btn" onclick="triggerHeroUpload()">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      Achtergrond wijzigen
+    </button>
+    <input type="file" accept="image/*" id="hero-file" style="display:none;" onchange="handleHeroUpload(event)">
   </header>
   <main class="dj-grid" id="dj-grid"></main>
   <footer>DJ Collective &copy; 2026 &mdash; Alle rechten voorbehouden</footer>
@@ -222,9 +271,10 @@
   const CLOUDINARY_PRESET = 'ml_default';
   const JSONBIN_KEY = '$2a$10$nXdyz2jtRp4nLWIBc6N.EeYx9LRkI5cn8KKMZjEfZ9VlJsI5p8BDq';
   const JSONBIN_URL = 'https://api.jsonbin.io/v3/b';
-  const BIN_ID = '6a049914c0954111d81a8e08'; // ← vast ingesteld, werkt op elk apparaat
+  const BIN_ID = '6a049914c0954111d81a8e08';
   const UPLOAD_WACHTWOORD = 'ewibbe2026';
   let wachtwoordGoedgekeurd = false;
+  let heroPhoto = null;
 
   const djs = [
     {
@@ -274,8 +324,18 @@
     }
   ];
 
+  function updateHeroImage() {
+    const img = document.getElementById('hero-img');
+    if (heroPhoto) {
+      img.src = heroPhoto;
+      img.style.display = 'block';
+    } else {
+      img.style.display = 'none';
+    }
+  }
+
   async function saveToJsonbin() {
-    const data = {};
+    const data = { hero: heroPhoto };
     djs.forEach(dj => { data[dj.id] = { photos: dj.photos, gallery: dj.gallery }; });
     await fetch(`${JSONBIN_URL}/${BIN_ID}`, {
       method: 'PUT',
@@ -291,6 +351,7 @@
       });
       const json = await res.json();
       const data = json.record;
+      if (data.hero) heroPhoto = data.hero;
       djs.forEach(dj => {
         if (data[dj.id]) {
           if (data[dj.id].photos) dj.photos = data[dj.id].photos.map((p, i) => p || dj.photos[i]);
@@ -313,6 +374,28 @@
     if (poging !== UPLOAD_WACHTWOORD) { alert('Incorrect wachtwoord.'); return false; }
     wachtwoordGoedgekeurd = true;
     return true;
+  }
+
+  function triggerHeroUpload() {
+    if (!checkWachtwoord()) return;
+    document.getElementById('hero-file').click();
+  }
+
+  async function handleHeroUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const btn = document.querySelector('.hero-upload-btn');
+    btn.textContent = 'Uploaden...';
+    try {
+      const url = await uploadToCloudinary(file);
+      heroPhoto = url;
+      updateHeroImage();
+      await saveToJsonbin();
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Achtergrond wijzigen`;
+    } catch (e) {
+      alert('Upload mislukt.');
+      btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Achtergrond wijzigen`;
+    }
   }
 
   function triggerUpload(djId, index) {
@@ -490,6 +573,7 @@
 
   async function init() {
     await loadFromJsonbin();
+    updateHeroImage();
     renderGrid();
     document.getElementById('loader').classList.add('hidden');
   }
