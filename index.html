@@ -175,11 +175,22 @@
     .ervaring-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
     .ervaring-section.open .ervaring-panel { max-height: 2000px; }
     .ervaring-inner { border-top: 1px solid var(--border); padding: 16px 18px; }
-    .ervaring-item { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid #1a1a1a; align-items: flex-start; }
+    .ervaring-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #1a1a1a; align-items: center; }
     .ervaring-item:last-child { border-bottom: none; }
-    .ervaring-jaar { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--accent); min-width: 48px; line-height: 1.2; }
-    .ervaring-tekst { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .ervaring-order-btns { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
+    .ervaring-order-btn {
+      background: none; border: 1px solid #2a2a2a; cursor: pointer;
+      color: #555; font-size: 9px; padding: 2px 5px; line-height: 1;
+      border-radius: 2px; transition: color 0.2s, border-color 0.2s;
+    }
+    .ervaring-order-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .ervaring-order-btn:disabled { opacity: 0.2; cursor: default; }
+    .ervaring-order-btn:disabled:hover { color: #555; border-color: #2a2a2a; }
+    .ervaring-jaar { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--accent); min-width: 48px; line-height: 1.2; flex-shrink: 0; }
+    .ervaring-tekst { font-size: 13px; color: var(--muted); line-height: 1.5; flex: 1; }
     .ervaring-tekst strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 2px; }
+    .ervaring-delete { background: none; border: none; cursor: pointer; color: #444; font-size: 16px; padding: 0 4px; line-height: 1; transition: color 0.2s; flex-shrink: 0; }
+    .ervaring-delete:hover { color: var(--accent2); }
     .ervaring-add { display: none; margin-top: 14px; flex-direction: column; gap: 8px; }
     .ervaring-add.admin { display: flex; }
     .ervaring-add-row { display: flex; gap: 8px; }
@@ -512,9 +523,7 @@
     dj.ervaring.push({ jaar, naam, omschrijving });
     await saveToJsonbin();
     renderDetail(djId);
-    setTimeout(() => {
-      document.getElementById(`ervaring-${djId}`)?.classList.add('open');
-    }, 50);
+    setTimeout(() => document.getElementById(`ervaring-${djId}`)?.classList.add('open'), 50);
   }
 
   async function deleteErvaring(djId, index) {
@@ -522,9 +531,19 @@
     dj.ervaring.splice(index, 1);
     await saveToJsonbin();
     renderDetail(djId);
-    setTimeout(() => {
-      document.getElementById(`ervaring-${djId}`)?.classList.add('open');
-    }, 50);
+    setTimeout(() => document.getElementById(`ervaring-${djId}`)?.classList.add('open'), 50);
+  }
+
+  async function moveErvaring(djId, index, direction) {
+    const dj = djs.find(d => d.id === djId);
+    const newIndex = index + direction;
+    if (newIndex < 0 || newIndex >= dj.ervaring.length) return;
+    const temp = dj.ervaring[index];
+    dj.ervaring[index] = dj.ervaring[newIndex];
+    dj.ervaring[newIndex] = temp;
+    await saveToJsonbin();
+    renderDetail(djId);
+    setTimeout(() => document.getElementById(`ervaring-${djId}`)?.classList.add('open'), 50);
   }
 
   function toggleErvaring(djId) {
@@ -551,12 +570,18 @@
               ? `<p class="ervaring-empty">Nog geen ervaring toegevoegd.</p>`
               : items.map((item, i) => `
                 <div class="ervaring-item">
+                  ${adminUnlocked ? `
+                    <div class="ervaring-order-btns">
+                      <button class="ervaring-order-btn" onclick="moveErvaring('${djId}', ${i}, -1)" ${i === 0 ? 'disabled' : ''}>▲</button>
+                      <button class="ervaring-order-btn" onclick="moveErvaring('${djId}', ${i}, 1)" ${i === items.length - 1 ? 'disabled' : ''}>▼</button>
+                    </div>
+                  ` : ''}
                   <div class="ervaring-jaar">${item.jaar}</div>
-                  <div class="ervaring-tekst" style="flex:1;">
+                  <div class="ervaring-tekst">
                     <strong>${item.naam}</strong>
                     ${item.omschrijving}
                   </div>
-                  ${adminUnlocked ? `<button onclick="deleteErvaring('${djId}', ${i})" style="background:none;border:none;cursor:pointer;color:#444;font-size:16px;padding:0 4px;line-height:1;transition:color 0.2s;" onmouseover="this.style.color='#ff3c00'" onmouseout="this.style.color='#444'">×</button>` : ''}
+                  ${adminUnlocked ? `<button class="ervaring-delete" onclick="deleteErvaring('${djId}', ${i})">×</button>` : ''}
                 </div>
               `).join('')
             }
