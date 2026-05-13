@@ -159,6 +159,13 @@
     .photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .photo-slot input[type=file] { display: none; }
 
+    .uploading-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
+    }
+
     .detail-info .dj-num { font-size: 12px; letter-spacing: 4px; margin-bottom: 6px; }
     .detail-info h2 {
       font-family: 'Bebas Neue', sans-serif;
@@ -244,6 +251,8 @@
 </div>
 
 <script>
+  const CLOUDINARY_CLOUD = 'devasysdf';
+  const CLOUDINARY_PRESET = 'ml_default';
   const UPLOAD_WACHTWOORD = 'ewibbe2026'; // ← Verander dit naar jouw wachtwoord
   let wachtwoordGoedgekeurd = false;
 
@@ -260,7 +269,11 @@
       instagram: '@ewowo',
       soundcloud: 'ewowo',
       bookingInfo: 'Fee op aanvraag · Min. 2 uur',
-      photos: [null, null, null]
+      photos: [
+        'https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5',
+        null,
+        null
+      ]
     },
     {
       id: 'jibbe',
@@ -292,6 +305,23 @@
     }
   ];
 
+  const STORAGE_KEY = 'djcollective_photos';
+
+  function savePhotos() {
+    const data = {};
+    djs.forEach(dj => { data[dj.id] = dj.photos; });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function loadPhotos() {
+    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    djs.forEach(dj => {
+      if (data[dj.id]) {
+        dj.photos = data[dj.id].map((p, i) => p || dj.photos[i]);
+      }
+    });
+  }
+
   const iMail = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg>`;
   const iPhone = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 12.14 19.79 19.79 0 0 1 1.63 3.56 2 2 0 0 1 3.6 1.37h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.09 6.09l.91-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
   const iIG = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`;
@@ -311,17 +341,34 @@
     document.getElementById(`file-${djId}-${index}`).click();
   }
 
-  function handlePhoto(djId, index, event) {
+  async function handlePhoto(djId, index, event) {
     const file = event.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
+
+    const slot = event.target.closest('.photo-slot');
+    slot.innerHTML += `<div class="uploading-overlay">Uploaden...</div>`;
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      const url = data.secure_url;
+
       const dj = djs.find(d => d.id === djId);
-      dj.photos[index] = e.target.result;
+      dj.photos[index] = url;
+      savePhotos();
       renderDetail(djId);
       renderGrid();
-    };
-    reader.readAsDataURL(file);
+    } catch (err) {
+      alert('Upload mislukt. Probeer opnieuw.');
+      renderDetail(djId);
+    }
   }
 
   function photoSlotHTML(djId, index, isMain) {
@@ -413,6 +460,7 @@
     window.scrollTo(0, 0);
   }
 
+  loadPhotos();
   renderGrid();
 </script>
 
