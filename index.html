@@ -29,6 +29,33 @@
     .page { display: none; }
     .page.active { display: block; }
 
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      z-index: 999;
+      transition: opacity 0.4s;
+    }
+    #loader.hidden { opacity: 0; pointer-events: none; }
+    .loader-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 6px; color: var(--text); }
+    .loader-title span { color: var(--accent); }
+    .loader-bar { width: 200px; height: 1px; background: var(--border); position: relative; overflow: hidden; }
+    .loader-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--accent);
+      animation: slide 1.2s ease-in-out infinite;
+    }
+    @keyframes slide { 0% { left: -100%; } 100% { left: 100%; } }
+    .loader-text { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
+
     .site-header {
       position: relative;
       padding: 80px 40px 60px;
@@ -45,19 +72,8 @@
       background: radial-gradient(ellipse, rgba(232,255,0,0.08) 0%, transparent 70%);
       pointer-events: none;
     }
-    .header-label {
-      font-size: 11px;
-      letter-spacing: 6px;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 16px;
-    }
-    .site-header h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(64px, 12vw, 140px);
-      line-height: 0.9;
-      letter-spacing: 4px;
-    }
+    .header-label { font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .site-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(64px, 12vw, 140px); line-height: 0.9; letter-spacing: 4px; }
     .site-header h1 span { color: var(--accent); }
     .site-header p { margin-top: 20px; color: var(--muted); font-size: 15px; font-weight: 300; }
 
@@ -70,28 +86,12 @@
       gap: 2px;
     }
 
-    .dj-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      overflow: hidden;
-      transition: border-color 0.2s;
-    }
+    .dj-card { background: var(--card); border: 1px solid var(--border); cursor: pointer; overflow: hidden; transition: border-color 0.2s; }
     .dj-card:hover { border-color: var(--accent); }
 
-    .dj-photo {
-      width: 100%;
-      aspect-ratio: 4/3;
-      background: #1a1a1a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
+    .dj-photo { width: 100%; aspect-ratio: 4/3; background: #1a1a1a; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .dj-photo img { width: 100%; height: 100%; object-fit: cover; }
-    .photo-placeholder {
-      display: flex; flex-direction: column; align-items: center; gap: 10px;
-    }
+    .photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; }
     .photo-placeholder svg { width: 36px; height: 36px; stroke: #333; }
     .photo-placeholder span { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #333; }
 
@@ -103,76 +103,35 @@
     .dj-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
     .tag { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border: 1px solid #2a2a2a; color: #777; border-radius: 2px; }
 
-    .open-btn {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--accent); background: none; border: none; cursor: pointer; padding: 0;
-      transition: gap 0.2s;
-    }
+    .open-btn { display: flex; align-items: center; gap: 7px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; transition: gap 0.2s; }
     .open-btn:hover { gap: 11px; }
     .open-btn svg { width: 14px; height: 14px; stroke: var(--accent); }
 
-    .detail-nav {
-      display: flex; align-items: center; gap: 16px;
-      padding: 20px 40px;
-      border-bottom: 1px solid var(--border);
-    }
-    .back-btn {
-      display: flex; align-items: center; gap: 8px;
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
-      transition: color 0.2s; padding: 0;
-    }
+    .detail-nav { display: flex; align-items: center; gap: 16px; padding: 20px 40px; border-bottom: 1px solid var(--border); }
+    .back-btn { display: flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; padding: 0; }
     .back-btn:hover { color: var(--accent); }
     .back-btn svg { width: 16px; height: 16px; stroke: currentColor; }
     .breadcrumb { font-size: 12px; color: #333; }
     .breadcrumb span { color: #555; }
 
-    .detail-body {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 56px 24px 100px;
-    }
+    .detail-body { max-width: 960px; margin: 0 auto; padding: 56px 24px 100px; }
 
-    .detail-top {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      margin-bottom: 56px;
-      align-items: start;
-    }
+    .detail-top { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 56px; align-items: start; }
 
     .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
     .photo-grid .photo-main { grid-column: 1 / -1; }
 
-    .photo-slot {
-      background: #141414;
-      border: 1px dashed #2a2a2a;
-      aspect-ratio: 4/3;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 8px; cursor: pointer; transition: border-color 0.2s; overflow: hidden;
-      position: relative;
-    }
+    .photo-slot { background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: border-color 0.2s; overflow: hidden; position: relative; }
     .photo-slot:hover { border-color: #444; }
     .photo-slot svg { width: 26px; height: 26px; stroke: #333; }
     .photo-slot span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
     .photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .photo-slot input[type=file] { display: none; }
 
-    .uploading-overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,0.7);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent);
-    }
+    .uploading-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); z-index: 2; }
 
     .detail-info .dj-num { font-size: 12px; letter-spacing: 4px; margin-bottom: 6px; }
-    .detail-info h2 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(42px, 6vw, 64px);
-      letter-spacing: 3px; line-height: 0.9;
-      margin-bottom: 10px;
-    }
+    .detail-info h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 6vw, 64px); letter-spacing: 3px; line-height: 0.9; margin-bottom: 10px; }
     .detail-genre { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent2); margin-bottom: 20px; }
     .detail-bio { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
 
@@ -180,41 +139,41 @@
     .booking-block h3 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
     .booking-block p { font-size: 12px; color: #555; margin-bottom: 16px; }
 
-    .booking-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 13px 28px;
-      background: var(--accent); color: #000;
-      font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-    }
+    .booking-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; background: var(--accent); color: #000; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.1s; }
     .booking-btn:hover { background: #fff; transform: translateY(-1px); }
 
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 0;
-      border: 1px solid var(--border);
-      background: var(--card);
-    }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; border: 1px solid var(--border); background: var(--card); }
     .contact-col { padding: 28px 32px; border-right: 1px solid var(--border); }
     .contact-col:last-child { border-right: none; }
     .contact-col h3 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
 
-    .contact-item {
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 10px; color: var(--text); font-size: 14px;
-      text-decoration: none; transition: color 0.2s;
-    }
+    .contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: var(--text); font-size: 14px; text-decoration: none; transition: color 0.2s; }
     .contact-item:hover { color: var(--accent); }
     .contact-item svg { width: 15px; height: 15px; stroke: var(--muted); flex-shrink: 0; transition: stroke 0.2s; }
     .contact-item:hover svg { stroke: var(--accent); }
 
-    footer {
-      text-align: center; padding: 40px;
-      border-top: 1px solid var(--border);
-      font-size: 12px; color: var(--muted); letter-spacing: 1px;
-    }
+    .gallery-section { margin-top: 48px; border: 1px solid var(--border); background: var(--card); overflow: hidden; }
+    .gallery-toggle { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; cursor: pointer; user-select: none; transition: background 0.2s; }
+    .gallery-toggle:hover { background: #1a1a1a; }
+    .gallery-toggle-left { display: flex; align-items: center; gap: 16px; }
+    .gallery-toggle h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--text); }
+    .gallery-toggle span { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+    .gallery-toggle-btn { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s; }
+    .gallery-toggle-btn svg { transition: transform 0.3s; stroke: var(--muted); }
+    .gallery-section.open .gallery-toggle-btn { background: var(--accent); border-color: var(--accent); }
+    .gallery-section.open .gallery-toggle-btn svg { transform: rotate(45deg); stroke: #000; }
+    .gallery-panel { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .gallery-section.open .gallery-panel { max-height: 1000px; }
+    .gallery-inner { border-top: 1px solid var(--border); padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+
+    .gallery-slot { background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; cursor: pointer; transition: border-color 0.2s; overflow: hidden; position: relative; }
+    .gallery-slot:hover { border-color: #444; }
+    .gallery-slot svg { width: 22px; height: 22px; stroke: #333; }
+    .gallery-slot span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+    .gallery-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .gallery-slot input[type=file] { display: none; }
+
+    footer { text-align: center; padding: 40px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); letter-spacing: 1px; }
 
     @media (max-width: 640px) {
       .detail-top { grid-template-columns: 1fr; gap: 32px; }
@@ -223,10 +182,18 @@
       .contact-col { border-right: none; border-bottom: 1px solid var(--border); }
       .contact-col:last-child { border-bottom: none; }
       .site-header { padding: 50px 20px 40px; }
+      .gallery-inner { grid-template-columns: repeat(2, 1fr); padding: 16px; }
+      .gallery-toggle { padding: 18px 20px; }
     }
   </style>
 </head>
 <body>
+
+<div id="loader">
+  <div class="loader-title">DJ<span>LINE</span>UP</div>
+  <div class="loader-bar"></div>
+  <div class="loader-text">Laden...</div>
+</div>
 
 <div class="page active" id="page-home">
   <header class="site-header">
@@ -255,9 +222,9 @@
   const CLOUDINARY_PRESET = 'ml_default';
   const JSONBIN_KEY = '$2a$10$nXdyz2jtRp4nLWIBc6N.EeYx9LRkI5cn8KKMZjEfZ9VlJsI5p8BDq';
   const JSONBIN_URL = 'https://api.jsonbin.io/v3/b';
+  const BIN_ID = '6a049914c0954111d81a8e08'; // ← vast ingesteld, werkt op elk apparaat
   const UPLOAD_WACHTWOORD = 'ewibbe2026';
   let wachtwoordGoedgekeurd = false;
-  let binId = localStorage.getItem('djcollective_binid') || null;
 
   const djs = [
     {
@@ -272,11 +239,8 @@
       instagram: '@ewowo',
       soundcloud: 'ewowo',
       bookingInfo: 'Fee op aanvraag · Min. 2 uur',
-      photos: [
-        'https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5',
-        null,
-        null
-      ]
+      photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null],
+      gallery: [null, null, null, null, null, null]
     },
     {
       id: 'jibbe',
@@ -290,7 +254,8 @@
       instagram: '@jibbe.dj',
       soundcloud: 'jibbe',
       bookingInfo: 'Beschikbaar NL & BE · 2–4 uur',
-      photos: [null, null, null]
+      photos: [null, null, null],
+      gallery: [null, null, null, null, null, null]
     },
     {
       id: 'ewibbe',
@@ -304,50 +269,32 @@
       instagram: '@ewibbe',
       soundcloud: 'ewibbe',
       bookingInfo: 'Ewowo × Jibbe · B2B',
-      photos: [null, null, null]
+      photos: [null, null, null],
+      gallery: [null, null, null, null, null, null]
     }
   ];
 
   async function saveToJsonbin() {
     const data = {};
-    djs.forEach(dj => { data[dj.id] = dj.photos; });
-
-    if (binId) {
-      await fetch(`${JSONBIN_URL}/${binId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': JSONBIN_KEY
-        },
-        body: JSON.stringify(data)
-      });
-    } else {
-      const res = await fetch(JSONBIN_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-Master-Key': JSONBIN_KEY,
-          'X-Bin-Name': 'dj-collective'
-        },
-        body: JSON.stringify(data)
-      });
-      const json = await res.json();
-      binId = json.metadata.id;
-      localStorage.setItem('djcollective_binid', binId);
-    }
+    djs.forEach(dj => { data[dj.id] = { photos: dj.photos, gallery: dj.gallery }; });
+    await fetch(`${JSONBIN_URL}/${BIN_ID}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
+      body: JSON.stringify(data)
+    });
   }
 
   async function loadFromJsonbin() {
-    if (!binId) return;
     try {
-      const res = await fetch(`${JSONBIN_URL}/${binId}/latest`, {
+      const res = await fetch(`${JSONBIN_URL}/${BIN_ID}/latest`, {
         headers: { 'X-Master-Key': JSONBIN_KEY }
       });
       const json = await res.json();
       const data = json.record;
       djs.forEach(dj => {
         if (data[dj.id]) {
-          dj.photos = data[dj.id].map((p, i) => p || dj.photos[i]);
+          if (data[dj.id].photos) dj.photos = data[dj.id].photos.map((p, i) => p || dj.photos[i]);
+          if (data[dj.id].gallery) dj.gallery = data[dj.id].gallery;
         }
       });
     } catch (e) {}
@@ -359,52 +306,67 @@
   const iSC = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 2H3l7 9.46V19l4 2v-9.54L21 2z"/></svg>`;
   const iPhoto = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg>`;
 
+  function checkWachtwoord() {
+    if (wachtwoordGoedgekeurd) return true;
+    const poging = prompt('Voer het wachtwoord in om een foto te uploaden:');
+    if (poging === null) return false;
+    if (poging !== UPLOAD_WACHTWOORD) { alert('Incorrect wachtwoord.'); return false; }
+    wachtwoordGoedgekeurd = true;
+    return true;
+  }
+
   function triggerUpload(djId, index) {
-    if (!wachtwoordGoedgekeurd) {
-      const poging = prompt('Voer het wachtwoord in om een foto te uploaden:');
-      if (poging === null) return;
-      if (poging !== UPLOAD_WACHTWOORD) {
-        alert('Incorrect wachtwoord.');
-        return;
-      }
-      wachtwoordGoedgekeurd = true;
-    }
+    if (!checkWachtwoord()) return;
     document.getElementById(`file-${djId}-${index}`).click();
+  }
+
+  function triggerGalleryUpload(djId, index) {
+    if (!checkWachtwoord()) return;
+    document.getElementById(`gfile-${djId}-${index}`).click();
+  }
+
+  async function uploadToCloudinary(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+      method: 'POST', body: formData
+    });
+    const data = await res.json();
+    if (!data.secure_url) throw new Error(data.error?.message || 'Upload mislukt');
+    return data.secure_url;
   }
 
   async function handlePhoto(djId, index, event) {
     const file = event.target.files[0];
     if (!file) return;
-
     const slot = document.getElementById(`slot-${djId}-${index}`);
-    slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay" id="overlay-${djId}-${index}">Uploaden...</div>`);
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
-
+    slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
     try {
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
-        method: 'POST',
-        body: formData
-      });
-      const data = await res.json();
+      const url = await uploadToCloudinary(file);
+      djs.find(d => d.id === djId).photos[index] = url;
+      await saveToJsonbin();
+      renderDetail(djId);
+      renderGrid();
+    } catch (e) {
+      alert('Upload mislukt. Zet de upload preset op Unsigned in Cloudinary.');
+      slot.querySelector('.uploading-overlay')?.remove();
+    }
+  }
 
-      if (data.secure_url) {
-        const dj = djs.find(d => d.id === djId);
-        dj.photos[index] = data.secure_url;
-        await saveToJsonbin();
-        renderDetail(djId);
-        renderGrid();
-      } else {
-        alert('Upload mislukt: ' + (data.error?.message || 'onbekende fout'));
-        const overlay = document.getElementById(`overlay-${djId}-${index}`);
-        if (overlay) overlay.remove();
-      }
-    } catch (err) {
-      alert('Upload mislukt. Controleer je internetverbinding.');
-      const overlay = document.getElementById(`overlay-${djId}-${index}`);
-      if (overlay) overlay.remove();
+  async function handleGalleryPhoto(djId, index, event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const slot = document.getElementById(`gslot-${djId}-${index}`);
+    slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
+    try {
+      const url = await uploadToCloudinary(file);
+      djs.find(d => d.id === djId).gallery[index] = url;
+      await saveToJsonbin();
+      renderDetail(djId);
+    } catch (e) {
+      alert('Upload mislukt. Zet de upload preset op Unsigned in Cloudinary.');
+      slot.querySelector('.uploading-overlay')?.remove();
     }
   }
 
@@ -413,23 +375,51 @@
     const photo = dj.photos[index];
     return `
       <div class="photo-slot${isMain ? ' photo-main' : ''}" id="slot-${djId}-${index}">
-        ${photo
-          ? `<img src="${photo}" alt="Foto ${index + 1}">`
-          : `${iPhoto}<span>${isMain ? 'Hoofdfoto' : 'Foto ' + (index + 1)}</span>`
-        }
+        ${photo ? `<img src="${photo}" alt="Foto ${index + 1}">` : `${iPhoto}<span>${isMain ? 'Hoofdfoto' : 'Foto ' + (index + 1)}</span>`}
         <input type="file" accept="image/*" id="file-${djId}-${index}" onchange="handlePhoto('${djId}', ${index}, event)">
         <div style="position:absolute;inset:0;" onclick="triggerUpload('${djId}', ${index})"></div>
       </div>`;
+  }
+
+  function galleryHTML(djId) {
+    const dj = djs.find(d => d.id === djId);
+    const filledCount = dj.gallery.filter(Boolean).length;
+    return `
+      <div class="gallery-section" id="gallery-${djId}">
+        <div class="gallery-toggle" onclick="toggleGallery('${djId}')">
+          <div class="gallery-toggle-left">
+            <h3>In the moment</h3>
+            <span>${filledCount} / 6 foto's</span>
+          </div>
+          <div class="gallery-toggle-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke-width="2">
+              <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
+            </svg>
+          </div>
+        </div>
+        <div class="gallery-panel">
+          <div class="gallery-inner">
+            ${dj.gallery.map((photo, i) => `
+              <div class="gallery-slot" id="gslot-${djId}-${i}">
+                ${photo ? `<img src="${photo}" alt="Galerij foto ${i + 1}">` : `${iPhoto}<span>Foto ${i + 1}</span>`}
+                <input type="file" accept="image/*" id="gfile-${djId}-${i}" onchange="handleGalleryPhoto('${djId}', ${i}, event)">
+                <div style="position:absolute;inset:0;" onclick="triggerGalleryUpload('${djId}', ${i})"></div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function toggleGallery(djId) {
+    document.getElementById(`gallery-${djId}`).classList.toggle('open');
   }
 
   function renderGrid() {
     document.getElementById('dj-grid').innerHTML = djs.map(dj => `
       <div class="dj-card" onclick="openDJ('${dj.id}')">
         <div class="dj-photo">
-          ${dj.photos[0]
-            ? `<img src="${dj.photos[0]}" alt="${dj.name}">`
-            : `<div class="photo-placeholder">${iPhoto}<span>Foto</span></div>`
-          }
+          ${dj.photos[0] ? `<img src="${dj.photos[0]}" alt="${dj.name}">` : `<div class="photo-placeholder">${iPhoto}<span>Foto</span></div>`}
         </div>
         <div class="dj-card-body">
           <div class="dj-num">${dj.number}</div>
@@ -481,6 +471,7 @@
           <a class="contact-item" href="#">${iSC} SoundCloud: ${dj.soundcloud}</a>
         </div>
       </div>
+      ${galleryHTML(dj.id)}
     `;
   }
 
@@ -500,6 +491,7 @@
   async function init() {
     await loadFromJsonbin();
     renderGrid();
+    document.getElementById('loader').classList.add('hidden');
   }
 
   init();
