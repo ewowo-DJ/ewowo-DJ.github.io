@@ -30,47 +30,27 @@
     .page.active { display: block; }
 
     #loader {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-      z-index: 999;
-      transition: opacity 0.4s;
+      position: fixed; inset: 0; background: var(--bg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 24px; z-index: 999; transition: opacity 0.4s;
     }
     #loader.hidden { opacity: 0; pointer-events: none; }
     .loader-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 6px; color: var(--text); }
     .loader-title span { color: var(--accent); }
     .loader-bar { width: 200px; height: 1px; background: var(--border); position: relative; overflow: hidden; }
     .loader-bar::after {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 100%; height: 100%;
-      background: var(--accent);
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%; background: var(--accent);
       animation: slide 1.2s ease-in-out infinite;
     }
     @keyframes slide { 0% { left: -100%; } 100% { left: 100%; } }
     .loader-text { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
 
     #admin-btn {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      z-index: 998;
-      width: 36px;
-      height: 36px;
-      background: rgba(10,10,10,0.8);
-      border: 1px solid #2a2a2a;
-      border-radius: 2px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: border-color 0.2s;
+      position: fixed; bottom: 20px; left: 20px; z-index: 998;
+      width: 36px; height: 36px; background: rgba(10,10,10,0.8);
+      border: 1px solid #2a2a2a; border-radius: 2px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; transition: border-color 0.2s;
     }
     #admin-btn:hover { border-color: #444; }
     #admin-btn.unlocked { border-color: var(--accent); }
@@ -78,76 +58,40 @@
     #admin-btn.unlocked svg { stroke: var(--accent); }
 
     #admin-popup {
-      position: fixed;
-      bottom: 66px;
-      left: 20px;
-      z-index: 998;
-      background: #111;
-      border: 1px solid var(--border);
-      padding: 16px;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      width: 220px;
+      position: fixed; bottom: 66px; left: 20px; z-index: 998;
+      background: #111; border: 1px solid var(--border); padding: 16px;
+      display: none; flex-direction: column; gap: 10px; width: 220px;
     }
     #admin-popup.visible { display: flex; }
     #admin-popup p { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
     #admin-popup input {
-      background: #0a0a0a;
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 13px;
-      padding: 8px 10px;
-      outline: none;
-      width: 100%;
+      background: #0a0a0a; border: 1px solid var(--border); color: var(--text);
+      font-size: 13px; padding: 8px 10px; outline: none; width: 100%;
     }
     #admin-popup input:focus { border-color: var(--accent); }
     #admin-popup button {
-      background: var(--accent);
-      color: #000;
-      border: none;
-      padding: 8px;
-      font-size: 11px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      font-weight: 500;
+      background: var(--accent); color: #000; border: none; padding: 8px;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-weight: 500;
     }
     #admin-popup button:hover { background: #fff; }
     #admin-popup .error { color: var(--accent2); font-size: 11px; display: none; }
     #admin-popup .error.visible { display: block; }
 
     .site-header {
-      position: relative;
-      padding: 80px 40px 60px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-      min-height: 320px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      position: relative; padding: 80px 40px 60px; text-align: center;
+      border-bottom: 1px solid var(--border); overflow: hidden;
+      min-height: 320px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
     }
-
     .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; }
     .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%); z-index: 1; }
-
     .hero-upload-zone { position: absolute; inset: 0; z-index: 2; cursor: default; }
     .hero-upload-zone.admin { cursor: pointer; }
     .hero-upload-zone.admin:hover::after {
-      content: 'Achtergrond wijzigen';
-      position: absolute;
-      bottom: 16px; right: 16px;
-      background: rgba(0,0,0,0.7);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 8px 14px;
+      content: 'Achtergrond wijzigen'; position: absolute; bottom: 16px; right: 16px;
+      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 14px;
     }
-
     .hero-content { position: relative; z-index: 3; pointer-events: none; }
     .header-label { font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
     .site-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(64px, 12vw, 140px); line-height: 0.9; letter-spacing: 4px; }
@@ -155,23 +99,16 @@
     .site-header p { margin-top: 20px; color: var(--muted); font-size: 15px; font-weight: 300; }
 
     .dj-grid {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 60px 24px 100px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 2px;
+      max-width: 960px; margin: 0 auto; padding: 60px 24px 100px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px;
     }
-
     .dj-card { background: var(--card); border: 1px solid var(--border); cursor: pointer; overflow: hidden; transition: border-color 0.2s; }
     .dj-card:hover { border-color: var(--accent); }
-
     .dj-photo { width: 100%; aspect-ratio: 4/3; background: #1a1a1a; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .dj-photo img { width: 100%; height: 100%; object-fit: cover; }
     .photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; }
     .photo-placeholder svg { width: 36px; height: 36px; stroke: #333; }
     .photo-placeholder span { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #333; }
-
     .dj-card-body { padding: 22px 26px 26px; }
     .dj-num { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 4px; color: var(--accent); margin-bottom: 4px; }
     .dj-card-body h2 { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 2px; margin-bottom: 6px; }
@@ -179,7 +116,6 @@
     .dj-bio-short { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
     .dj-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
     .tag { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border: 1px solid #2a2a2a; color: #777; border-radius: 2px; }
-
     .open-btn { display: flex; align-items: center; gap: 7px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; transition: gap 0.2s; }
     .open-btn:hover { gap: 11px; }
     .open-btn svg { width: 14px; height: 14px; stroke: var(--accent); }
@@ -193,17 +129,13 @@
 
     .detail-body { max-width: 960px; margin: 0 auto; padding: 56px 24px 100px; }
     .detail-top { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 56px; align-items: start; }
-
     .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
     .photo-grid .photo-main { grid-column: 1 / -1; }
 
     .photo-slot {
-      background: #141414;
-      border: 1px dashed #2a2a2a;
-      aspect-ratio: 4/3;
+      background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 8px; overflow: hidden; position: relative;
-      transition: border-color 0.2s;
+      gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s;
     }
     .photo-slot.admin { cursor: pointer; }
     .photo-slot.admin:hover { border-color: #444; }
@@ -211,20 +143,13 @@
     .photo-slot span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
     .photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .photo-slot input[type=file] { display: none; }
-
-    .photo-slot .upload-overlay {
-      display: none; position: absolute; inset: 0;
-      background: rgba(0,0,0,0); z-index: 1; transition: background 0.2s;
-    }
+    .photo-slot .upload-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 1; transition: background 0.2s; }
     .photo-slot.admin .upload-overlay { display: block; }
     .photo-slot.admin:hover .upload-overlay { background: rgba(0,0,0,0.3); }
     .photo-slot.admin:hover .upload-overlay::after {
-      content: 'Foto wijzigen';
-      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--accent); white-space: nowrap;
+      content: 'Foto wijzigen'; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap;
     }
-
     .uploading-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); z-index: 2; }
 
     .detail-info .dj-num { font-size: 12px; letter-spacing: 4px; margin-bottom: 6px; }
@@ -235,15 +160,43 @@
     .booking-block { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--border); }
     .booking-block h3 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
     .booking-block p { font-size: 12px; color: #555; margin-bottom: 16px; }
-
     .booking-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; background: var(--accent); color: #000; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.1s; }
     .booking-btn:hover { background: #fff; transform: translateY(-1px); }
+
+    /* ERVARING */
+    .ervaring-section { margin-top: 16px; border: 1px solid var(--border); overflow: hidden; }
+    .ervaring-toggle { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; cursor: pointer; user-select: none; transition: background 0.2s; }
+    .ervaring-toggle:hover { background: #1a1a1a; }
+    .ervaring-toggle h4 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
+    .ervaring-toggle-btn { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s; }
+    .ervaring-toggle-btn svg { transition: transform 0.3s; stroke: var(--muted); width: 12px; height: 12px; }
+    .ervaring-section.open .ervaring-toggle-btn { background: var(--accent); border-color: var(--accent); }
+    .ervaring-section.open .ervaring-toggle-btn svg { transform: rotate(45deg); stroke: #000; }
+    .ervaring-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .ervaring-section.open .ervaring-panel { max-height: 2000px; }
+    .ervaring-inner { border-top: 1px solid var(--border); padding: 16px 18px; }
+    .ervaring-item { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid #1a1a1a; align-items: flex-start; }
+    .ervaring-item:last-child { border-bottom: none; }
+    .ervaring-jaar { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--accent); min-width: 48px; line-height: 1.2; }
+    .ervaring-tekst { font-size: 13px; color: var(--muted); line-height: 1.5; }
+    .ervaring-tekst strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 2px; }
+    .ervaring-add { display: none; margin-top: 14px; flex-direction: column; gap: 8px; }
+    .ervaring-add.admin { display: flex; }
+    .ervaring-add-row { display: flex; gap: 8px; }
+    .ervaring-add input {
+      background: #0a0a0a; border: 1px solid var(--border); color: var(--text);
+      font-size: 12px; padding: 7px 10px; outline: none; width: 100%;
+    }
+    .ervaring-add input::placeholder { color: #444; }
+    .ervaring-add input:focus { border-color: var(--accent); }
+    .ervaring-add-btn { background: var(--accent); color: #000; border: none; padding: 7px 16px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; white-space: nowrap; font-weight: 500; }
+    .ervaring-add-btn:hover { background: #fff; }
+    .ervaring-empty { font-size: 12px; color: #444; padding: 4px 0; }
 
     .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; border: 1px solid var(--border); background: var(--card); }
     .contact-col { padding: 28px 32px; border-right: 1px solid var(--border); }
     .contact-col:last-child { border-right: none; }
     .contact-col h3 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-
     .contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: var(--text); font-size: 14px; text-decoration: none; transition: color 0.2s; }
     .contact-item:hover { color: var(--accent); }
     .contact-item svg { width: 15px; height: 15px; stroke: var(--muted); flex-shrink: 0; transition: stroke 0.2s; }
@@ -264,12 +217,9 @@
     .gallery-inner { border-top: 1px solid var(--border); padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
 
     .gallery-slot {
-      background: #141414;
-      border: 1px dashed #2a2a2a;
-      aspect-ratio: 4/3;
+      background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 8px; overflow: hidden; position: relative;
-      transition: border-color 0.2s;
+      gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s;
     }
     .gallery-slot.admin { cursor: pointer; }
     .gallery-slot.admin:hover { border-color: #444; }
@@ -277,51 +227,14 @@
     .gallery-slot span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
     .gallery-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .gallery-slot input[type=file] { display: none; }
-
-    /* VIDEO */
-    .gallery-slot video {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-    }
-    .video-play-icon {
-      position: absolute;
-      inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1;
-      pointer-events: none;
-    }
-    .video-play-icon svg {
-      width: 40px; height: 40px;
-      stroke: none;
-      fill: rgba(255,255,255,0.85);
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
-    }
-    .video-badge {
-      position: absolute;
-      top: 8px; left: 8px;
-      background: rgba(0,0,0,0.6);
-      border: 1px solid #333;
-      color: var(--muted);
-      font-size: 9px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 3px 7px;
-      z-index: 2;
-    }
-
-    .gallery-slot .upload-overlay {
-      display: none; position: absolute; inset: 0;
-      background: rgba(0,0,0,0); z-index: 3; transition: background 0.2s;
-    }
+    .gallery-slot video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .video-play-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; pointer-events: none; }
+    .video-play-icon svg { width: 40px; height: 40px; stroke: none; fill: rgba(255,255,255,0.85); filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5)); }
+    .video-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.6); border: 1px solid #333; color: var(--muted); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 3px 7px; z-index: 2; }
+    .gallery-slot .upload-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 3; transition: background 0.2s; }
     .gallery-slot.admin .upload-overlay { display: block; }
     .gallery-slot.admin:hover .upload-overlay { background: rgba(0,0,0,0.35); }
-    .gallery-slot.admin:hover .upload-overlay::after {
-      content: 'Wijzigen';
-      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      color: var(--accent); white-space: nowrap;
-    }
+    .gallery-slot.admin:hover .upload-overlay::after { content: 'Wijzigen'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
 
     footer { text-align: center; padding: 40px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); letter-spacing: 1px; }
 
@@ -334,6 +247,7 @@
       .site-header { padding: 50px 20px 40px; min-height: 260px; }
       .gallery-inner { grid-template-columns: repeat(2, 1fr); padding: 16px; }
       .gallery-toggle { padding: 18px 20px; }
+      .ervaring-add-row { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -405,7 +319,8 @@
       instagram: '@ewowo', soundcloud: 'ewowo',
       bookingInfo: 'Fee op aanvraag · Min. 2 uur',
       photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null],
-      gallery: [null, null, null, null, null, null]
+      gallery: [null, null, null, null, null, null],
+      ervaring: []
     },
     {
       id: 'jibbe', number: '02', name: 'JIBBE',
@@ -416,7 +331,8 @@
       instagram: '@jibbe.dj', soundcloud: 'jibbe',
       bookingInfo: 'Beschikbaar NL & BE · 2–4 uur',
       photos: [null, null, null],
-      gallery: [null, null, null, null, null, null]
+      gallery: [null, null, null, null, null, null],
+      ervaring: []
     },
     {
       id: 'ewibbe', number: '03', name: 'EWIBBE',
@@ -427,12 +343,10 @@
       instagram: '@ewibbe', soundcloud: 'ewibbe',
       bookingInfo: 'Ewowo × Jibbe · B2B',
       photos: [null, null, null],
-      gallery: [null, null, null, null, null, null]
+      gallery: [null, null, null, null, null, null],
+      ervaring: []
     }
   ];
-
-  // gallery items bevatten nu { url, type } objecten
-  // type = 'image' of 'video'
 
   function toggleAdminPopup() {
     if (adminUnlocked) {
@@ -446,9 +360,7 @@
     }
     const popup = document.getElementById('admin-popup');
     popup.classList.toggle('visible');
-    if (popup.classList.contains('visible')) {
-      setTimeout(() => document.getElementById('admin-input').focus(), 50);
-    }
+    if (popup.classList.contains('visible')) setTimeout(() => document.getElementById('admin-input').focus(), 50);
   }
 
   function submitWachtwoord() {
@@ -487,7 +399,9 @@
 
   async function saveToJsonbin() {
     const data = { hero: heroPhoto };
-    djs.forEach(dj => { data[dj.id] = { photos: dj.photos, gallery: dj.gallery }; });
+    djs.forEach(dj => {
+      data[dj.id] = { photos: dj.photos, gallery: dj.gallery, ervaring: dj.ervaring || [] };
+    });
     await fetch(`${JSONBIN_URL}/${BIN_ID}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
@@ -507,6 +421,7 @@
         if (data[dj.id]) {
           if (data[dj.id].photos) dj.photos = data[dj.id].photos.map((p, i) => p || dj.photos[i]);
           if (data[dj.id].gallery) dj.gallery = data[dj.id].gallery;
+          if (data[dj.id].ervaring) dj.ervaring = data[dj.id].ervaring;
         }
       });
     } catch (e) {}
@@ -517,7 +432,6 @@
   const iIG = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`;
   const iSC = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 2H3l7 9.46V19l4 2v-9.54L21 2z"/></svg>`;
   const iPhoto = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg>`;
-  const iVideo = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`;
   const iPlay = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.5)"/><polygon points="10,8 18,12 10,16" fill="white"/></svg>`;
 
   async function uploadToCloudinary(file) {
@@ -588,6 +502,79 @@
     }
   }
 
+  async function addErvaring(djId) {
+    const jaar = document.getElementById(`ejaar-${djId}`).value.trim();
+    const naam = document.getElementById(`enaam-${djId}`).value.trim();
+    const omschrijving = document.getElementById(`eomschr-${djId}`).value.trim();
+    if (!jaar || !naam) return;
+    const dj = djs.find(d => d.id === djId);
+    if (!dj.ervaring) dj.ervaring = [];
+    dj.ervaring.push({ jaar, naam, omschrijving });
+    await saveToJsonbin();
+    renderDetail(djId);
+    setTimeout(() => {
+      document.getElementById(`ervaring-${djId}`)?.classList.add('open');
+    }, 50);
+  }
+
+  async function deleteErvaring(djId, index) {
+    const dj = djs.find(d => d.id === djId);
+    dj.ervaring.splice(index, 1);
+    await saveToJsonbin();
+    renderDetail(djId);
+    setTimeout(() => {
+      document.getElementById(`ervaring-${djId}`)?.classList.add('open');
+    }, 50);
+  }
+
+  function toggleErvaring(djId) {
+    document.getElementById(`ervaring-${djId}`).classList.toggle('open');
+  }
+
+  function ervaringHTML(djId) {
+    const dj = djs.find(d => d.id === djId);
+    const items = dj.ervaring || [];
+    const adminClass = adminUnlocked ? ' admin' : '';
+    return `
+      <div class="ervaring-section" id="ervaring-${djId}">
+        <div class="ervaring-toggle" onclick="toggleErvaring('${djId}')">
+          <h4>Ervaring${items.length > 0 ? ` · ${items.length}` : ''}</h4>
+          <div class="ervaring-toggle-btn">
+            <svg viewBox="0 0 14 14" fill="none" stroke-width="2">
+              <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
+            </svg>
+          </div>
+        </div>
+        <div class="ervaring-panel">
+          <div class="ervaring-inner">
+            ${items.length === 0
+              ? `<p class="ervaring-empty">Nog geen ervaring toegevoegd.</p>`
+              : items.map((item, i) => `
+                <div class="ervaring-item">
+                  <div class="ervaring-jaar">${item.jaar}</div>
+                  <div class="ervaring-tekst" style="flex:1;">
+                    <strong>${item.naam}</strong>
+                    ${item.omschrijving}
+                  </div>
+                  ${adminUnlocked ? `<button onclick="deleteErvaring('${djId}', ${i})" style="background:none;border:none;cursor:pointer;color:#444;font-size:16px;padding:0 4px;line-height:1;transition:color 0.2s;" onmouseover="this.style.color='#ff3c00'" onmouseout="this.style.color='#444'">×</button>` : ''}
+                </div>
+              `).join('')
+            }
+            <div class="ervaring-add${adminClass}">
+              <div class="ervaring-add-row">
+                <input type="text" id="ejaar-${djId}" placeholder="Jaar" style="max-width:70px;">
+                <input type="text" id="enaam-${djId}" placeholder="Naam (bijv. Awakenings)" style="flex:1;">
+              </div>
+              <div class="ervaring-add-row">
+                <input type="text" id="eomschr-${djId}" placeholder="Omschrijving" style="flex:1;">
+                <button class="ervaring-add-btn" onclick="addErvaring('${djId}')">Toevoegen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
   function photoSlotHTML(djId, index, isMain) {
     const dj = djs.find(d => d.id === djId);
     const photo = dj.photos[index];
@@ -603,7 +590,6 @@
   function gallerySlotHTML(djId, index, item, adminClass) {
     const isVideo = item && item.type === 'video';
     const isImage = item && item.type === 'image';
-    const isEmpty = !item;
     return `
       <div class="gallery-slot${adminClass}" id="gslot-${djId}-${index}" onclick="triggerGalleryUpload('${djId}', ${index})">
         ${isImage ? `<img src="${item.url}" alt="Foto ${index + 1}">` : ''}
@@ -613,7 +599,7 @@
           <div class="video-play-icon">${iPlay}</div>
           <span class="video-badge">Video</span>
         ` : ''}
-        ${isEmpty ? `${iPhoto}<span>Foto / Video</span>` : ''}
+        ${!item ? `${iPhoto}<span>Foto / Video</span>` : ''}
         <div class="upload-overlay"></div>
         <input type="file" accept="image/*,video/*" id="gfile-${djId}-${index}" onchange="handleGalleryMedia('${djId}', ${index}, event)">
       </div>`;
@@ -691,6 +677,7 @@
             <p>${dj.bookingInfo}</p>
             <a class="booking-btn" href="mailto:${dj.email}">Boek nu →</a>
           </div>
+          ${ervaringHTML(dj.id)}
         </div>
       </div>
       <div class="contact-grid">
