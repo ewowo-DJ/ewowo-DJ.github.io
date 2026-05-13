@@ -253,8 +253,11 @@
 <script>
   const CLOUDINARY_CLOUD = 'devasysdf';
   const CLOUDINARY_PRESET = 'ml_default';
-  const UPLOAD_WACHTWOORD = 'ewibbe2026'; // ← Verander dit naar jouw wachtwoord
+  const JSONBIN_KEY = '$2a$10$nXdyz2jtRp4nLWIBc6N.EeYx9LRkI5cn8KKMZjEfZ9VlJsI5p8BDq';
+  const JSONBIN_URL = 'https://api.jsonbin.io/v3/b';
+  const UPLOAD_WACHTWOORD = 'ewibbe2026';
   let wachtwoordGoedgekeurd = false;
+  let binId = localStorage.getItem('djcollective_binid') || null;
 
   const djs = [
     {
@@ -305,21 +308,49 @@
     }
   ];
 
-  const STORAGE_KEY = 'djcollective_photos';
-
-  function savePhotos() {
+  async function saveToJsonbin() {
     const data = {};
     djs.forEach(dj => { data[dj.id] = dj.photos; });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+    if (binId) {
+      await fetch(`${JSONBIN_URL}/${binId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_KEY
+        },
+        body: JSON.stringify(data)
+      });
+    } else {
+      const res = await fetch(JSONBIN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Master-Key': JSONBIN_KEY,
+          'X-Bin-Name': 'dj-collective'
+        },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json();
+      binId = json.metadata.id;
+      localStorage.setItem('djcollective_binid', binId);
+    }
   }
 
-  function loadPhotos() {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    djs.forEach(dj => {
-      if (data[dj.id]) {
-        dj.photos = data[dj.id].map((p, i) => p || dj.photos[i]);
-      }
-    });
+  async function loadFromJsonbin() {
+    if (!binId) return;
+    try {
+      const res = await fetch(`${JSONBIN_URL}/${binId}/latest`, {
+        headers: { 'X-Master-Key': JSONBIN_KEY }
+      });
+      const json = await res.json();
+      const data = json.record;
+      djs.forEach(dj => {
+        if (data[dj.id]) {
+          dj.photos = data[dj.id].map((p, i) => p || dj.photos[i]);
+        }
+      });
+    } catch (e) {}
   }
 
   const iMail = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg>`;
@@ -345,8 +376,8 @@
     const file = event.target.files[0];
     if (!file) return;
 
-    const slot = event.target.closest('.photo-slot');
-    slot.innerHTML += `<div class="uploading-overlay">Uploaden...</div>`;
+    const slot = document.getElementById(`slot-${djId}-${index}`);
+    slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay" id="overlay-${djId}-${index}">Uploaden...</div>`);
 
     const formData = new FormData();
     formData.append('file', file);
@@ -358,16 +389,22 @@
         body: formData
       });
       const data = await res.json();
-      const url = data.secure_url;
 
-      const dj = djs.find(d => d.id === djId);
-      dj.photos[index] = url;
-      savePhotos();
-      renderDetail(djId);
-      renderGrid();
+      if (data.secure_url) {
+        const dj = djs.find(d => d.id === djId);
+        dj.photos[index] = data.secure_url;
+        await saveToJsonbin();
+        renderDetail(djId);
+        renderGrid();
+      } else {
+        alert('Upload mislukt: ' + (data.error?.message || 'onbekende fout'));
+        const overlay = document.getElementById(`overlay-${djId}-${index}`);
+        if (overlay) overlay.remove();
+      }
     } catch (err) {
-      alert('Upload mislukt. Probeer opnieuw.');
-      renderDetail(djId);
+      alert('Upload mislukt. Controleer je internetverbinding.');
+      const overlay = document.getElementById(`overlay-${djId}-${index}`);
+      if (overlay) overlay.remove();
     }
   }
 
@@ -375,7 +412,7 @@
     const dj = djs.find(d => d.id === djId);
     const photo = dj.photos[index];
     return `
-      <div class="photo-slot${isMain ? ' photo-main' : ''}">
+      <div class="photo-slot${isMain ? ' photo-main' : ''}" id="slot-${djId}-${index}">
         ${photo
           ? `<img src="${photo}" alt="Foto ${index + 1}">`
           : `${iPhoto}<span>${isMain ? 'Hoofdfoto' : 'Foto ' + (index + 1)}</span>`
@@ -460,8 +497,12 @@
     window.scrollTo(0, 0);
   }
 
-  loadPhotos();
-  renderGrid();
+  async function init() {
+    await loadFromJsonbin();
+    renderGrid();
+  }
+
+  init();
 </script>
 
 </body>
