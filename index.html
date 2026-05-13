@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DJ collectief</title>
+  <title>DJ Collective</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -56,7 +56,6 @@
     @keyframes slide { 0% { left: -100%; } 100% { left: 100%; } }
     .loader-text { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
 
-    /* WACHTWOORD KNOP */
     #admin-btn {
       position: fixed;
       bottom: 20px;
@@ -78,7 +77,6 @@
     #admin-btn svg { width: 14px; height: 14px; stroke: #444; transition: stroke 0.2s; }
     #admin-btn.unlocked svg { stroke: var(--accent); }
 
-    /* WACHTWOORD POPUP */
     #admin-popup {
       position: fixed;
       bottom: 66px;
@@ -135,18 +133,12 @@
     .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; }
     .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%); z-index: 1; }
 
-    .hero-upload-zone {
-      position: absolute;
-      inset: 0;
-      z-index: 2;
-      cursor: default;
-    }
+    .hero-upload-zone { position: absolute; inset: 0; z-index: 2; cursor: default; }
     .hero-upload-zone.admin { cursor: pointer; }
     .hero-upload-zone.admin:hover::after {
       content: 'Achtergrond wijzigen';
       position: absolute;
-      bottom: 16px;
-      right: 16px;
+      bottom: 16px; right: 16px;
       background: rgba(0,0,0,0.7);
       border: 1px solid var(--accent);
       color: var(--accent);
@@ -220,21 +212,15 @@
     .photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .photo-slot input[type=file] { display: none; }
 
-    /* Upload knop overlay op foto — alleen zichtbaar in admin mode */
     .photo-slot .upload-overlay {
-      display: none;
-      position: absolute;
-      inset: 0;
-      background: rgba(0,0,0,0);
-      z-index: 1;
-      transition: background 0.2s;
+      display: none; position: absolute; inset: 0;
+      background: rgba(0,0,0,0); z-index: 1; transition: background 0.2s;
     }
     .photo-slot.admin .upload-overlay { display: block; }
     .photo-slot.admin:hover .upload-overlay { background: rgba(0,0,0,0.3); }
     .photo-slot.admin:hover .upload-overlay::after {
       content: 'Foto wijzigen';
-      position: absolute;
-      bottom: 10px; left: 50%; transform: translateX(-50%);
+      position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
       font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
       color: var(--accent); white-space: nowrap;
     }
@@ -274,7 +260,7 @@
     .gallery-section.open .gallery-toggle-btn { background: var(--accent); border-color: var(--accent); }
     .gallery-section.open .gallery-toggle-btn svg { transform: rotate(45deg); stroke: #000; }
     .gallery-panel { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-    .gallery-section.open .gallery-panel { max-height: 1000px; }
+    .gallery-section.open .gallery-panel { max-height: 2000px; }
     .gallery-inner { border-top: 1px solid var(--border); padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
 
     .gallery-slot {
@@ -292,19 +278,47 @@
     .gallery-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .gallery-slot input[type=file] { display: none; }
 
-    .gallery-slot .upload-overlay {
-      display: none;
+    /* VIDEO */
+    .gallery-slot video {
       position: absolute; inset: 0;
-      background: rgba(0,0,0,0);
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .video-play-icon {
+      position: absolute;
+      inset: 0;
+      display: flex; align-items: center; justify-content: center;
       z-index: 1;
-      transition: background 0.2s;
+      pointer-events: none;
+    }
+    .video-play-icon svg {
+      width: 40px; height: 40px;
+      stroke: none;
+      fill: rgba(255,255,255,0.85);
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+    }
+    .video-badge {
+      position: absolute;
+      top: 8px; left: 8px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid #333;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 3px 7px;
+      z-index: 2;
+    }
+
+    .gallery-slot .upload-overlay {
+      display: none; position: absolute; inset: 0;
+      background: rgba(0,0,0,0); z-index: 3; transition: background 0.2s;
     }
     .gallery-slot.admin .upload-overlay { display: block; }
-    .gallery-slot.admin:hover .upload-overlay { background: rgba(0,0,0,0.3); }
+    .gallery-slot.admin:hover .upload-overlay { background: rgba(0,0,0,0.35); }
     .gallery-slot.admin:hover .upload-overlay::after {
-      content: 'Foto wijzigen';
-      position: absolute;
-      bottom: 8px; left: 50%; transform: translateX(-50%);
+      content: 'Wijzigen';
+      position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
       font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
       color: var(--accent); white-space: nowrap;
     }
@@ -326,17 +340,15 @@
 <body>
 
 <div id="loader">
-  <div class="loader-title">DJ<span>COLLECT</span>IEF</div>
+  <div class="loader-title">DJ<span>LINE</span>UP</div>
   <div class="loader-bar"></div>
-  <div class="loader-text">Turning Tables...</div>
+  <div class="loader-text">Laden...</div>
 </div>
 
-<!-- ADMIN KNOP -->
 <button id="admin-btn" onclick="toggleAdminPopup()" title="Beheer">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
 </button>
 
-<!-- WACHTWOORD POPUP -->
 <div id="admin-popup">
   <p>Beheerder</p>
   <input type="password" id="admin-input" placeholder="Wachtwoord" onkeydown="if(event.key==='Enter') submitWachtwoord()">
@@ -350,14 +362,14 @@
     <div class="hero-overlay"></div>
     <div class="hero-upload-zone" id="hero-zone" onclick="handleHeroZoneClick()"></div>
     <div class="hero-content">
-      <p class="header-label">dj collectief</p>
-      <h1>DJ<span>COLLECT</span>IEF</h1>
+      <p class="header-label">Het collectief</p>
+      <h1>DJ<span>LINE</span>UP</h1>
       <p>Klik op een DJ voor meer info & booking</p>
     </div>
     <input type="file" accept="image/*" id="hero-file" style="display:none;" onchange="handleHeroUpload(event)">
   </header>
   <main class="dj-grid" id="dj-grid"></main>
-  <footer>DJ collectief &copy; 2026 &mdash; Alle rechten voorbehouden</footer>
+  <footer>DJ Collective &copy; 2026 &mdash; Alle rechten voorbehouden</footer>
 </div>
 
 <div class="page" id="page-detail">
@@ -366,10 +378,10 @@
       <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M19 12H5M5 12l7-7M5 12l7 7"/></svg>
       Terug
     </button>
-    <span class="breadcrumb">DJ collectief / <span id="breadcrumb-name"></span></span>
+    <span class="breadcrumb">Lineup / <span id="breadcrumb-name"></span></span>
   </nav>
   <div class="detail-body" id="detail-content"></div>
-  <footer>DJ collectief &copy; 2026 &mdash; Alle rechten voorbehouden</footer>
+  <footer>DJ Collective &copy; 2026 &mdash; Alle rechten voorbehouden</footer>
 </div>
 
 <script>
@@ -387,11 +399,11 @@
     {
       id: 'ewowo', number: '01', name: 'EWOWO',
       genre: 'Drum & Bass · Trance · Commercieel',
-      bio: 'Veelzijdig DJ met een scherp gevoel voor energie. Van drum & bass tot trance en catchy commerciële bangers, ewowo fixt het wel.',
-      tags: ['Sfeer', 'Energie', 'Allrounder'],
-      email: 'ewowo@outlook.be', phone: '+32 4 73 61 15 57',
-      instagram: 'https://www.instagram.com/_ewowo_/', soundcloud: 'https://on.soundcloud.com/sQtB0GjS7Kr9vGxplJ',
-      bookingInfo: 'Fee op aanvraag',
+      bio: 'Veelzijdig DJ met een scherp gevoel voor energie. Van zware drum & bass tot euforische trance en catchy commerciële bangers — ewowo houdt elke zaal in zijn greep.',
+      tags: ['Club', 'Festival', 'Allrounder'],
+      email: 'booking@ewowo.nl', phone: '+31 6 12 34 56 78',
+      instagram: '@ewowo', soundcloud: 'ewowo',
+      bookingInfo: 'Fee op aanvraag · Min. 2 uur',
       photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null],
       gallery: [null, null, null, null, null, null]
     },
@@ -399,27 +411,29 @@
       id: 'jibbe', number: '02', name: 'JIBBE',
       genre: 'Trance · UKG',
       bio: 'Meester in de mix van euforische trance en strakke UK garage. Jibbe brengt een unieke sound die de dansvloer van begin tot eind beweegt.',
-      tags: ['Energie', 'Vibes', 'Party'],
-      email: '*******@******.**', phone: '+32 * ** ** ** **',
+      tags: ['Club', 'Trance', 'UKG'],
+      email: 'booking@jibbe.nl', phone: '+31 6 98 76 54 32',
       instagram: '@jibbe.dj', soundcloud: 'jibbe',
-      bookingInfo: 'Fee op aanvraag',
+      bookingInfo: 'Beschikbaar NL & BE · 2–4 uur',
       photos: [null, null, null],
       gallery: [null, null, null, null, null, null]
     },
     {
-      id: 'ewibbe', number: 'B2B', name: 'EWIBBE',
+      id: 'ewibbe', number: '03', name: 'EWIBBE',
       genre: 'B2B · Drum & Bass · Trance · UKG · Commercieel',
       bio: 'Ewowo & Jibbe samen op de decks. Als duo combineren ze hun volledige repertoire — drum & bass, trance, UKG en commercieel — voor een onvergetelijke b2b set.',
-      tags: ['B2B', 'Vibes', 'Party'],
-      email: '*****@*****.**', phone: '+32 4 73 61 15 57',
+      tags: ['B2B', 'Festival', 'Club'],
+      email: 'booking@ewibbe.nl', phone: '+31 6 55 44 33 22',
       instagram: '@ewibbe', soundcloud: 'ewibbe',
-      bookingInfo: 'Fee op aanvraag',
+      bookingInfo: 'Ewowo × Jibbe · B2B',
       photos: [null, null, null],
       gallery: [null, null, null, null, null, null]
     }
   ];
 
-  // ADMIN
+  // gallery items bevatten nu { url, type } objecten
+  // type = 'image' of 'video'
+
   function toggleAdminPopup() {
     if (adminUnlocked) {
       adminUnlocked = false;
@@ -457,11 +471,7 @@
 
   function updateHeroZone() {
     const zone = document.getElementById('hero-zone');
-    if (adminUnlocked) {
-      zone.classList.add('admin');
-    } else {
-      zone.classList.remove('admin');
-    }
+    adminUnlocked ? zone.classList.add('admin') : zone.classList.remove('admin');
   }
 
   function handleHeroZoneClick() {
@@ -507,25 +517,29 @@
   const iIG = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`;
   const iSC = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 2H3l7 9.46V19l4 2v-9.54L21 2z"/></svg>`;
   const iPhoto = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg>`;
+  const iVideo = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`;
+  const iPlay = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.5)"/><polygon points="10,8 18,12 10,16" fill="white"/></svg>`;
 
   async function uploadToCloudinary(file) {
+    const isVideo = file.type.startsWith('video/');
     const formData = new FormData();
     formData.append('file', file);
     formData.append('upload_preset', CLOUDINARY_PRESET);
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+    const resourceType = isVideo ? 'video' : 'image';
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`, {
       method: 'POST', body: formData
     });
     const data = await res.json();
     if (!data.secure_url) throw new Error(data.error?.message || 'Upload mislukt');
-    return data.secure_url;
+    return { url: data.secure_url, type: resourceType };
   }
 
   async function handleHeroUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
     try {
-      const url = await uploadToCloudinary(file);
-      heroPhoto = url;
+      const result = await uploadToCloudinary(file);
+      heroPhoto = result.url;
       updateHeroImage();
       await saveToJsonbin();
     } catch (e) { alert('Upload mislukt.'); }
@@ -547,8 +561,8 @@
     const slot = document.getElementById(`slot-${djId}-${index}`);
     slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
     try {
-      const url = await uploadToCloudinary(file);
-      djs.find(d => d.id === djId).photos[index] = url;
+      const result = await uploadToCloudinary(file);
+      djs.find(d => d.id === djId).photos[index] = result.url;
       await saveToJsonbin();
       renderDetail(djId);
       renderGrid();
@@ -558,14 +572,14 @@
     }
   }
 
-  async function handleGalleryPhoto(djId, index, event) {
+  async function handleGalleryMedia(djId, index, event) {
     const file = event.target.files[0];
     if (!file) return;
     const slot = document.getElementById(`gslot-${djId}-${index}`);
     slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
     try {
-      const url = await uploadToCloudinary(file);
-      djs.find(d => d.id === djId).gallery[index] = url;
+      const result = await uploadToCloudinary(file);
+      djs.find(d => d.id === djId).gallery[index] = { url: result.url, type: result.type };
       await saveToJsonbin();
       renderDetail(djId);
     } catch (e) {
@@ -586,6 +600,25 @@
       </div>`;
   }
 
+  function gallerySlotHTML(djId, index, item, adminClass) {
+    const isVideo = item && item.type === 'video';
+    const isImage = item && item.type === 'image';
+    const isEmpty = !item;
+    return `
+      <div class="gallery-slot${adminClass}" id="gslot-${djId}-${index}" onclick="triggerGalleryUpload('${djId}', ${index})">
+        ${isImage ? `<img src="${item.url}" alt="Foto ${index + 1}">` : ''}
+        ${isVideo ? `
+          <video src="${item.url}" muted loop playsinline
+            onmouseenter="this.play()" onmouseleave="this.pause(); this.currentTime=0;"></video>
+          <div class="video-play-icon">${iPlay}</div>
+          <span class="video-badge">Video</span>
+        ` : ''}
+        ${isEmpty ? `${iPhoto}<span>Foto / Video</span>` : ''}
+        <div class="upload-overlay"></div>
+        <input type="file" accept="image/*,video/*" id="gfile-${djId}-${index}" onchange="handleGalleryMedia('${djId}', ${index}, event)">
+      </div>`;
+  }
+
   function galleryHTML(djId) {
     const dj = djs.find(d => d.id === djId);
     const filledCount = dj.gallery.filter(Boolean).length;
@@ -595,7 +628,7 @@
         <div class="gallery-toggle" onclick="toggleGallery('${djId}')">
           <div class="gallery-toggle-left">
             <h3>In the moment</h3>
-            <span>${filledCount} / 6 foto's</span>
+            <span>${filledCount} / 6</span>
           </div>
           <div class="gallery-toggle-btn">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke-width="2">
@@ -605,13 +638,7 @@
         </div>
         <div class="gallery-panel">
           <div class="gallery-inner">
-            ${dj.gallery.map((photo, i) => `
-              <div class="gallery-slot${adminClass}" id="gslot-${djId}-${i}" onclick="triggerGalleryUpload('${djId}', ${i})">
-                ${photo ? `<img src="${photo}" alt="Galerij foto ${i + 1}">` : `${iPhoto}<span>Foto ${i + 1}</span>`}
-                <div class="upload-overlay"></div>
-                <input type="file" accept="image/*" id="gfile-${djId}-${i}" onchange="handleGalleryPhoto('${djId}', ${i}, event)">
-              </div>
-            `).join('')}
+            ${dj.gallery.map((item, i) => gallerySlotHTML(djId, i, item, adminClass)).join('')}
           </div>
         </div>
       </div>`;
