@@ -29,25 +29,15 @@
     .page { display: none; }
     .page.active { display: block; }
 
-    /* LOADER */
     #loader {
       position: fixed; inset: 0; background: var(--bg);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
       gap: 24px; z-index: 999; transition: opacity 0.4s; overflow: hidden;
     }
     #loader.hidden { opacity: 0; pointer-events: none; }
-    #loader-bg-img {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; opacity: 0.35; display: none;
-    }
-    #loader-bg-vid {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; opacity: 0.35; display: none;
-    }
-    #loader-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%);
-    }
+    #loader-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; display: none; }
+    #loader-bg-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; display: none; }
+    #loader-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%); }
     .loader-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 24px; }
     .loader-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 6px; color: var(--text); }
     .loader-title span { color: var(--accent); }
@@ -60,7 +50,6 @@
     @keyframes slide { 0% { left: -100%; } 100% { left: 100%; } }
     .loader-text { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
 
-    /* ADMIN */
     #admin-btn {
       position: fixed; bottom: 20px; left: 20px; z-index: 998;
       width: 36px; height: 36px; background: rgba(10,10,10,0.8);
@@ -71,6 +60,18 @@
     #admin-btn.unlocked { border-color: var(--accent); }
     #admin-btn svg { width: 14px; height: 14px; stroke: #444; transition: stroke 0.2s; }
     #admin-btn.unlocked svg { stroke: var(--accent); }
+
+    #loader-edit-btn {
+      display: none;
+      position: fixed; bottom: 20px; left: 66px; z-index: 998;
+      height: 36px; background: rgba(10,10,10,0.8);
+      border: 1px solid #2a2a2a; border-radius: 2px; cursor: pointer;
+      align-items: center; justify-content: center;
+      color: var(--accent); font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 0 12px; white-space: nowrap;
+      transition: border-color 0.2s;
+    }
+    #loader-edit-btn:hover { border-color: var(--accent); }
 
     #admin-popup {
       position: fixed; bottom: 66px; left: 20px; z-index: 998;
@@ -92,7 +93,6 @@
     #admin-popup .error { color: var(--accent2); font-size: 11px; display: none; }
     #admin-popup .error.visible { display: block; }
 
-    /* EDIT OVERLAY */
     .edit-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.85); z-index: 9999;
@@ -135,14 +135,6 @@
     }
     .header-edit-btn:hover { background: rgba(232,255,0,0.15); }
 
-    .loader-edit-btn {
-      display: none; position: absolute; top: 16px; right: 16px; z-index: 4;
-      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      padding: 7px 14px; cursor: pointer; transition: background 0.2s;
-    }
-    .loader-edit-btn:hover { background: rgba(232,255,0,0.15); }
-
     .footer-wrap { position: relative; }
     .footer-edit-btn {
       display: none; position: absolute; top: 50%; right: 20px; transform: translateY(-50%);
@@ -159,7 +151,6 @@
     }
     .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* HERO */
     .site-header {
       position: relative; padding: 80px 40px 60px; text-align: center;
       border-bottom: 1px solid var(--border); overflow: hidden;
@@ -342,12 +333,10 @@
   <div class="edit-box" id="edit-box"></div>
 </div>
 
-<!-- LOADER -->
 <div id="loader">
   <img id="loader-bg-img" src="" alt="">
   <video id="loader-bg-vid" autoplay muted loop playsinline></video>
   <div id="loader-overlay"></div>
-  <button class="loader-edit-btn" id="loader-edit-btn" onclick="editLoader()">✎ Laadscherm bewerken</button>
   <div class="loader-content">
     <div class="loader-title" id="loader-title-el"></div>
     <div class="loader-bar"></div>
@@ -359,6 +348,8 @@
   <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
 </button>
 
+<button id="loader-edit-btn" onclick="editLoader()">✎ Laadscherm</button>
+
 <div id="admin-popup">
   <p>Beheerder</p>
   <input type="password" id="admin-input" placeholder="Wachtwoord" onkeydown="if(event.key==='Enter') submitWachtwoord()">
@@ -367,7 +358,7 @@
 </div>
 
 <div class="page active" id="page-home">
-  <header class="site-header" id="site-header">
+  <header class="site-header">
     <img class="hero-bg" id="hero-img" src="" alt="" style="display:none;">
     <video class="hero-bg-video" id="hero-video" autoplay muted loop playsinline style="display:none;"></video>
     <div class="hero-overlay"></div>
@@ -461,7 +452,6 @@
     }
   ];
 
-  // ── LOADER ──
   function renderLoader() {
     const titleEl = document.getElementById('loader-title-el');
     const textEl = document.getElementById('loader-text-el');
@@ -490,7 +480,7 @@
       { key: 'loaderTitleAccent', label: 'Titel deel 2 (geel)', value: siteConfig.loaderTitleAccent },
       { key: 'loaderTitleEnd', label: 'Titel deel 3 (wit)', value: siteConfig.loaderTitleEnd },
       { key: 'loaderText', label: 'Laadtekst', value: siteConfig.loaderText },
-      { key: 'loaderMediaUpload', label: 'Achtergrond (foto of video) — klik Opslaan dan upload', value: siteConfig.loaderMedia ? '✓ Media ingesteld' : 'Nog geen media' },
+      { key: 'loaderMediaInfo', label: 'Achtergrond — na opslaan wordt upload gevraagd', value: siteConfig.loaderMedia ? '✓ Media ingesteld' : 'Nog geen media' },
     ], async () => {
       siteConfig.loaderTitleMain = getEditVal('loaderTitleMain');
       siteConfig.loaderTitleAccent = getEditVal('loaderTitleAccent');
@@ -499,7 +489,6 @@
       closeEdit();
       renderLoader();
       await saveToJsonbin();
-      // trigger media upload apart
       document.getElementById('loader-media-file').click();
     });
   }
@@ -520,12 +509,11 @@
     const headerBtn = document.getElementById('header-edit-btn');
     const footerBtn = document.getElementById('footer-edit-btn');
     const loaderBtn = document.getElementById('loader-edit-btn');
-    [headerBtn, footerBtn, loaderBtn].forEach(btn => {
-      if (btn) btn.style.display = adminUnlocked ? 'block' : 'none';
-    });
+    if (headerBtn) headerBtn.style.display = adminUnlocked ? 'block' : 'none';
+    if (footerBtn) footerBtn.style.display = adminUnlocked ? 'block' : 'none';
+    if (loaderBtn) loaderBtn.style.display = adminUnlocked ? 'flex' : 'none';
   }
 
-  // ── HEADER / FOOTER ──
   function renderHeader() {
     document.getElementById('hero-content').innerHTML = `
       <p class="header-label">${siteConfig.headerLabel}</p>
@@ -571,7 +559,6 @@
     });
   }
 
-  // ── ADMIN ──
   function toggleAdminPopup() {
     if (adminUnlocked) {
       adminUnlocked = false;
@@ -607,7 +594,6 @@
     }
   }
 
-  // ── EDIT OVERLAY ──
   function openEdit(title, fields, onSave) {
     const box = document.getElementById('edit-box');
     box.innerHTML = `
@@ -642,7 +628,6 @@
     return document.getElementById(`ef-${key}`)?.value?.trim() || '';
   }
 
-  // ── EDIT DJ ──
   function editDJ(djId) {
     const dj = djs.find(d => d.id === djId);
     openEdit('DJ bewerken', [
@@ -723,7 +708,6 @@
     });
   }
 
-  // ── ADD / DELETE DJ ──
   function addDJ() {
     openEdit('Nieuwe DJ toevoegen', [
       { key: 'name', label: 'Naam' },
@@ -765,7 +749,6 @@
     renderGrid();
   }
 
-  // ── HERO ──
   function updateHeroZone() {
     const zone = document.getElementById('hero-zone');
     adminUnlocked ? zone.classList.add('admin') : zone.classList.remove('admin');
@@ -789,7 +772,6 @@
     }
   }
 
-  // ── JSONBIN ──
   async function saveToJsonbin() {
     const data = { heroMedia, siteConfig, djs };
     await fetch(`${JSONBIN_URL}/${BIN_ID}`, {
@@ -828,7 +810,6 @@
     } catch (e) {}
   }
 
-  // ── CLOUDINARY ──
   async function uploadToCloudinary(file) {
     const isVideo = file.type.startsWith('video/');
     const formData = new FormData();
@@ -897,7 +878,6 @@
     }
   }
 
-  // ── ERVARING ──
   async function addErvaring(djId) {
     const jaar = document.getElementById(`ejaar-${djId}`).value.trim();
     const naam = document.getElementById(`enaam-${djId}`).value.trim();
@@ -935,7 +915,6 @@
     document.getElementById(`ervaring-${djId}`).classList.toggle('open');
   }
 
-  // ── HTML BUILDERS ──
   const iMail = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg>`;
   const iPhone = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 12.14 19.79 19.79 0 0 1 1.63 3.56 2 2 0 0 1 3.6 1.37h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.09 6.09l.91-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
   const iIG = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`;
