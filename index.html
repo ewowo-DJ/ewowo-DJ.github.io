@@ -29,12 +29,26 @@
     .page { display: none; }
     .page.active { display: block; }
 
+    /* LOADER */
     #loader {
       position: fixed; inset: 0; background: var(--bg);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 24px; z-index: 999; transition: opacity 0.4s;
+      gap: 24px; z-index: 999; transition: opacity 0.4s; overflow: hidden;
     }
     #loader.hidden { opacity: 0; pointer-events: none; }
+    #loader-bg-img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.35; display: none;
+    }
+    #loader-bg-vid {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; opacity: 0.35; display: none;
+    }
+    #loader-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%);
+    }
+    .loader-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 24px; }
     .loader-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 6px; color: var(--text); }
     .loader-title span { color: var(--accent); }
     .loader-bar { width: 200px; height: 1px; background: var(--border); position: relative; overflow: hidden; }
@@ -46,6 +60,7 @@
     @keyframes slide { 0% { left: -100%; } 100% { left: 100%; } }
     .loader-text { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
 
+    /* ADMIN */
     #admin-btn {
       position: fixed; bottom: 20px; left: 20px; z-index: 998;
       width: 36px; height: 36px; background: rgba(10,10,10,0.8);
@@ -77,6 +92,7 @@
     #admin-popup .error { color: var(--accent2); font-size: 11px; display: none; }
     #admin-popup .error.visible { display: block; }
 
+    /* EDIT OVERLAY */
     .edit-overlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0,0,0,0.85); z-index: 9999;
@@ -86,6 +102,7 @@
     .edit-box {
       background: #111; border: 1px solid var(--border); padding: 28px;
       width: 90%; max-width: 560px; display: flex; flex-direction: column; gap: 14px;
+      max-height: 90vh; overflow-y: auto;
     }
     .edit-box h3 { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
     .edit-box input, .edit-box textarea {
@@ -110,39 +127,28 @@
     }
     .admin .edit-btn { display: block; }
 
-    /* HEADER EDIT BTN */
     .header-edit-btn {
-      display: none;
-      position: absolute;
-      top: 16px; left: 16px;
-      z-index: 4;
-      background: rgba(0,0,0,0.7);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 7px 14px;
-      cursor: pointer;
-      transition: background 0.2s;
+      display: none; position: absolute; top: 16px; left: 16px; z-index: 4;
+      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 7px 14px; cursor: pointer; transition: background 0.2s;
     }
     .header-edit-btn:hover { background: rgba(232,255,0,0.15); }
 
-    /* FOOTER EDIT BTN */
+    .loader-edit-btn {
+      display: none; position: absolute; top: 16px; right: 16px; z-index: 4;
+      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 7px 14px; cursor: pointer; transition: background 0.2s;
+    }
+    .loader-edit-btn:hover { background: rgba(232,255,0,0.15); }
+
     .footer-wrap { position: relative; }
     .footer-edit-btn {
-      display: none;
-      position: absolute;
-      top: 50%; right: 20px;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.7);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      font-size: 10px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      cursor: pointer;
+      display: none; position: absolute; top: 50%; right: 20px; transform: translateY(-50%);
+      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 6px 12px; cursor: pointer;
     }
     .footer-edit-btn:hover { background: rgba(232,255,0,0.15); }
 
@@ -153,6 +159,7 @@
     }
     .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
 
+    /* HERO */
     .site-header {
       position: relative; padding: 80px 40px 60px; text-align: center;
       border-bottom: 1px solid var(--border); overflow: hidden;
@@ -335,10 +342,17 @@
   <div class="edit-box" id="edit-box"></div>
 </div>
 
+<!-- LOADER -->
 <div id="loader">
-  <div class="loader-title">DJ<span>LINE</span>UP</div>
-  <div class="loader-bar"></div>
-  <div class="loader-text">Laden...</div>
+  <img id="loader-bg-img" src="" alt="">
+  <video id="loader-bg-vid" autoplay muted loop playsinline></video>
+  <div id="loader-overlay"></div>
+  <button class="loader-edit-btn" id="loader-edit-btn" onclick="editLoader()">✎ Laadscherm bewerken</button>
+  <div class="loader-content">
+    <div class="loader-title" id="loader-title-el"></div>
+    <div class="loader-bar"></div>
+    <div class="loader-text" id="loader-text-el"></div>
+  </div>
 </div>
 
 <button id="admin-btn" onclick="toggleAdminPopup()" title="Beheer">
@@ -359,14 +373,12 @@
     <div class="hero-overlay"></div>
     <div class="hero-upload-zone" id="hero-zone" onclick="handleHeroZoneClick()"></div>
     <button class="header-edit-btn" id="header-edit-btn" onclick="editHeader()">✎ Header bewerken</button>
-    <div class="hero-content" id="hero-content">
-      <!-- filled by renderHeader() -->
-    </div>
+    <div class="hero-content" id="hero-content"></div>
     <input type="file" accept="image/*,video/*" id="hero-file" style="display:none;" onchange="handleHeroUpload(event)">
   </header>
   <main class="dj-grid" id="dj-grid"></main>
   <div class="footer-wrap">
-    <footer id="site-footer"><!-- filled by renderFooter() --></footer>
+    <footer id="site-footer"></footer>
     <button class="footer-edit-btn" id="footer-edit-btn" onclick="editFooter()">✎</button>
   </div>
 </div>
@@ -380,8 +392,10 @@
     <span class="breadcrumb">Lineup / <span id="breadcrumb-name"></span></span>
   </nav>
   <div class="detail-body" id="detail-content"></div>
-  <footer id="detail-footer"><!-- filled by renderFooter() --></footer>
+  <footer id="detail-footer"></footer>
 </div>
+
+<input type="file" accept="image/*,video/*" id="loader-media-file" style="display:none;" onchange="handleLoaderMediaUpload(event)">
 
 <script>
   const CLOUDINARY_CLOUD = 'devasysdf';
@@ -400,7 +414,12 @@
     headerTitleAccent: 'LINE',
     headerTitleEnd: 'UP',
     headerSubtitle: 'Klik op een DJ voor meer info & booking',
-    footerText: 'DJ Collective © 2026 — Alle rechten voorbehouden'
+    footerText: 'DJ Collective © 2026 — Alle rechten voorbehouden',
+    loaderTitleMain: 'DJ',
+    loaderTitleAccent: 'LINE',
+    loaderTitleEnd: 'UP',
+    loaderText: 'Laden...',
+    loaderMedia: null
   };
 
   let djs = [
@@ -442,7 +461,71 @@
     }
   ];
 
-  // ── RENDER HEADER / FOOTER ──
+  // ── LOADER ──
+  function renderLoader() {
+    const titleEl = document.getElementById('loader-title-el');
+    const textEl = document.getElementById('loader-text-el');
+    titleEl.innerHTML = `${siteConfig.loaderTitleMain}<span>${siteConfig.loaderTitleAccent}</span>${siteConfig.loaderTitleEnd}`;
+    textEl.textContent = siteConfig.loaderText;
+    updateLoaderMedia();
+  }
+
+  function updateLoaderMedia() {
+    const img = document.getElementById('loader-bg-img');
+    const vid = document.getElementById('loader-bg-vid');
+    const m = siteConfig.loaderMedia;
+    if (!m) { img.style.display = 'none'; vid.style.display = 'none'; return; }
+    if (m.type === 'video') {
+      img.style.display = 'none';
+      vid.src = m.url; vid.style.display = 'block'; vid.play();
+    } else {
+      vid.style.display = 'none';
+      img.src = m.url; img.style.display = 'block';
+    }
+  }
+
+  function editLoader() {
+    openEdit('Laadscherm bewerken', [
+      { key: 'loaderTitleMain', label: 'Titel deel 1 (wit)', value: siteConfig.loaderTitleMain },
+      { key: 'loaderTitleAccent', label: 'Titel deel 2 (geel)', value: siteConfig.loaderTitleAccent },
+      { key: 'loaderTitleEnd', label: 'Titel deel 3 (wit)', value: siteConfig.loaderTitleEnd },
+      { key: 'loaderText', label: 'Laadtekst', value: siteConfig.loaderText },
+      { key: 'loaderMediaUpload', label: 'Achtergrond (foto of video) — klik Opslaan dan upload', value: siteConfig.loaderMedia ? '✓ Media ingesteld' : 'Nog geen media' },
+    ], async () => {
+      siteConfig.loaderTitleMain = getEditVal('loaderTitleMain');
+      siteConfig.loaderTitleAccent = getEditVal('loaderTitleAccent');
+      siteConfig.loaderTitleEnd = getEditVal('loaderTitleEnd');
+      siteConfig.loaderText = getEditVal('loaderText') || siteConfig.loaderText;
+      closeEdit();
+      renderLoader();
+      await saveToJsonbin();
+      // trigger media upload apart
+      document.getElementById('loader-media-file').click();
+    });
+  }
+
+  async function handleLoaderMediaUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      const result = await uploadToCloudinary(file);
+      siteConfig.loaderMedia = { url: result.url, type: result.type };
+      updateLoaderMedia();
+      await saveToJsonbin();
+    } catch (e) { alert('Upload mislukt.'); }
+    event.target.value = '';
+  }
+
+  function updateAdminButtons() {
+    const headerBtn = document.getElementById('header-edit-btn');
+    const footerBtn = document.getElementById('footer-edit-btn');
+    const loaderBtn = document.getElementById('loader-edit-btn');
+    [headerBtn, footerBtn, loaderBtn].forEach(btn => {
+      if (btn) btn.style.display = adminUnlocked ? 'block' : 'none';
+    });
+  }
+
+  // ── HEADER / FOOTER ──
   function renderHeader() {
     document.getElementById('hero-content').innerHTML = `
       <p class="header-label">${siteConfig.headerLabel}</p>
@@ -456,18 +539,6 @@
     document.getElementById('site-footer').textContent = text;
     const df = document.getElementById('detail-footer');
     if (df) df.textContent = text;
-  }
-
-  function updateHeaderEditBtn() {
-    const btn = document.getElementById('header-edit-btn');
-    const footerBtn = document.getElementById('footer-edit-btn');
-    if (adminUnlocked) {
-      btn.style.display = 'block';
-      footerBtn.style.display = 'block';
-    } else {
-      btn.style.display = 'none';
-      footerBtn.style.display = 'none';
-    }
   }
 
   function editHeader() {
@@ -506,7 +577,7 @@
       adminUnlocked = false;
       document.getElementById('admin-btn').classList.remove('unlocked');
       document.getElementById('admin-popup').classList.remove('visible');
-      updateHeaderEditBtn();
+      updateAdminButtons();
       if (currentDJId) renderDetail(currentDJId);
       renderGrid();
       updateHeroZone();
@@ -526,7 +597,7 @@
       document.getElementById('admin-popup').classList.remove('visible');
       document.getElementById('admin-input').value = '';
       err.classList.remove('visible');
-      updateHeaderEditBtn();
+      updateAdminButtons();
       if (currentDJId) renderDetail(currentDJId);
       renderGrid();
       updateHeroZone();
@@ -1003,11 +1074,8 @@
         </div>
       </div>
     `).join('');
-
     if (adminUnlocked) {
-      grid.insertAdjacentHTML('beforeend', `
-        <button class="add-dj-btn" style="display:block;" onclick="addDJ()">+ DJ toevoegen</button>
-      `);
+      grid.insertAdjacentHTML('beforeend', `<button class="add-dj-btn" style="display:block;" onclick="addDJ()">+ DJ toevoegen</button>`);
     }
   }
 
@@ -1078,6 +1146,7 @@
 
   async function init() {
     await loadFromJsonbin();
+    renderLoader();
     renderHeader();
     renderFooter();
     updateHeroMedia();
