@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DJ collectief</title>
+  <title>DJ Collective</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,6 +24,13 @@
       font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23111' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23222' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23222' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23e8ff00'/%3E%3C/svg%3E") 16 16, auto;
+    }
+
+    a, button, .dj-card-clickable, .open-btn, .back-btn, .gallery-toggle,
+    .ervaring-toggle, .photo-slot.admin, .gallery-slot.admin,
+    .hero-upload-zone.admin, .booking-btn {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer;
     }
 
     .page { display: none; }
@@ -53,7 +60,7 @@
     #admin-btn {
       position: fixed; bottom: 20px; left: 20px; z-index: 998;
       width: 36px; height: 36px; background: rgba(10,10,10,0.8);
-      border: 1px solid #2a2a2a; border-radius: 2px; cursor: pointer;
+      border: 1px solid #2a2a2a; border-radius: 2px;
       display: flex; align-items: center; justify-content: center; transition: border-color 0.2s;
     }
     #admin-btn:hover { border-color: #444; }
@@ -65,7 +72,7 @@
       display: none;
       position: fixed; bottom: 20px; left: 66px; z-index: 998;
       height: 36px; background: rgba(10,10,10,0.8);
-      border: 1px solid #2a2a2a; border-radius: 2px; cursor: pointer;
+      border: 1px solid #2a2a2a; border-radius: 2px;
       align-items: center; justify-content: center;
       color: var(--accent); font-size: 10px; letter-spacing: 2px;
       text-transform: uppercase; padding: 0 12px; white-space: nowrap;
@@ -123,7 +130,7 @@
       display: none; position: absolute; top: -8px; right: -8px;
       background: var(--accent); color: #000; border: none;
       font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
-      padding: 3px 8px; cursor: pointer; z-index: 10; white-space: nowrap;
+      padding: 3px 8px; z-index: 10; white-space: nowrap;
     }
     .admin .edit-btn { display: block; }
 
@@ -131,7 +138,7 @@
       display: none; position: absolute; top: 16px; left: 16px; z-index: 4;
       background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
       font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      padding: 7px 14px; cursor: pointer; transition: background 0.2s;
+      padding: 7px 14px; transition: background 0.2s;
     }
     .header-edit-btn:hover { background: rgba(232,255,0,0.15); }
 
@@ -139,15 +146,14 @@
     .footer-edit-btn {
       display: none; position: absolute; top: 50%; right: 20px; transform: translateY(-50%);
       background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      padding: 6px 12px; cursor: pointer;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 12px;
     }
     .footer-edit-btn:hover { background: rgba(232,255,0,0.15); }
 
     .add-dj-btn {
       display: none; width: 100%; background: none; border: 1px dashed #2a2a2a;
       color: #444; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-      padding: 20px; cursor: pointer; transition: border-color 0.2s, color 0.2s; margin-top: 2px;
+      padding: 20px; transition: border-color 0.2s, color 0.2s; margin-top: 2px;
     }
     .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -161,7 +167,7 @@
     .hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; }
     .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%); z-index: 1; }
     .hero-upload-zone { position: absolute; inset: 0; z-index: 2; cursor: default; }
-    .hero-upload-zone.admin { cursor: pointer; }
+    .hero-upload-zone.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
     .hero-upload-zone.admin:hover::after {
       content: 'Achtergrond wijzigen'; position: absolute; bottom: 16px; right: 16px;
       background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
@@ -179,7 +185,7 @@
     }
     .dj-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.2s; position: relative; }
     .dj-card:hover { border-color: #333; }
-    .dj-card-clickable { cursor: pointer; }
+    .dj-card-clickable { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
     .dj-card-clickable:hover { border-color: var(--accent); }
     .dj-photo { width: 100%; aspect-ratio: 4/3; background: #1a1a1a; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .dj-photo img { width: 100%; height: 100%; object-fit: cover; }
@@ -193,19 +199,19 @@
     .dj-bio-short { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
     .dj-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
     .tag { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border: 1px solid #2a2a2a; color: #777; border-radius: 2px; }
-    .open-btn { display: flex; align-items: center; gap: 7px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; transition: gap 0.2s; }
+    .open-btn { display: flex; align-items: center; gap: 7px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); background: none; border: none; padding: 0; transition: gap 0.2s; }
     .open-btn:hover { gap: 11px; }
     .open-btn svg { width: 14px; height: 14px; stroke: var(--accent); }
     .delete-dj-btn {
       display: none; position: absolute; top: 10px; right: 10px;
       background: rgba(0,0,0,0.7); border: 1px solid #333; color: #666;
-      font-size: 16px; width: 28px; height: 28px; cursor: pointer; z-index: 5;
+      font-size: 16px; width: 28px; height: 28px; z-index: 5;
       align-items: center; justify-content: center; transition: color 0.2s, border-color 0.2s;
     }
     .delete-dj-btn:hover { color: var(--accent2); border-color: var(--accent2); }
 
     .detail-nav { display: flex; align-items: center; gap: 16px; padding: 20px 40px; border-bottom: 1px solid var(--border); }
-    .back-btn { display: flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; padding: 0; }
+    .back-btn { display: flex; align-items: center; gap: 8px; background: none; border: none; color: var(--muted); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; padding: 0; }
     .back-btn:hover { color: var(--accent); }
     .back-btn svg { width: 16px; height: 16px; stroke: currentColor; }
     .breadcrumb { font-size: 12px; color: #333; }
@@ -217,7 +223,7 @@
     .photo-grid .photo-main { grid-column: 1 / -1; }
 
     .photo-slot { background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s; }
-    .photo-slot.admin { cursor: pointer; }
+    .photo-slot.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
     .photo-slot.admin:hover { border-color: #444; }
     .photo-slot svg { width: 26px; height: 26px; stroke: #333; }
     .photo-slot span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
@@ -237,11 +243,11 @@
     .booking-block { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--border); }
     .booking-block h3 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
     .booking-block p { font-size: 12px; color: #555; margin-bottom: 16px; }
-    .booking-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; background: var(--accent); color: #000; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+    .booking-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; background: var(--accent); color: #000; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: none; transition: background 0.2s, transform 0.1s; }
     .booking-btn:hover { background: #fff; transform: translateY(-1px); }
 
     .ervaring-section { margin-top: 16px; border: 1px solid var(--border); overflow: hidden; }
-    .ervaring-toggle { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; cursor: pointer; user-select: none; transition: background 0.2s; }
+    .ervaring-toggle { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; user-select: none; transition: background 0.2s; }
     .ervaring-toggle:hover { background: #1a1a1a; }
     .ervaring-toggle h4 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
     .ervaring-toggle-btn { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s; }
@@ -254,14 +260,14 @@
     .ervaring-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #1a1a1a; align-items: center; }
     .ervaring-item:last-child { border-bottom: none; }
     .ervaring-order-btns { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
-    .ervaring-order-btn { background: none; border: 1px solid #2a2a2a; cursor: pointer; color: #555; font-size: 9px; padding: 2px 5px; line-height: 1; border-radius: 2px; transition: color 0.2s, border-color 0.2s; }
+    .ervaring-order-btn { background: none; border: 1px solid #2a2a2a; color: #555; font-size: 9px; padding: 2px 5px; line-height: 1; border-radius: 2px; transition: color 0.2s, border-color 0.2s; }
     .ervaring-order-btn:hover { color: var(--accent); border-color: var(--accent); }
-    .ervaring-order-btn:disabled { opacity: 0.2; cursor: default; }
+    .ervaring-order-btn:disabled { opacity: 0.2; }
     .ervaring-order-btn:disabled:hover { color: #555; border-color: #2a2a2a; }
     .ervaring-jaar { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--accent); min-width: 48px; line-height: 1.2; flex-shrink: 0; }
     .ervaring-tekst { font-size: 13px; color: var(--muted); line-height: 1.5; flex: 1; }
     .ervaring-tekst strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 2px; }
-    .ervaring-delete { background: none; border: none; cursor: pointer; color: #444; font-size: 16px; padding: 0 4px; line-height: 1; transition: color 0.2s; flex-shrink: 0; }
+    .ervaring-delete { background: none; border: none; color: #444; font-size: 16px; padding: 0 4px; line-height: 1; transition: color 0.2s; flex-shrink: 0; }
     .ervaring-delete:hover { color: var(--accent2); }
     .ervaring-add { display: none; margin-top: 14px; flex-direction: column; gap: 8px; }
     .ervaring-add.admin { display: flex; }
@@ -269,7 +275,7 @@
     .ervaring-add input { background: #0a0a0a; border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 7px 10px; outline: none; width: 100%; }
     .ervaring-add input::placeholder { color: #444; }
     .ervaring-add input:focus { border-color: var(--accent); }
-    .ervaring-add-btn { background: var(--accent); color: #000; border: none; padding: 7px 16px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; white-space: nowrap; font-weight: 500; }
+    .ervaring-add-btn { background: var(--accent); color: #000; border: none; padding: 7px 16px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; font-weight: 500; }
     .ervaring-add-btn:hover { background: #fff; }
     .ervaring-empty { font-size: 12px; color: #444; padding: 4px 0; }
 
@@ -283,7 +289,7 @@
     .contact-item:hover svg { stroke: var(--accent); }
 
     .gallery-section { margin-top: 48px; border: 1px solid var(--border); background: var(--card); overflow: hidden; }
-    .gallery-toggle { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; cursor: pointer; user-select: none; transition: background 0.2s; }
+    .gallery-toggle { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; user-select: none; transition: background 0.2s; }
     .gallery-toggle:hover { background: #1a1a1a; }
     .gallery-toggle-left { display: flex; align-items: center; gap: 16px; }
     .gallery-toggle h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--text); }
@@ -297,7 +303,7 @@
     .gallery-inner { border-top: 1px solid var(--border); padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
 
     .gallery-slot { background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s; }
-    .gallery-slot.admin { cursor: pointer; }
+    .gallery-slot.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
     .gallery-slot.admin:hover { border-color: #444; }
     .gallery-slot svg { width: 22px; height: 22px; stroke: #333; }
     .gallery-slot span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
