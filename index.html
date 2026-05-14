@@ -77,42 +77,15 @@
     #admin-popup .error { color: var(--accent2); font-size: 11px; display: none; }
     #admin-popup .error.visible { display: block; }
 
-    /* EDIT INLINE */
-    .editable { position: relative; }
-    .edit-btn {
-      display: none;
-      position: absolute;
-      top: -8px; right: -8px;
-      background: var(--accent);
-      color: #000;
-      border: none;
-      font-size: 9px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      cursor: pointer;
-      z-index: 10;
-      white-space: nowrap;
-    }
-    .admin .edit-btn { display: block; }
     .edit-overlay {
-      display: none;
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.85);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85); z-index: 9999;
+      align-items: center; justify-content: center;
     }
     .edit-overlay.visible { display: flex; }
     .edit-box {
-      background: #111;
-      border: 1px solid var(--border);
-      padding: 28px;
-      width: 90%;
-      max-width: 560px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      background: #111; border: 1px solid var(--border); padding: 28px;
+      width: 90%; max-width: 560px; display: flex; flex-direction: column; gap: 14px;
     }
     .edit-box h3 { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
     .edit-box input, .edit-box textarea {
@@ -128,24 +101,58 @@
     .edit-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
     .edit-cancel:hover { border-color: #444; color: var(--text); }
 
-    /* ADD DJ */
-    .add-dj-btn {
+    .editable { position: relative; }
+    .edit-btn {
+      display: none; position: absolute; top: -8px; right: -8px;
+      background: var(--accent); color: #000; border: none;
+      font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+      padding: 3px 8px; cursor: pointer; z-index: 10; white-space: nowrap;
+    }
+    .admin .edit-btn { display: block; }
+
+    /* HEADER EDIT BTN */
+    .header-edit-btn {
       display: none;
-      width: 100%;
-      background: none;
-      border: 1px dashed #2a2a2a;
-      color: #444;
-      font-size: 11px;
-      letter-spacing: 3px;
+      position: absolute;
+      top: 16px; left: 16px;
+      z-index: 4;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 10px;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      padding: 20px;
+      padding: 7px 14px;
       cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
-      margin-top: 2px;
+      transition: background 0.2s;
+    }
+    .header-edit-btn:hover { background: rgba(232,255,0,0.15); }
+
+    /* FOOTER EDIT BTN */
+    .footer-wrap { position: relative; }
+    .footer-edit-btn {
+      display: none;
+      position: absolute;
+      top: 50%; right: 20px;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.7);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+    .footer-edit-btn:hover { background: rgba(232,255,0,0.15); }
+
+    .add-dj-btn {
+      display: none; width: 100%; background: none; border: 1px dashed #2a2a2a;
+      color: #444; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+      padding: 20px; cursor: pointer; transition: border-color 0.2s, color 0.2s; margin-top: 2px;
     }
     .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* HERO */
     .site-header {
       position: relative; padding: 80px 40px 60px; text-align: center;
       border-bottom: 1px solid var(--border); overflow: hidden;
@@ -191,22 +198,11 @@
     .open-btn { display: flex; align-items: center; gap: 7px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); background: none; border: none; cursor: pointer; padding: 0; transition: gap 0.2s; }
     .open-btn:hover { gap: 11px; }
     .open-btn svg { width: 14px; height: 14px; stroke: var(--accent); }
-
-    /* DELETE DJ BTN */
     .delete-dj-btn {
-      display: none;
-      position: absolute;
-      top: 10px; right: 10px;
-      background: rgba(0,0,0,0.7);
-      border: 1px solid #333;
-      color: #666;
-      font-size: 16px;
-      width: 28px; height: 28px;
-      cursor: pointer;
-      z-index: 5;
-      align-items: center;
-      justify-content: center;
-      transition: color 0.2s, border-color 0.2s;
+      display: none; position: absolute; top: 10px; right: 10px;
+      background: rgba(0,0,0,0.7); border: 1px solid #333; color: #666;
+      font-size: 16px; width: 28px; height: 28px; cursor: pointer; z-index: 5;
+      align-items: center; justify-content: center; transition: color 0.2s, border-color 0.2s;
     }
     .delete-dj-btn:hover { color: var(--accent2); border-color: var(--accent2); }
 
@@ -335,7 +331,6 @@
 </head>
 <body>
 
-<!-- EDIT OVERLAY -->
 <div class="edit-overlay" id="edit-overlay">
   <div class="edit-box" id="edit-box"></div>
 </div>
@@ -358,20 +353,22 @@
 </div>
 
 <div class="page active" id="page-home">
-  <header class="site-header">
+  <header class="site-header" id="site-header">
     <img class="hero-bg" id="hero-img" src="" alt="" style="display:none;">
     <video class="hero-bg-video" id="hero-video" autoplay muted loop playsinline style="display:none;"></video>
     <div class="hero-overlay"></div>
     <div class="hero-upload-zone" id="hero-zone" onclick="handleHeroZoneClick()"></div>
-    <div class="hero-content">
-      <p class="header-label">Het collectief</p>
-      <h1>DJ<span>LINE</span>UP</h1>
-      <p>Klik op een DJ voor meer info & booking</p>
+    <button class="header-edit-btn" id="header-edit-btn" onclick="editHeader()">✎ Header bewerken</button>
+    <div class="hero-content" id="hero-content">
+      <!-- filled by renderHeader() -->
     </div>
     <input type="file" accept="image/*,video/*" id="hero-file" style="display:none;" onchange="handleHeroUpload(event)">
   </header>
   <main class="dj-grid" id="dj-grid"></main>
-  <footer>DJ Collective &copy; 2026 &mdash; Alle rechten voorbehouden</footer>
+  <div class="footer-wrap">
+    <footer id="site-footer"><!-- filled by renderFooter() --></footer>
+    <button class="footer-edit-btn" id="footer-edit-btn" onclick="editFooter()">✎</button>
+  </div>
 </div>
 
 <div class="page" id="page-detail">
@@ -383,7 +380,7 @@
     <span class="breadcrumb">Lineup / <span id="breadcrumb-name"></span></span>
   </nav>
   <div class="detail-body" id="detail-content"></div>
-  <footer>DJ Collective &copy; 2026 &mdash; Alle rechten voorbehouden</footer>
+  <footer id="detail-footer"><!-- filled by renderFooter() --></footer>
 </div>
 
 <script>
@@ -396,6 +393,15 @@
   let adminUnlocked = false;
   let heroMedia = null;
   let currentDJId = null;
+
+  let siteConfig = {
+    headerLabel: 'Het collectief',
+    headerTitleMain: 'DJ',
+    headerTitleAccent: 'LINE',
+    headerTitleEnd: 'UP',
+    headerSubtitle: 'Klik op een DJ voor meer info & booking',
+    footerText: 'DJ Collective © 2026 — Alle rechten voorbehouden'
+  };
 
   let djs = [
     {
@@ -436,12 +442,71 @@
     }
   ];
 
+  // ── RENDER HEADER / FOOTER ──
+  function renderHeader() {
+    document.getElementById('hero-content').innerHTML = `
+      <p class="header-label">${siteConfig.headerLabel}</p>
+      <h1>${siteConfig.headerTitleMain}<span>${siteConfig.headerTitleAccent}</span>${siteConfig.headerTitleEnd}</h1>
+      <p>${siteConfig.headerSubtitle}</p>
+    `;
+  }
+
+  function renderFooter() {
+    const text = siteConfig.footerText;
+    document.getElementById('site-footer').textContent = text;
+    const df = document.getElementById('detail-footer');
+    if (df) df.textContent = text;
+  }
+
+  function updateHeaderEditBtn() {
+    const btn = document.getElementById('header-edit-btn');
+    const footerBtn = document.getElementById('footer-edit-btn');
+    if (adminUnlocked) {
+      btn.style.display = 'block';
+      footerBtn.style.display = 'block';
+    } else {
+      btn.style.display = 'none';
+      footerBtn.style.display = 'none';
+    }
+  }
+
+  function editHeader() {
+    openEdit('Header bewerken', [
+      { key: 'headerLabel', label: 'Label (klein bovenaan)', value: siteConfig.headerLabel },
+      { key: 'headerTitleMain', label: 'Titel deel 1 (wit)', value: siteConfig.headerTitleMain },
+      { key: 'headerTitleAccent', label: 'Titel deel 2 (geel)', value: siteConfig.headerTitleAccent },
+      { key: 'headerTitleEnd', label: 'Titel deel 3 (wit)', value: siteConfig.headerTitleEnd },
+      { key: 'headerSubtitle', label: 'Ondertitel', value: siteConfig.headerSubtitle },
+    ], async () => {
+      siteConfig.headerLabel = getEditVal('headerLabel') || siteConfig.headerLabel;
+      siteConfig.headerTitleMain = getEditVal('headerTitleMain');
+      siteConfig.headerTitleAccent = getEditVal('headerTitleAccent');
+      siteConfig.headerTitleEnd = getEditVal('headerTitleEnd');
+      siteConfig.headerSubtitle = getEditVal('headerSubtitle') || siteConfig.headerSubtitle;
+      closeEdit();
+      renderHeader();
+      await saveToJsonbin();
+    });
+  }
+
+  function editFooter() {
+    openEdit('Footer bewerken', [
+      { key: 'footerText', label: 'Footer tekst', value: siteConfig.footerText },
+    ], async () => {
+      siteConfig.footerText = getEditVal('footerText') || siteConfig.footerText;
+      closeEdit();
+      renderFooter();
+      await saveToJsonbin();
+    });
+  }
+
   // ── ADMIN ──
   function toggleAdminPopup() {
     if (adminUnlocked) {
       adminUnlocked = false;
       document.getElementById('admin-btn').classList.remove('unlocked');
       document.getElementById('admin-popup').classList.remove('visible');
+      updateHeaderEditBtn();
       if (currentDJId) renderDetail(currentDJId);
       renderGrid();
       updateHeroZone();
@@ -461,6 +526,7 @@
       document.getElementById('admin-popup').classList.remove('visible');
       document.getElementById('admin-input').value = '';
       err.classList.remove('visible');
+      updateHeaderEditBtn();
       if (currentDJId) renderDetail(currentDJId);
       renderGrid();
       updateHeroZone();
@@ -505,7 +571,7 @@
     return document.getElementById(`ef-${key}`)?.value?.trim() || '';
   }
 
-  // ── EDIT DJ INFO ──
+  // ── EDIT DJ ──
   function editDJ(djId) {
     const dj = djs.find(d => d.id === djId);
     openEdit('DJ bewerken', [
@@ -535,7 +601,58 @@
     });
   }
 
-  // ── ADD DJ ──
+  function editDJDetail(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('Naam & bio bewerken', [
+      { key: 'name', label: 'Naam', value: dj.name },
+      { key: 'genre', label: 'Genre', value: dj.genre },
+      { key: 'bio', label: 'Bio', value: dj.bio, multiline: true },
+      { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
+    ], async () => {
+      dj.name = getEditVal('name') || dj.name;
+      dj.genre = getEditVal('genre') || dj.genre;
+      dj.bio = getEditVal('bio') || dj.bio;
+      dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
+      closeEdit();
+      await saveToJsonbin();
+      renderDetail(djId);
+      renderGrid();
+    });
+  }
+
+  function editBooking(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('Booking bewerken', [
+      { key: 'bookingInfo', label: 'Booking info', value: dj.bookingInfo },
+      { key: 'email', label: 'Email', value: dj.email },
+    ], async () => {
+      dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo;
+      dj.email = getEditVal('email') || dj.email;
+      closeEdit();
+      await saveToJsonbin();
+      renderDetail(djId);
+    });
+  }
+
+  function editContact(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('Contact bewerken', [
+      { key: 'email', label: 'Email', value: dj.email },
+      { key: 'phone', label: 'Telefoon', value: dj.phone },
+      { key: 'instagram', label: 'Instagram', value: dj.instagram },
+      { key: 'soundcloud', label: 'SoundCloud', value: dj.soundcloud },
+    ], async () => {
+      dj.email = getEditVal('email') || dj.email;
+      dj.phone = getEditVal('phone') || dj.phone;
+      dj.instagram = getEditVal('instagram') || dj.instagram;
+      dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
+      closeEdit();
+      await saveToJsonbin();
+      renderDetail(djId);
+    });
+  }
+
+  // ── ADD / DELETE DJ ──
   function addDJ() {
     openEdit('Nieuwe DJ toevoegen', [
       { key: 'name', label: 'Naam' },
@@ -551,7 +668,7 @@
       const name = getEditVal('name');
       if (!name) return;
       const id = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
-      const newDJ = {
+      djs.push({
         id, number: String(djs.length + 1).padStart(2, '0'),
         name, genre: getEditVal('genre'),
         bio: getEditVal('bio'),
@@ -562,15 +679,13 @@
         photos: [null, null, null],
         gallery: [null, null, null, null, null, null],
         ervaring: []
-      };
-      djs.push(newDJ);
+      });
       closeEdit();
       await saveToJsonbin();
       renderGrid();
     });
   }
 
-  // ── DELETE DJ ──
   async function deleteDJ(djId) {
     if (!confirm('Weet je zeker dat je deze DJ wil verwijderen?')) return;
     djs = djs.filter(d => d.id !== djId);
@@ -605,7 +720,7 @@
 
   // ── JSONBIN ──
   async function saveToJsonbin() {
-    const data = { heroMedia, djs };
+    const data = { heroMedia, siteConfig, djs };
     await fetch(`${JSONBIN_URL}/${BIN_ID}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
@@ -622,6 +737,7 @@
       const data = json.record;
       if (data.heroMedia) heroMedia = data.heroMedia;
       else if (data.hero) heroMedia = { url: data.hero, type: 'image' };
+      if (data.siteConfig) siteConfig = { ...siteConfig, ...data.siteConfig };
       if (data.djs && data.djs.length > 0) {
         djs = data.djs.map(d => ({
           ...d,
@@ -630,7 +746,6 @@
           ervaring: d.ervaring || []
         }));
       } else {
-        // legacy support
         djs.forEach(dj => {
           if (data[dj.id]) {
             if (data[dj.id].photos) dj.photos = data[dj.id].photos.map((p, i) => p || dj.photos[i]);
@@ -866,7 +981,7 @@
     grid.innerHTML = djs.map(dj => `
       <div class="dj-card ${adminUnlocked ? '' : 'dj-card-clickable'}" ${adminUnlocked ? '' : `onclick="openDJ('${dj.id}')"`}>
         ${adminUnlocked ? `<button class="delete-dj-btn" style="display:flex;" onclick="deleteDJ('${dj.id}')">×</button>` : ''}
-        <div class="dj-photo" ${adminUnlocked ? '' : ''}>
+        <div class="dj-photo">
           ${dj.photos[0] ? `<img src="${dj.photos[0]}" alt="${dj.name}">` : `<div class="photo-placeholder">${iPhoto}<span>Foto</span></div>`}
         </div>
         <div class="dj-card-body">
@@ -947,57 +1062,6 @@
     `;
   }
 
-  function editDJDetail(djId) {
-    const dj = djs.find(d => d.id === djId);
-    openEdit('Naam & bio bewerken', [
-      { key: 'name', label: 'Naam', value: dj.name },
-      { key: 'genre', label: 'Genre', value: dj.genre },
-      { key: 'bio', label: 'Bio', value: dj.bio, multiline: true },
-      { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
-    ], async () => {
-      dj.name = getEditVal('name') || dj.name;
-      dj.genre = getEditVal('genre') || dj.genre;
-      dj.bio = getEditVal('bio') || dj.bio;
-      dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
-      closeEdit();
-      await saveToJsonbin();
-      renderDetail(djId);
-      renderGrid();
-    });
-  }
-
-  function editBooking(djId) {
-    const dj = djs.find(d => d.id === djId);
-    openEdit('Booking bewerken', [
-      { key: 'bookingInfo', label: 'Booking info', value: dj.bookingInfo },
-      { key: 'email', label: 'Email', value: dj.email },
-    ], async () => {
-      dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo;
-      dj.email = getEditVal('email') || dj.email;
-      closeEdit();
-      await saveToJsonbin();
-      renderDetail(djId);
-    });
-  }
-
-  function editContact(djId) {
-    const dj = djs.find(d => d.id === djId);
-    openEdit('Contact bewerken', [
-      { key: 'email', label: 'Email', value: dj.email },
-      { key: 'phone', label: 'Telefoon', value: dj.phone },
-      { key: 'instagram', label: 'Instagram', value: dj.instagram },
-      { key: 'soundcloud', label: 'SoundCloud', value: dj.soundcloud },
-    ], async () => {
-      dj.email = getEditVal('email') || dj.email;
-      dj.phone = getEditVal('phone') || dj.phone;
-      dj.instagram = getEditVal('instagram') || dj.instagram;
-      dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
-      closeEdit();
-      await saveToJsonbin();
-      renderDetail(djId);
-    });
-  }
-
   function openDJ(id) {
     renderDetail(id);
     document.getElementById('page-home').classList.remove('active');
@@ -1014,6 +1078,8 @@
 
   async function init() {
     await loadFromJsonbin();
+    renderHeader();
+    renderFooter();
     updateHeroMedia();
     renderGrid();
     document.getElementById('loader').classList.add('hidden');
