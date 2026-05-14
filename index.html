@@ -77,6 +77,74 @@
     #admin-popup .error { color: var(--accent2); font-size: 11px; display: none; }
     #admin-popup .error.visible { display: block; }
 
+    /* EDIT INLINE */
+    .editable { position: relative; }
+    .edit-btn {
+      display: none;
+      position: absolute;
+      top: -8px; right: -8px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      font-size: 9px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      cursor: pointer;
+      z-index: 10;
+      white-space: nowrap;
+    }
+    .admin .edit-btn { display: block; }
+    .edit-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+    }
+    .edit-overlay.visible { display: flex; }
+    .edit-box {
+      background: #111;
+      border: 1px solid var(--border);
+      padding: 28px;
+      width: 90%;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .edit-box h3 { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
+    .edit-box input, .edit-box textarea {
+      background: #0a0a0a; border: 1px solid var(--border); color: var(--text);
+      font-size: 13px; padding: 10px 12px; outline: none; width: 100%;
+      font-family: 'DM Sans', sans-serif; resize: vertical;
+    }
+    .edit-box input:focus, .edit-box textarea:focus { border-color: var(--accent); }
+    .edit-box label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: -8px; }
+    .edit-box-btns { display: flex; gap: 8px; }
+    .edit-save { background: var(--accent); color: #000; border: none; padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-weight: 500; flex: 1; }
+    .edit-save:hover { background: #fff; }
+    .edit-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+    .edit-cancel:hover { border-color: #444; color: var(--text); }
+
+    /* ADD DJ */
+    .add-dj-btn {
+      display: none;
+      width: 100%;
+      background: none;
+      border: 1px dashed #2a2a2a;
+      color: #444;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 20px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      margin-top: 2px;
+    }
+    .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
+
     /* HERO */
     .site-header {
       position: relative; padding: 80px 40px 60px; text-align: center;
@@ -84,19 +152,9 @@
       min-height: 320px; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
     }
-    .hero-bg {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; z-index: 0; opacity: 0.35;
-    }
-    .hero-bg-video {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; z-index: 0; opacity: 0.35;
-    }
-    .hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%);
-      z-index: 1;
-    }
+    .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; }
+    .hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%); z-index: 1; }
     .hero-upload-zone { position: absolute; inset: 0; z-index: 2; cursor: default; }
     .hero-upload-zone.admin { cursor: pointer; }
     .hero-upload-zone.admin:hover::after {
@@ -114,8 +172,10 @@
       max-width: 960px; margin: 0 auto; padding: 60px 24px 100px;
       display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px;
     }
-    .dj-card { background: var(--card); border: 1px solid var(--border); cursor: pointer; overflow: hidden; transition: border-color 0.2s; }
-    .dj-card:hover { border-color: var(--accent); }
+    .dj-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.2s; position: relative; }
+    .dj-card:hover { border-color: #333; }
+    .dj-card-clickable { cursor: pointer; }
+    .dj-card-clickable:hover { border-color: var(--accent); }
     .dj-photo { width: 100%; aspect-ratio: 4/3; background: #1a1a1a; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .dj-photo img { width: 100%; height: 100%; object-fit: cover; }
     .photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; }
@@ -132,6 +192,24 @@
     .open-btn:hover { gap: 11px; }
     .open-btn svg { width: 14px; height: 14px; stroke: var(--accent); }
 
+    /* DELETE DJ BTN */
+    .delete-dj-btn {
+      display: none;
+      position: absolute;
+      top: 10px; right: 10px;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid #333;
+      color: #666;
+      font-size: 16px;
+      width: 28px; height: 28px;
+      cursor: pointer;
+      z-index: 5;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .delete-dj-btn:hover { color: var(--accent2); border-color: var(--accent2); }
+
     .detail-nav { display: flex; align-items: center; gap: 16px; padding: 20px 40px; border-bottom: 1px solid var(--border); }
     .back-btn { display: flex; align-items: center; gap: 8px; background: none; border: none; cursor: pointer; color: var(--muted); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; padding: 0; }
     .back-btn:hover { color: var(--accent); }
@@ -144,11 +222,7 @@
     .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
     .photo-grid .photo-main { grid-column: 1 / -1; }
 
-    .photo-slot {
-      background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s;
-    }
+    .photo-slot { background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s; }
     .photo-slot.admin { cursor: pointer; }
     .photo-slot.admin:hover { border-color: #444; }
     .photo-slot svg { width: 26px; height: 26px; stroke: #333; }
@@ -158,10 +232,7 @@
     .photo-slot .upload-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 1; transition: background 0.2s; }
     .photo-slot.admin .upload-overlay { display: block; }
     .photo-slot.admin:hover .upload-overlay { background: rgba(0,0,0,0.3); }
-    .photo-slot.admin:hover .upload-overlay::after {
-      content: 'Foto wijzigen'; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap;
-    }
+    .photo-slot.admin:hover .upload-overlay::after { content: 'Foto wijzigen'; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
     .uploading-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); z-index: 2; }
 
     .detail-info .dj-num { font-size: 12px; letter-spacing: 4px; margin-bottom: 6px; }
@@ -264,6 +335,11 @@
 </head>
 <body>
 
+<!-- EDIT OVERLAY -->
+<div class="edit-overlay" id="edit-overlay">
+  <div class="edit-box" id="edit-box"></div>
+</div>
+
 <div id="loader">
   <div class="loader-title">DJ<span>LINE</span>UP</div>
   <div class="loader-bar"></div>
@@ -318,10 +394,10 @@
   const BIN_ID = '6a049914c0954111d81a8e08';
   const UPLOAD_WACHTWOORD = 'ewibbe2026';
   let adminUnlocked = false;
-  let heroMedia = null; // { url, type: 'image' | 'video' }
+  let heroMedia = null;
   let currentDJId = null;
 
-  const djs = [
+  let djs = [
     {
       id: 'ewowo', number: '01', name: 'EWOWO',
       genre: 'Drum & Bass · Trance · Commercieel',
@@ -360,6 +436,7 @@
     }
   ];
 
+  // ── ADMIN ──
   function toggleAdminPopup() {
     if (adminUnlocked) {
       adminUnlocked = false;
@@ -393,6 +470,116 @@
     }
   }
 
+  // ── EDIT OVERLAY ──
+  function openEdit(title, fields, onSave) {
+    const box = document.getElementById('edit-box');
+    box.innerHTML = `
+      <h3>${title}</h3>
+      ${fields.map(f => `
+        <label>${f.label}</label>
+        ${f.multiline
+          ? `<textarea id="ef-${f.key}" rows="3">${f.value || ''}</textarea>`
+          : `<input type="text" id="ef-${f.key}" value="${(f.value || '').replace(/"/g, '&quot;')}">`
+        }
+      `).join('')}
+      <div class="edit-box-btns">
+        <button class="edit-cancel" onclick="closeEdit()">Annuleren</button>
+        <button class="edit-save" onclick="saveEdit()">Opslaan</button>
+      </div>
+    `;
+    window._editSaveCallback = onSave;
+    document.getElementById('edit-overlay').classList.add('visible');
+    box.querySelector('input, textarea')?.focus();
+  }
+
+  function closeEdit() {
+    document.getElementById('edit-overlay').classList.remove('visible');
+    window._editSaveCallback = null;
+  }
+
+  function saveEdit() {
+    if (window._editSaveCallback) window._editSaveCallback();
+  }
+
+  function getEditVal(key) {
+    return document.getElementById(`ef-${key}`)?.value?.trim() || '';
+  }
+
+  // ── EDIT DJ INFO ──
+  function editDJ(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('DJ bewerken', [
+      { key: 'name', label: 'Naam', value: dj.name },
+      { key: 'genre', label: 'Genre', value: dj.genre },
+      { key: 'bio', label: 'Bio', value: dj.bio, multiline: true },
+      { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
+      { key: 'email', label: 'Email', value: dj.email },
+      { key: 'phone', label: 'Telefoon', value: dj.phone },
+      { key: 'instagram', label: 'Instagram', value: dj.instagram },
+      { key: 'soundcloud', label: 'SoundCloud', value: dj.soundcloud },
+      { key: 'bookingInfo', label: 'Booking info', value: dj.bookingInfo },
+    ], async () => {
+      dj.name = getEditVal('name') || dj.name;
+      dj.genre = getEditVal('genre') || dj.genre;
+      dj.bio = getEditVal('bio') || dj.bio;
+      dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
+      dj.email = getEditVal('email') || dj.email;
+      dj.phone = getEditVal('phone') || dj.phone;
+      dj.instagram = getEditVal('instagram') || dj.instagram;
+      dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
+      dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo;
+      closeEdit();
+      await saveToJsonbin();
+      renderGrid();
+      if (currentDJId === djId) renderDetail(djId);
+    });
+  }
+
+  // ── ADD DJ ──
+  function addDJ() {
+    openEdit('Nieuwe DJ toevoegen', [
+      { key: 'name', label: 'Naam' },
+      { key: 'genre', label: 'Genre' },
+      { key: 'bio', label: 'Bio', multiline: true },
+      { key: 'tags', label: 'Tags (komma-gescheiden)' },
+      { key: 'email', label: 'Email' },
+      { key: 'phone', label: 'Telefoon' },
+      { key: 'instagram', label: 'Instagram' },
+      { key: 'soundcloud', label: 'SoundCloud' },
+      { key: 'bookingInfo', label: 'Booking info' },
+    ], async () => {
+      const name = getEditVal('name');
+      if (!name) return;
+      const id = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
+      const newDJ = {
+        id, number: String(djs.length + 1).padStart(2, '0'),
+        name, genre: getEditVal('genre'),
+        bio: getEditVal('bio'),
+        tags: getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean),
+        email: getEditVal('email'), phone: getEditVal('phone'),
+        instagram: getEditVal('instagram'), soundcloud: getEditVal('soundcloud'),
+        bookingInfo: getEditVal('bookingInfo'),
+        photos: [null, null, null],
+        gallery: [null, null, null, null, null, null],
+        ervaring: []
+      };
+      djs.push(newDJ);
+      closeEdit();
+      await saveToJsonbin();
+      renderGrid();
+    });
+  }
+
+  // ── DELETE DJ ──
+  async function deleteDJ(djId) {
+    if (!confirm('Weet je zeker dat je deze DJ wil verwijderen?')) return;
+    djs = djs.filter(d => d.id !== djId);
+    djs.forEach((dj, i) => { dj.number = String(i + 1).padStart(2, '0'); });
+    await saveToJsonbin();
+    renderGrid();
+  }
+
+  // ── HERO ──
   function updateHeroZone() {
     const zone = document.getElementById('hero-zone');
     adminUnlocked ? zone.classList.add('admin') : zone.classList.remove('admin');
@@ -406,28 +593,19 @@
   function updateHeroMedia() {
     const img = document.getElementById('hero-img');
     const vid = document.getElementById('hero-video');
-    if (!heroMedia) {
-      img.style.display = 'none';
-      vid.style.display = 'none';
-      return;
-    }
+    if (!heroMedia) { img.style.display = 'none'; vid.style.display = 'none'; return; }
     if (heroMedia.type === 'video') {
       img.style.display = 'none';
-      vid.src = heroMedia.url;
-      vid.style.display = 'block';
-      vid.play();
+      vid.src = heroMedia.url; vid.style.display = 'block'; vid.play();
     } else {
       vid.style.display = 'none';
-      img.src = heroMedia.url;
-      img.style.display = 'block';
+      img.src = heroMedia.url; img.style.display = 'block';
     }
   }
 
+  // ── JSONBIN ──
   async function saveToJsonbin() {
-    const data = { heroMedia };
-    djs.forEach(dj => {
-      data[dj.id] = { photos: dj.photos, gallery: dj.gallery, ervaring: dj.ervaring || [] };
-    });
+    const data = { heroMedia, djs };
     await fetch(`${JSONBIN_URL}/${BIN_ID}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
@@ -443,24 +621,28 @@
       const json = await res.json();
       const data = json.record;
       if (data.heroMedia) heroMedia = data.heroMedia;
-      else if (data.hero) heroMedia = { url: data.hero, type: 'image' }; // backwards compat
-      djs.forEach(dj => {
-        if (data[dj.id]) {
-          if (data[dj.id].photos) dj.photos = data[dj.id].photos.map((p, i) => p || dj.photos[i]);
-          if (data[dj.id].gallery) dj.gallery = data[dj.id].gallery;
-          if (data[dj.id].ervaring) dj.ervaring = data[dj.id].ervaring;
-        }
-      });
+      else if (data.hero) heroMedia = { url: data.hero, type: 'image' };
+      if (data.djs && data.djs.length > 0) {
+        djs = data.djs.map(d => ({
+          ...d,
+          photos: d.photos || [null, null, null],
+          gallery: d.gallery || [null, null, null, null, null, null],
+          ervaring: d.ervaring || []
+        }));
+      } else {
+        // legacy support
+        djs.forEach(dj => {
+          if (data[dj.id]) {
+            if (data[dj.id].photos) dj.photos = data[dj.id].photos.map((p, i) => p || dj.photos[i]);
+            if (data[dj.id].gallery) dj.gallery = data[dj.id].gallery;
+            if (data[dj.id].ervaring) dj.ervaring = data[dj.id].ervaring;
+          }
+        });
+      }
     } catch (e) {}
   }
 
-  const iMail = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg>`;
-  const iPhone = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 12.14 19.79 19.79 0 0 1 1.63 3.56 2 2 0 0 1 3.6 1.37h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.09 6.09l.91-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
-  const iIG = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`;
-  const iSC = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 2H3l7 9.46V19l4 2v-9.54L21 2z"/></svg>`;
-  const iPhoto = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg>`;
-  const iPlay = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.5)"/><polygon points="10,8 18,12 10,16" fill="white"/></svg>`;
-
+  // ── CLOUDINARY ──
   async function uploadToCloudinary(file) {
     const isVideo = file.type.startsWith('video/');
     const formData = new FormData();
@@ -529,6 +711,7 @@
     }
   }
 
+  // ── ERVARING ──
   async function addErvaring(djId) {
     const jaar = document.getElementById(`ejaar-${djId}`).value.trim();
     const naam = document.getElementById(`enaam-${djId}`).value.trim();
@@ -565,6 +748,14 @@
   function toggleErvaring(djId) {
     document.getElementById(`ervaring-${djId}`).classList.toggle('open');
   }
+
+  // ── HTML BUILDERS ──
+  const iMail = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg>`;
+  const iPhone = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 12.14 19.79 19.79 0 0 1 1.63 3.56 2 2 0 0 1 3.6 1.37h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.09 6.09l.91-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
+  const iIG = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`;
+  const iSC = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 2H3l7 9.46V19l4 2v-9.54L21 2z"/></svg>`;
+  const iPhoto = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg>`;
+  const iPlay = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.5)"/><polygon points="10,8 18,12 10,16" fill="white"/></svg>`;
 
   function ervaringHTML(djId) {
     const dj = djs.find(d => d.id === djId);
@@ -634,12 +825,7 @@
     return `
       <div class="gallery-slot${adminClass}" id="gslot-${djId}-${index}" onclick="triggerGalleryUpload('${djId}', ${index})">
         ${isImage ? `<img src="${item.url}" alt="Foto ${index + 1}">` : ''}
-        ${isVideo ? `
-          <video src="${item.url}" muted loop playsinline
-            onmouseenter="this.play()" onmouseleave="this.pause(); this.currentTime=0;"></video>
-          <div class="video-play-icon">${iPlay}</div>
-          <span class="video-badge">Video</span>
-        ` : ''}
+        ${isVideo ? `<video src="${item.url}" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0;"></video><div class="video-play-icon">${iPlay}</div><span class="video-badge">Video</span>` : ''}
         ${!item ? `${iPhoto}<span>Foto / Video</span>` : ''}
         <div class="upload-overlay"></div>
         <input type="file" accept="image/*,video/*" id="gfile-${djId}-${index}" onchange="handleGalleryMedia('${djId}', ${index}, event)">
@@ -676,9 +862,11 @@
   }
 
   function renderGrid() {
-    document.getElementById('dj-grid').innerHTML = djs.map(dj => `
-      <div class="dj-card" onclick="openDJ('${dj.id}')">
-        <div class="dj-photo">
+    const grid = document.getElementById('dj-grid');
+    grid.innerHTML = djs.map(dj => `
+      <div class="dj-card ${adminUnlocked ? '' : 'dj-card-clickable'}" ${adminUnlocked ? '' : `onclick="openDJ('${dj.id}')"`}>
+        ${adminUnlocked ? `<button class="delete-dj-btn" style="display:flex;" onclick="deleteDJ('${dj.id}')">×</button>` : ''}
+        <div class="dj-photo" ${adminUnlocked ? '' : ''}>
           ${dj.photos[0] ? `<img src="${dj.photos[0]}" alt="${dj.name}">` : `<div class="photo-placeholder">${iPhoto}<span>Foto</span></div>`}
         </div>
         <div class="dj-card-body">
@@ -687,19 +875,32 @@
           <div class="dj-genre">${dj.genre}</div>
           <p class="dj-bio-short">${dj.bio}</p>
           <div class="dj-tags">${dj.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-          <button class="open-btn">
-            Bekijk profiel
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
+          ${adminUnlocked
+            ? `<button class="open-btn" onclick="editDJ('${dj.id}')">
+                Bewerken
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>`
+            : `<button class="open-btn" onclick="openDJ('${dj.id}')">
+                Bekijk profiel
+                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>`
+          }
         </div>
       </div>
     `).join('');
+
+    if (adminUnlocked) {
+      grid.insertAdjacentHTML('beforeend', `
+        <button class="add-dj-btn" style="display:block;" onclick="addDJ()">+ DJ toevoegen</button>
+      `);
+    }
   }
 
   function renderDetail(id) {
     currentDJId = id;
     const dj = djs.find(d => d.id === id);
     document.getElementById('breadcrumb-name').textContent = dj.name;
+    const adminClass = adminUnlocked ? ' admin' : '';
     document.getElementById('detail-content').innerHTML = `
       <div class="detail-top">
         <div class="photo-grid">
@@ -709,32 +910,92 @@
         </div>
         <div class="detail-info">
           <div class="dj-num">${dj.number}</div>
-          <h2>${dj.name}</h2>
+          <div class="editable${adminClass}" style="position:relative;">
+            <h2>${dj.name}</h2>
+            <button class="edit-btn" onclick="editDJDetail('${dj.id}')">✎ Bewerken</button>
+          </div>
           <div class="detail-genre">${dj.genre}</div>
           <p class="detail-bio">${dj.bio}</p>
           <div class="dj-tags">${dj.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
           <div class="booking-block">
             <h3>Booking</h3>
-            <p>${dj.bookingInfo}</p>
+            <div class="editable${adminClass}" style="position:relative;">
+              <p style="font-size:12px;color:#555;margin-bottom:16px;">${dj.bookingInfo}</p>
+              <button class="edit-btn" onclick="editBooking('${dj.id}')">✎ Bewerken</button>
+            </div>
             <a class="booking-btn" href="mailto:${dj.email}">Boek nu →</a>
           </div>
           ${ervaringHTML(dj.id)}
         </div>
       </div>
-      <div class="contact-grid">
-        <div class="contact-col">
-          <h3>Contact</h3>
-          <a class="contact-item" href="mailto:${dj.email}">${iMail} ${dj.email}</a>
-          <a class="contact-item" href="tel:${dj.phone.replace(/\s/g,'')}">${iPhone} ${dj.phone}</a>
+      <div class="editable${adminClass}" style="position:relative;">
+        <div class="contact-grid">
+          <div class="contact-col">
+            <h3>Contact</h3>
+            <a class="contact-item" href="mailto:${dj.email}">${iMail} ${dj.email}</a>
+            <a class="contact-item" href="tel:${dj.phone.replace(/\s/g,'')}">${iPhone} ${dj.phone}</a>
+          </div>
+          <div class="contact-col">
+            <h3>Socials</h3>
+            <a class="contact-item" href="#">${iIG} ${dj.instagram}</a>
+            <a class="contact-item" href="#">${iSC} SoundCloud: ${dj.soundcloud}</a>
+          </div>
         </div>
-        <div class="contact-col">
-          <h3>Socials</h3>
-          <a class="contact-item" href="#">${iIG} ${dj.instagram}</a>
-          <a class="contact-item" href="#">${iSC} SoundCloud: ${dj.soundcloud}</a>
-        </div>
+        <button class="edit-btn" onclick="editContact('${dj.id}')">✎ Bewerken</button>
       </div>
       ${galleryHTML(dj.id)}
     `;
+  }
+
+  function editDJDetail(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('Naam & bio bewerken', [
+      { key: 'name', label: 'Naam', value: dj.name },
+      { key: 'genre', label: 'Genre', value: dj.genre },
+      { key: 'bio', label: 'Bio', value: dj.bio, multiline: true },
+      { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
+    ], async () => {
+      dj.name = getEditVal('name') || dj.name;
+      dj.genre = getEditVal('genre') || dj.genre;
+      dj.bio = getEditVal('bio') || dj.bio;
+      dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
+      closeEdit();
+      await saveToJsonbin();
+      renderDetail(djId);
+      renderGrid();
+    });
+  }
+
+  function editBooking(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('Booking bewerken', [
+      { key: 'bookingInfo', label: 'Booking info', value: dj.bookingInfo },
+      { key: 'email', label: 'Email', value: dj.email },
+    ], async () => {
+      dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo;
+      dj.email = getEditVal('email') || dj.email;
+      closeEdit();
+      await saveToJsonbin();
+      renderDetail(djId);
+    });
+  }
+
+  function editContact(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('Contact bewerken', [
+      { key: 'email', label: 'Email', value: dj.email },
+      { key: 'phone', label: 'Telefoon', value: dj.phone },
+      { key: 'instagram', label: 'Instagram', value: dj.instagram },
+      { key: 'soundcloud', label: 'SoundCloud', value: dj.soundcloud },
+    ], async () => {
+      dj.email = getEditVal('email') || dj.email;
+      dj.phone = getEditVal('phone') || dj.phone;
+      dj.instagram = getEditVal('instagram') || dj.instagram;
+      dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
+      closeEdit();
+      await saveToJsonbin();
+      renderDetail(djId);
+    });
   }
 
   function openDJ(id) {
