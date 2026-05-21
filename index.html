@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DJ Collective</title>
+  <title>DJ Collectief</title>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,19 +27,15 @@
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23111' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23222' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23222' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23e8ff00'/%3E%3C/svg%3E") 16 16, auto;
     }
 
-    a, button, .dj-card-clickable, .open-btn, .back-btn, .gallery-toggle,
-    .ervaring-toggle, .photo-slot.admin, .gallery-slot.admin,
-    .hero-upload-zone.admin, .booking-btn {
+    a, button, .dj-row, .nav-link {
       cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer;
     }
 
-    .page { display: none; }
-    .page.active { display: block; }
-
+    /* LOADER */
     #loader {
       position: fixed; inset: 0; background: var(--bg);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 24px; z-index: 999; transition: opacity 0.4s; overflow: hidden;
+      gap: 24px; z-index: 9999; transition: opacity 0.4s; overflow: hidden;
     }
     #loader.hidden { opacity: 0; pointer-events: none; }
     #loader-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; display: none; }
@@ -49,14 +45,302 @@
     .loader-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 6px; color: var(--text); }
     .loader-title span { color: var(--accent); }
     .loader-bar { width: 200px; height: 1px; background: var(--border); position: relative; overflow: hidden; }
-    .loader-bar::after {
-      content: ''; position: absolute; top: 0; left: -100%;
-      width: 100%; height: 100%; background: var(--accent);
-      animation: slide 1.2s ease-in-out infinite;
-    }
+    .loader-bar::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--accent); animation: slide 1.2s ease-in-out infinite; }
     @keyframes slide { 0% { left: -100%; } 100% { left: 100%; } }
     .loader-text { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
 
+    /* NAVBAR */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px; letter-spacing: 4px;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-dropdown { position: relative; }
+    .nav-link {
+      display: flex; align-items: center; gap: 6px;
+      background: none; border: 1px solid var(--border);
+      color: var(--text); font-size: 12px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 8px 16px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .nav-link:hover { border-color: var(--accent); color: var(--accent); }
+    .nav-link svg { width: 12px; height: 12px; stroke: currentColor; transition: transform 0.2s; }
+    .nav-link.open svg { transform: rotate(180deg); }
+    .nav-dropdown-menu {
+      display: none; position: absolute; top: calc(100% + 4px); right: 0;
+      background: #111; border: 1px solid var(--border); min-width: 180px; z-index: 200;
+    }
+    .nav-dropdown-menu.open { display: block; }
+    .nav-dropdown-item {
+      display: block; padding: 12px 16px;
+      font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-dropdown-item:last-child { border-bottom: none; }
+    .nav-dropdown-item:hover { color: var(--accent); background: #1a1a1a; }
+
+    /* HERO */
+    .hero {
+      position: relative; height: 100vh; min-height: 500px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+    .hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.8) 100%); }
+    .hero-upload-zone { position: absolute; inset: 0; z-index: 2; }
+    .hero-upload-zone.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
+    .hero-upload-zone.admin:hover::after {
+      content: 'Achtergrond wijzigen'; position: absolute; bottom: 20px; right: 20px;
+      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 14px;
+    }
+    .hero-content { position: relative; z-index: 3; text-align: center; pointer-events: none; }
+    .hero-label { font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+    .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(80px, 15vw, 180px); line-height: 0.85; letter-spacing: 6px; }
+    .hero-title span { color: var(--accent); }
+    .hero-sub { margin-top: 24px; color: var(--muted); font-size: 15px; font-weight: 300; }
+    .header-edit-btn {
+      display: none; position: absolute; top: 80px; left: 20px; z-index: 4;
+      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 7px 14px;
+    }
+    .header-edit-btn:hover { background: rgba(232,255,0,0.15); }
+
+    /* MAIN LAYOUT */
+    #section-djs {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* DJ SIDEBAR */
+    .dj-sidebar {
+      border-right: 1px solid var(--border);
+      position: sticky; top: 60px;
+      height: calc(100vh - 60px);
+      overflow-y: auto;
+    }
+    .dj-sidebar::-webkit-scrollbar { width: 3px; }
+    .dj-sidebar::-webkit-scrollbar-track { background: transparent; }
+    .dj-sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+
+    .dj-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .dj-row:hover { background: #1a1a1a; }
+    .dj-row.active { background: #1a1a1a; border-left: 2px solid var(--accent); }
+    .dj-row-left { display: flex; flex-direction: column; gap: 4px; }
+    .dj-row-num { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--accent); }
+    .dj-row-name { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; line-height: 1; }
+    .dj-row-genre { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+    .dj-row-arrow { color: var(--muted); font-size: 18px; transition: transform 0.2s, color 0.2s; }
+    .dj-row.active .dj-row-arrow { transform: translateX(4px); color: var(--accent); }
+
+    .dj-sidebar-footer {
+      padding: 20px 28px;
+      border-top: 1px solid var(--border);
+    }
+    .add-dj-btn {
+      display: none; width: 100%; background: none; border: 1px dashed #2a2a2a;
+      color: #444; font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+      padding: 14px; transition: border-color 0.2s, color 0.2s;
+    }
+    .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* DJ DETAIL */
+    .dj-detail {
+      padding: 40px;
+      display: none;
+    }
+    .dj-detail.active { display: block; }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    /* COL 1: FOTO */
+    .detail-photo-col {}
+    .detail-photo-main {
+      width: 100%; aspect-ratio: 4/3;
+      background: #141414; border: 1px dashed #2a2a2a;
+      position: relative; overflow: hidden; margin-bottom: 2px;
+    }
+    .detail-photo-main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .detail-photo-main.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
+    .detail-photo-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .detail-photo-sm {
+      aspect-ratio: 4/3; background: #141414; border: 1px dashed #2a2a2a;
+      position: relative; overflow: hidden;
+    }
+    .detail-photo-sm img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .detail-photo-sm.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
+    .photo-placeholder-icon { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+    .photo-placeholder-icon svg { width: 24px; height: 24px; stroke: #333; }
+    .photo-placeholder-icon span { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+    .photo-upload-hover {
+      position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 1; transition: background 0.2s;
+    }
+    .admin .photo-upload-hover:hover { background: rgba(0,0,0,0.3); }
+    .admin .photo-upload-hover:hover::after {
+      content: 'Wijzigen'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+      font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap;
+    }
+    input[type=file] { display: none; }
+
+    /* COL 2: CONTACT */
+    .detail-contact-col {}
+    .contact-section-title { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+    .contact-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .contact-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
+    .contact-list li svg { width: 14px; height: 14px; stroke: var(--muted); flex-shrink: 0; }
+    .contact-list a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+    .contact-list a:hover { color: var(--accent); }
+    .contact-divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+    /* COL 3: INFO + SOUNDCLOUD */
+    .detail-info-col {}
+    .sc-player {
+      background: var(--card); border: 1px solid var(--border);
+      padding: 16px; margin-bottom: 20px;
+    }
+    .sc-player-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .sc-player iframe { width: 100%; border: none; display: block; }
+    .sc-player-placeholder {
+      height: 80px; display: flex; align-items: center; justify-content: center;
+      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+      border: 1px dashed #2a2a2a;
+    }
+    .dj-name-big { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 4vw, 52px); letter-spacing: 3px; line-height: 0.9; margin-bottom: 6px; }
+    .dj-genre-detail { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2); margin-bottom: 14px; }
+    .dj-bio-detail { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+    .dj-tags-detail { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+    .tag { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border: 1px solid #2a2a2a; color: #777; border-radius: 2px; }
+    .booking-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; background: var(--accent); color: #000;
+      font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; border: none; transition: background 0.2s, transform 0.1s;
+    }
+    .booking-btn:hover { background: #fff; transform: translateY(-1px); }
+
+    /* EDITABLE */
+    .editable { position: relative; }
+    .edit-btn {
+      display: none; position: absolute; top: -8px; right: -8px;
+      background: var(--accent); color: #000; border: none;
+      font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
+      padding: 3px 8px; z-index: 10; white-space: nowrap;
+    }
+    .admin .edit-btn { display: block; }
+
+    /* UPLOADING */
+    .uploading-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.7);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); z-index: 2;
+    }
+
+    /* GALERIJ — dynamische breedte */
+    .gallery-section { margin-top: 0; border-top: 1px solid var(--border); padding: 32px 40px; }
+    .gallery-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .gallery-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; }
+    .gallery-count { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+    .gallery-grid {
+      display: grid;
+      gap: 2px;
+    }
+    .gallery-slot {
+      background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s;
+    }
+    .gallery-slot.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
+    .gallery-slot.admin:hover { border-color: #444; }
+    .gallery-slot svg { width: 20px; height: 20px; stroke: #333; }
+    .gallery-slot span { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
+    .gallery-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .gallery-slot video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .gallery-slot .upload-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 3; transition: background 0.2s; }
+    .gallery-slot.admin .upload-overlay { display: block; }
+    .gallery-slot.admin:hover .upload-overlay { background: rgba(0,0,0,0.35); }
+    .gallery-slot.admin:hover .upload-overlay::after { content: 'Wijzigen'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
+    .video-play-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; pointer-events: none; }
+    .video-play-icon svg { width: 36px; height: 36px; stroke: none; fill: rgba(255,255,255,0.85); }
+    .video-badge { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.6); border: 1px solid #333; color: var(--muted); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; padding: 2px 6px; z-index: 2; }
+
+    /* ERVARING */
+    .ervaring-section { margin-top: 16px; border: 1px solid var(--border); overflow: hidden; }
+    .ervaring-toggle { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; user-select: none; transition: background 0.2s; }
+    .ervaring-toggle:hover { background: #1a1a1a; }
+    .ervaring-toggle h4 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
+    .ervaring-toggle-btn { width: 24px; height: 24px; border: 1px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s; }
+    .ervaring-toggle-btn svg { transition: transform 0.3s; stroke: var(--muted); width: 10px; height: 10px; }
+    .ervaring-section.open .ervaring-toggle-btn { background: var(--accent); border-color: var(--accent); }
+    .ervaring-section.open .ervaring-toggle-btn svg { transform: rotate(45deg); stroke: #000; }
+    .ervaring-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .ervaring-section.open .ervaring-panel { max-height: 2000px; }
+    .ervaring-inner { border-top: 1px solid var(--border); padding: 14px 16px; }
+    .ervaring-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1a1a1a; align-items: center; }
+    .ervaring-item:last-child { border-bottom: none; }
+    .ervaring-order-btns { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
+    .ervaring-order-btn { background: none; border: 1px solid #2a2a2a; color: #555; font-size: 8px; padding: 2px 4px; line-height: 1; border-radius: 2px; transition: color 0.2s, border-color 0.2s; }
+    .ervaring-order-btn:hover { color: var(--accent); border-color: var(--accent); }
+    .ervaring-order-btn:disabled { opacity: 0.2; }
+    .ervaring-jaar { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--accent); min-width: 44px; line-height: 1.2; flex-shrink: 0; }
+    .ervaring-tekst { font-size: 12px; color: var(--muted); line-height: 1.5; flex: 1; }
+    .ervaring-tekst strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 1px; }
+    .ervaring-delete { background: none; border: none; color: #444; font-size: 14px; padding: 0 4px; line-height: 1; transition: color 0.2s; flex-shrink: 0; }
+    .ervaring-delete:hover { color: var(--accent2); }
+    .ervaring-add { display: none; margin-top: 12px; flex-direction: column; gap: 8px; }
+    .ervaring-add.admin { display: flex; }
+    .ervaring-add-row { display: flex; gap: 8px; }
+    .ervaring-add input { background: #0a0a0a; border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 6px 10px; outline: none; width: 100%; }
+    .ervaring-add input::placeholder { color: #444; }
+    .ervaring-add input:focus { border-color: var(--accent); }
+    .ervaring-add-btn { background: var(--accent); color: #000; border: none; padding: 6px 14px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; font-weight: 500; }
+    .ervaring-add-btn:hover { background: #fff; }
+    .ervaring-empty { font-size: 11px; color: #444; padding: 4px 0; }
+
+    /* INFO SECTIE */
+    #section-info { padding: 80px 40px; border-top: 1px solid var(--border); display: none; }
+    #section-info.active { display: block; }
+    .info-content { max-width: 700px; margin: 0 auto; }
+    .info-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 4px; margin-bottom: 20px; }
+    .info-text { font-size: 15px; color: var(--muted); line-height: 1.8; }
+
+    /* FOOTER */
+    .footer-wrap { position: relative; }
+    footer { text-align: center; padding: 32px 40px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+    .footer-edit-btn {
+      display: none; position: absolute; top: 50%; right: 20px; transform: translateY(-50%);
+      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 12px;
+    }
+    .footer-edit-btn:hover { background: rgba(232,255,0,0.15); }
+
+    /* ADMIN BUTTONS */
     #admin-btn {
       position: fixed; bottom: 20px; left: 20px; z-index: 998;
       width: 36px; height: 36px; background: rgba(10,10,10,0.8);
@@ -69,14 +353,10 @@
     #admin-btn.unlocked svg { stroke: var(--accent); }
 
     #loader-edit-btn {
-      display: none;
-      position: fixed; bottom: 20px; left: 66px; z-index: 998;
-      height: 36px; background: rgba(10,10,10,0.8);
-      border: 1px solid #2a2a2a; border-radius: 2px;
-      align-items: center; justify-content: center;
-      color: var(--accent); font-size: 10px; letter-spacing: 2px;
-      text-transform: uppercase; padding: 0 12px; white-space: nowrap;
-      transition: border-color 0.2s;
+      display: none; position: fixed; bottom: 20px; left: 66px; z-index: 998;
+      height: 36px; background: rgba(10,10,10,0.8); border: 1px solid #2a2a2a; border-radius: 2px;
+      align-items: center; color: var(--accent); font-size: 10px; letter-spacing: 2px;
+      text-transform: uppercase; padding: 0 12px; white-space: nowrap; transition: border-color 0.2s;
     }
     #loader-edit-btn:hover { border-color: var(--accent); }
 
@@ -87,249 +367,41 @@
     }
     #admin-popup.visible { display: flex; }
     #admin-popup p { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-    #admin-popup input {
-      background: #0a0a0a; border: 1px solid var(--border); color: var(--text);
-      font-size: 13px; padding: 8px 10px; outline: none; width: 100%;
-    }
+    #admin-popup input { background: #0a0a0a; border: 1px solid var(--border); color: var(--text); font-size: 13px; padding: 8px 10px; outline: none; width: 100%; }
     #admin-popup input:focus { border-color: var(--accent); }
-    #admin-popup button {
-      background: var(--accent); color: #000; border: none; padding: 8px;
-      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-weight: 500;
-    }
+    #admin-popup button { background: var(--accent); color: #000; border: none; padding: 8px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; }
     #admin-popup button:hover { background: #fff; }
     #admin-popup .error { color: var(--accent2); font-size: 11px; display: none; }
     #admin-popup .error.visible { display: block; }
 
-    .edit-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.85); z-index: 9999;
-      align-items: center; justify-content: center;
-    }
+    /* EDIT OVERLAY */
+    .edit-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; }
     .edit-overlay.visible { display: flex; }
-    .edit-box {
-      background: #111; border: 1px solid var(--border); padding: 28px;
-      width: 90%; max-width: 560px; display: flex; flex-direction: column; gap: 14px;
-      max-height: 90vh; overflow-y: auto;
-    }
+    .edit-box { background: #111; border: 1px solid var(--border); padding: 28px; width: 90%; max-width: 560px; display: flex; flex-direction: column; gap: 14px; max-height: 90vh; overflow-y: auto; }
     .edit-box h3 { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
-    .edit-box input, .edit-box textarea {
-      background: #0a0a0a; border: 1px solid var(--border); color: var(--text);
-      font-size: 13px; padding: 10px 12px; outline: none; width: 100%;
-      font-family: 'DM Sans', sans-serif; resize: vertical;
-    }
+    .edit-box input, .edit-box textarea { background: #0a0a0a; border: 1px solid var(--border); color: var(--text); font-size: 13px; padding: 10px 12px; outline: none; width: 100%; font-family: 'DM Sans', sans-serif; resize: vertical; }
     .edit-box input:focus, .edit-box textarea:focus { border-color: var(--accent); }
     .edit-box label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: -8px; }
     .edit-box-btns { display: flex; gap: 8px; }
-    .edit-save { background: var(--accent); color: #000; border: none; padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; font-weight: 500; flex: 1; }
+    .edit-save { background: var(--accent); color: #000; border: none; padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; flex: 1; }
     .edit-save:hover { background: #fff; }
-    .edit-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
+    .edit-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
     .edit-cancel:hover { border-color: #444; color: var(--text); }
 
-    .editable { position: relative; }
-    .edit-btn {
-      display: none; position: absolute; top: -8px; right: -8px;
-      background: var(--accent); color: #000; border: none;
-      font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
-      padding: 3px 8px; z-index: 10; white-space: nowrap;
-    }
-    .admin .edit-btn { display: block; }
-
-    .header-edit-btn {
-      display: none; position: absolute; top: 16px; left: 16px; z-index: 4;
-      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      padding: 7px 14px; transition: background 0.2s;
-    }
-    .header-edit-btn:hover { background: rgba(232,255,0,0.15); }
-
-    .footer-wrap { position: relative; }
-    .footer-edit-btn {
-      display: none; position: absolute; top: 50%; right: 20px; transform: translateY(-50%);
-      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 12px;
-    }
-    .footer-edit-btn:hover { background: rgba(232,255,0,0.15); }
-
-    .add-dj-btn {
-      display: none; width: 100%; background: none; border: 1px dashed #2a2a2a;
-      color: #444; font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
-      padding: 20px; transition: border-color 0.2s, color 0.2s; margin-top: 2px;
-    }
-    .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-    .site-header {
-      position: relative; padding: 80px 40px 60px; text-align: center;
-      border-bottom: 1px solid var(--border); overflow: hidden;
-      min-height: 320px; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-    }
-    .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; }
-    .hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%); z-index: 1; }
-    .hero-upload-zone { position: absolute; inset: 0; z-index: 2; cursor: default; }
-    .hero-upload-zone.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
-    .hero-upload-zone.admin:hover::after {
-      content: 'Achtergrond wijzigen'; position: absolute; bottom: 16px; right: 16px;
-      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 14px;
-    }
-    .hero-content { position: relative; z-index: 3; pointer-events: none; }
-    .header-label { font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
-    .site-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(64px, 12vw, 140px); line-height: 0.9; letter-spacing: 4px; }
-    .site-header h1 span { color: var(--accent); }
-    .site-header p { margin-top: 20px; color: var(--muted); font-size: 15px; font-weight: 300; }
-
-    .dj-grid {
-      max-width: 960px; margin: 0 auto; padding: 60px 24px 100px;
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px;
-    }
-    .dj-card { background: var(--card); border: 1px solid var(--border); overflow: hidden; transition: border-color 0.2s; position: relative; }
-    .dj-card:hover { border-color: #333; }
-    .dj-card-clickable { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
-    .dj-card-clickable:hover { border-color: var(--accent); }
-    .dj-photo { width: 100%; aspect-ratio: 4/3; background: #1a1a1a; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .dj-photo img { width: 100%; height: 100%; object-fit: cover; }
-    .photo-placeholder { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-    .photo-placeholder svg { width: 36px; height: 36px; stroke: #333; }
-    .photo-placeholder span { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #333; }
-    .dj-card-body { padding: 22px 26px 26px; }
-    .dj-num { font-family: 'Bebas Neue', sans-serif; font-size: 12px; letter-spacing: 4px; color: var(--accent); margin-bottom: 4px; }
-    .dj-card-body h2 { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 2px; margin-bottom: 6px; }
-    .dj-genre { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2); margin-bottom: 10px; }
-    .dj-bio-short { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
-    .dj-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 18px; }
-    .tag { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border: 1px solid #2a2a2a; color: #777; border-radius: 2px; }
-    .open-btn { display: flex; align-items: center; gap: 7px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); background: none; border: none; padding: 0; transition: gap 0.2s; }
-    .open-btn:hover { gap: 11px; }
-    .open-btn svg { width: 14px; height: 14px; stroke: var(--accent); }
     .delete-dj-btn {
-      display: none; position: absolute; top: 10px; right: 10px;
-      background: rgba(0,0,0,0.7); border: 1px solid #333; color: #666;
-      font-size: 16px; width: 28px; height: 28px; z-index: 5;
-      align-items: center; justify-content: center; transition: color 0.2s, border-color 0.2s;
+      display: none; background: none; border: 1px solid #333; color: #555;
+      font-size: 12px; padding: 4px 8px; margin-top: 8px; width: 100%;
+      text-transform: uppercase; letter-spacing: 1px; font-size: 10px; transition: color 0.2s, border-color 0.2s;
     }
     .delete-dj-btn:hover { color: var(--accent2); border-color: var(--accent2); }
 
-    .detail-nav { display: flex; align-items: center; gap: 16px; padding: 20px 40px; border-bottom: 1px solid var(--border); }
-    .back-btn { display: flex; align-items: center; gap: 8px; background: none; border: none; color: var(--muted); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: color 0.2s; padding: 0; }
-    .back-btn:hover { color: var(--accent); }
-    .back-btn svg { width: 16px; height: 16px; stroke: currentColor; }
-    .breadcrumb { font-size: 12px; color: #333; }
-    .breadcrumb span { color: #555; }
-
-    .detail-body { max-width: 960px; margin: 0 auto; padding: 56px 24px 100px; }
-    .detail-top { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-bottom: 56px; align-items: start; }
-    .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-    .photo-grid .photo-main { grid-column: 1 / -1; }
-
-    .photo-slot { background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s; }
-    .photo-slot.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
-    .photo-slot.admin:hover { border-color: #444; }
-    .photo-slot svg { width: 26px; height: 26px; stroke: #333; }
-    .photo-slot span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
-    .photo-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .photo-slot input[type=file] { display: none; }
-    .photo-slot .upload-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 1; transition: background 0.2s; }
-    .photo-slot.admin .upload-overlay { display: block; }
-    .photo-slot.admin:hover .upload-overlay { background: rgba(0,0,0,0.3); }
-    .photo-slot.admin:hover .upload-overlay::after { content: 'Foto wijzigen'; position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
-    .uploading-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); z-index: 2; }
-
-    .detail-info .dj-num { font-size: 12px; letter-spacing: 4px; margin-bottom: 6px; }
-    .detail-info h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(42px, 6vw, 64px); letter-spacing: 3px; line-height: 0.9; margin-bottom: 10px; }
-    .detail-genre { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent2); margin-bottom: 20px; }
-    .detail-bio { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; }
-
-    .booking-block { margin-top: 28px; padding-top: 28px; border-top: 1px solid var(--border); }
-    .booking-block h3 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
-    .booking-block p { font-size: 12px; color: #555; margin-bottom: 16px; }
-    .booking-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; background: var(--accent); color: #000; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: none; transition: background 0.2s, transform 0.1s; }
-    .booking-btn:hover { background: #fff; transform: translateY(-1px); }
-
-    .ervaring-section { margin-top: 16px; border: 1px solid var(--border); overflow: hidden; }
-    .ervaring-toggle { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; user-select: none; transition: background 0.2s; }
-    .ervaring-toggle:hover { background: #1a1a1a; }
-    .ervaring-toggle h4 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
-    .ervaring-toggle-btn { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s; }
-    .ervaring-toggle-btn svg { transition: transform 0.3s; stroke: var(--muted); width: 12px; height: 12px; }
-    .ervaring-section.open .ervaring-toggle-btn { background: var(--accent); border-color: var(--accent); }
-    .ervaring-section.open .ervaring-toggle-btn svg { transform: rotate(45deg); stroke: #000; }
-    .ervaring-panel { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    .ervaring-section.open .ervaring-panel { max-height: 2000px; }
-    .ervaring-inner { border-top: 1px solid var(--border); padding: 16px 18px; }
-    .ervaring-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #1a1a1a; align-items: center; }
-    .ervaring-item:last-child { border-bottom: none; }
-    .ervaring-order-btns { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
-    .ervaring-order-btn { background: none; border: 1px solid #2a2a2a; color: #555; font-size: 9px; padding: 2px 5px; line-height: 1; border-radius: 2px; transition: color 0.2s, border-color 0.2s; }
-    .ervaring-order-btn:hover { color: var(--accent); border-color: var(--accent); }
-    .ervaring-order-btn:disabled { opacity: 0.2; }
-    .ervaring-order-btn:disabled:hover { color: #555; border-color: #2a2a2a; }
-    .ervaring-jaar { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--accent); min-width: 48px; line-height: 1.2; flex-shrink: 0; }
-    .ervaring-tekst { font-size: 13px; color: var(--muted); line-height: 1.5; flex: 1; }
-    .ervaring-tekst strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 2px; }
-    .ervaring-delete { background: none; border: none; color: #444; font-size: 16px; padding: 0 4px; line-height: 1; transition: color 0.2s; flex-shrink: 0; }
-    .ervaring-delete:hover { color: var(--accent2); }
-    .ervaring-add { display: none; margin-top: 14px; flex-direction: column; gap: 8px; }
-    .ervaring-add.admin { display: flex; }
-    .ervaring-add-row { display: flex; gap: 8px; }
-    .ervaring-add input { background: #0a0a0a; border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 7px 10px; outline: none; width: 100%; }
-    .ervaring-add input::placeholder { color: #444; }
-    .ervaring-add input:focus { border-color: var(--accent); }
-    .ervaring-add-btn { background: var(--accent); color: #000; border: none; padding: 7px 16px; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; font-weight: 500; }
-    .ervaring-add-btn:hover { background: #fff; }
-    .ervaring-empty { font-size: 12px; color: #444; padding: 4px 0; }
-
-    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0; border: 1px solid var(--border); background: var(--card); }
-    .contact-col { padding: 28px 32px; border-right: 1px solid var(--border); }
-    .contact-col:last-child { border-right: none; }
-    .contact-col h3 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
-    .contact-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; color: var(--text); font-size: 14px; text-decoration: none; transition: color 0.2s; }
-    .contact-item:hover { color: var(--accent); }
-    .contact-item svg { width: 15px; height: 15px; stroke: var(--muted); flex-shrink: 0; transition: stroke 0.2s; }
-    .contact-item:hover svg { stroke: var(--accent); }
-
-    .gallery-section { margin-top: 48px; border: 1px solid var(--border); background: var(--card); overflow: hidden; }
-    .gallery-toggle { display: flex; align-items: center; justify-content: space-between; padding: 24px 32px; user-select: none; transition: background 0.2s; }
-    .gallery-toggle:hover { background: #1a1a1a; }
-    .gallery-toggle-left { display: flex; align-items: center; gap: 16px; }
-    .gallery-toggle h3 { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--text); }
-    .gallery-toggle span { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-    .gallery-toggle-btn { width: 36px; height: 36px; border: 1px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s; }
-    .gallery-toggle-btn svg { transition: transform 0.3s; stroke: var(--muted); }
-    .gallery-section.open .gallery-toggle-btn { background: var(--accent); border-color: var(--accent); }
-    .gallery-section.open .gallery-toggle-btn svg { transform: rotate(45deg); stroke: #000; }
-    .gallery-panel { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
-    .gallery-section.open .gallery-panel { max-height: 2000px; }
-    .gallery-inner { border-top: 1px solid var(--border); padding: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-
-    .gallery-slot { background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s; }
-    .gallery-slot.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
-    .gallery-slot.admin:hover { border-color: #444; }
-    .gallery-slot svg { width: 22px; height: 22px; stroke: #333; }
-    .gallery-slot span { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
-    .gallery-slot img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .gallery-slot input[type=file] { display: none; }
-    .gallery-slot video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .video-play-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 1; pointer-events: none; }
-    .video-play-icon svg { width: 40px; height: 40px; stroke: none; fill: rgba(255,255,255,0.85); filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5)); }
-    .video-badge { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.6); border: 1px solid #333; color: var(--muted); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 3px 7px; z-index: 2; }
-    .gallery-slot .upload-overlay { display: none; position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 3; transition: background 0.2s; }
-    .gallery-slot.admin .upload-overlay { display: block; }
-    .gallery-slot.admin:hover .upload-overlay { background: rgba(0,0,0,0.35); }
-    .gallery-slot.admin:hover .upload-overlay::after { content: 'Wijzigen'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
-
-    footer { text-align: center; padding: 40px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); letter-spacing: 1px; }
-
-    @media (max-width: 640px) {
-      .detail-top { grid-template-columns: 1fr; gap: 32px; }
-      .detail-nav { padding: 16px 20px; }
-      .detail-body { padding: 36px 16px 80px; }
-      .contact-col { border-right: none; border-bottom: 1px solid var(--border); }
-      .contact-col:last-child { border-bottom: none; }
-      .site-header { padding: 50px 20px 40px; min-height: 260px; }
-      .gallery-inner { grid-template-columns: repeat(2, 1fr); padding: 16px; }
-      .gallery-toggle { padding: 18px 20px; }
-      .ervaring-add-row { flex-wrap: wrap; }
+    @media (max-width: 900px) {
+      #section-djs { grid-template-columns: 1fr; }
+      .dj-sidebar { position: static; height: auto; }
+      .detail-grid { grid-template-columns: 1fr; }
+      nav { padding: 0 20px; }
+      .dj-detail { padding: 24px 20px; }
+      .gallery-section { padding: 24px 20px; }
     }
   </style>
 </head>
@@ -353,7 +425,6 @@
 <button id="admin-btn" onclick="toggleAdminPopup()" title="Beheer">
   <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
 </button>
-
 <button id="loader-edit-btn" onclick="editLoader()">✎ Laadscherm</button>
 
 <div id="admin-popup">
@@ -363,33 +434,55 @@
   <span class="error" id="admin-error">Incorrect wachtwoord</span>
 </div>
 
-<div class="page active" id="page-home">
-  <header class="site-header">
-    <img class="hero-bg" id="hero-img" src="" alt="" style="display:none;">
-    <video class="hero-bg-video" id="hero-video" autoplay muted loop playsinline style="display:none;"></video>
-    <div class="hero-overlay"></div>
-    <div class="hero-upload-zone" id="hero-zone" onclick="handleHeroZoneClick()"></div>
-    <button class="header-edit-btn" id="header-edit-btn" onclick="editHeader()">✎ Header bewerken</button>
-    <div class="hero-content" id="hero-content"></div>
-    <input type="file" accept="image/*,video/*" id="hero-file" style="display:none;" onchange="handleHeroUpload(event)">
-  </header>
-  <main class="dj-grid" id="dj-grid"></main>
-  <div class="footer-wrap">
-    <footer id="site-footer"></footer>
-    <button class="footer-edit-btn" id="footer-edit-btn" onclick="editFooter()">✎</button>
+<!-- NAVBAR -->
+<nav>
+  <a class="nav-logo" href="#" onclick="scrollToTop()" id="nav-logo-el"></a>
+  <div class="nav-right">
+    <div class="nav-dropdown" id="djs-dropdown">
+      <button class="nav-link" onclick="toggleDropdown('djs-dropdown')">
+        DJ's <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="nav-dropdown-menu" id="djs-menu"></div>
+    </div>
+    <div class="nav-dropdown" id="info-dropdown">
+      <button class="nav-link" onclick="toggleDropdown('info-dropdown'); showInfo()">
+        Info <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+    </div>
   </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="hero-section">
+  <img class="hero-bg" id="hero-img" src="" alt="" style="display:none;">
+  <video class="hero-bg-video" id="hero-video" autoplay muted loop playsinline style="display:none;"></video>
+  <div class="hero-overlay"></div>
+  <div class="hero-upload-zone" id="hero-zone" onclick="handleHeroZoneClick()"></div>
+  <button class="header-edit-btn" id="header-edit-btn" onclick="editHeader()">✎ Header bewerken</button>
+  <div class="hero-content" id="hero-content"></div>
+  <input type="file" accept="image/*,video/*" id="hero-file" style="display:none;" onchange="handleHeroUpload(event)">
+</section>
+
+<!-- DJ SECTIE -->
+<div id="section-djs">
+  <aside class="dj-sidebar" id="dj-sidebar">
+    <div id="dj-list"></div>
+    <div class="dj-sidebar-footer">
+      <button class="add-dj-btn" id="add-dj-btn" onclick="addDJ()">+ DJ toevoegen</button>
+    </div>
+  </aside>
+  <main id="dj-detail-area"></main>
 </div>
 
-<div class="page" id="page-detail">
-  <nav class="detail-nav">
-    <button class="back-btn" onclick="goHome()">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M19 12H5M5 12l7-7M5 12l7 7"/></svg>
-      Terug
-    </button>
-    <span class="breadcrumb">Lineup / <span id="breadcrumb-name"></span></span>
-  </nav>
-  <div class="detail-body" id="detail-content"></div>
-  <footer id="detail-footer"></footer>
+<!-- INFO SECTIE -->
+<section id="section-info">
+  <div class="info-content" id="info-content"></div>
+</section>
+
+<!-- FOOTER -->
+<div class="footer-wrap">
+  <footer id="site-footer"></footer>
+  <button class="footer-edit-btn" id="footer-edit-btn" onclick="editFooter()">✎</button>
 </div>
 
 <input type="file" accept="image/*,video/*" id="loader-media-file" style="display:none;" onchange="handleLoaderMediaUpload(event)">
@@ -403,18 +496,22 @@
   const UPLOAD_WACHTWOORD = 'ewibbe2026';
   let adminUnlocked = false;
   let heroMedia = null;
-  let currentDJId = null;
+  let activeDJId = null;
 
   let siteConfig = {
+    logoMain: 'DJ',
+    logoAccent: 'COLLECTIEF',
     headerLabel: 'Het collectief',
     headerTitleMain: 'DJ',
-    headerTitleAccent: 'LINE',
-    headerTitleEnd: 'UP',
+    headerTitleAccent: 'COLLECTIEF',
+    headerTitleEnd: '',
     headerSubtitle: 'Klik op een DJ voor meer info & booking',
-    footerText: 'DJ Collective © 2026 — Alle rechten voorbehouden',
+    footerText: 'DJ Collectief © 2026 — Alle rechten voorbehouden',
+    infoTitle: 'Over ons',
+    infoText: 'DJ Collectief is een groep gepassioneerde DJ\'s die samen de dansvloer in vuur en vlam zetten.',
     loaderTitleMain: 'DJ',
-    loaderTitleAccent: 'LINE',
-    loaderTitleEnd: 'UP',
+    loaderTitleAccent: 'COLLECTIEF',
+    loaderTitleEnd: '',
     loaderText: 'Laden...',
     loaderMedia: null
   };
@@ -423,10 +520,11 @@
     {
       id: 'ewowo', number: '01', name: 'EWOWO',
       genre: 'Drum & Bass · Trance · Commercieel',
-      bio: 'Veelzijdig DJ met een scherp gevoel voor energie. Van zware drum & bass tot euforische trance en catchy commerciële bangers — ewowo houdt elke zaal in zijn greep.',
+      bio: 'Veelzijdig DJ met een scherp gevoel voor energie. Van zware drum & bass tot euforische trance en catchy commerciële bangers.',
       tags: ['Club', 'Festival', 'Allrounder'],
       email: 'booking@ewowo.nl', phone: '+31 6 12 34 56 78',
       instagram: '@ewowo', soundcloud: 'ewowo',
+      soundcloudUrl: '',
       bookingInfo: 'Fee op aanvraag · Min. 2 uur',
       photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null],
       gallery: [null, null, null, null, null, null],
@@ -435,10 +533,11 @@
     {
       id: 'jibbe', number: '02', name: 'JIBBE',
       genre: 'Trance · UKG',
-      bio: 'Meester in de mix van euforische trance en strakke UK garage. Jibbe brengt een unieke sound die de dansvloer van begin tot eind beweegt.',
+      bio: 'Meester in de mix van euforische trance en strakke UK garage.',
       tags: ['Club', 'Trance', 'UKG'],
       email: 'booking@jibbe.nl', phone: '+31 6 98 76 54 32',
       instagram: '@jibbe.dj', soundcloud: 'jibbe',
+      soundcloudUrl: '',
       bookingInfo: 'Beschikbaar NL & BE · 2–4 uur',
       photos: [null, null, null],
       gallery: [null, null, null, null, null, null],
@@ -447,10 +546,11 @@
     {
       id: 'ewibbe', number: '03', name: 'EWIBBE',
       genre: 'B2B · Drum & Bass · Trance · UKG · Commercieel',
-      bio: 'Ewowo & Jibbe samen op de decks. Als duo combineren ze hun volledige repertoire — drum & bass, trance, UKG en commercieel — voor een onvergetelijke b2b set.',
+      bio: 'Ewowo & Jibbe samen op de decks. Een onvergetelijke b2b set.',
       tags: ['B2B', 'Festival', 'Club'],
       email: 'booking@ewibbe.nl', phone: '+31 6 55 44 33 22',
       instagram: '@ewibbe', soundcloud: 'ewibbe',
+      soundcloudUrl: '',
       bookingInfo: 'Ewowo × Jibbe · B2B',
       photos: [null, null, null],
       gallery: [null, null, null, null, null, null],
@@ -458,11 +558,38 @@
     }
   ];
 
+  // ── DROPDOWN ──
+  function toggleDropdown(id) {
+    const dd = document.getElementById(id);
+    const menu = dd.querySelector('.nav-dropdown-menu');
+    const btn = dd.querySelector('.nav-link');
+    if (!menu) return;
+    const isOpen = menu.classList.contains('open');
+    document.querySelectorAll('.nav-dropdown-menu.open').forEach(m => m.classList.remove('open'));
+    document.querySelectorAll('.nav-link.open').forEach(b => b.classList.remove('open'));
+    if (!isOpen) { menu.classList.add('open'); btn.classList.add('open'); }
+  }
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.nav-dropdown')) {
+      document.querySelectorAll('.nav-dropdown-menu.open').forEach(m => m.classList.remove('open'));
+      document.querySelectorAll('.nav-link.open').forEach(b => b.classList.remove('open'));
+    }
+  });
+
+  function scrollToTop() {
+    document.getElementById('hero-section').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function showInfo() {
+    document.getElementById('section-info').classList.add('active');
+    document.getElementById('section-info').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // ── LOADER ──
   function renderLoader() {
-    const titleEl = document.getElementById('loader-title-el');
-    const textEl = document.getElementById('loader-text-el');
-    titleEl.innerHTML = `${siteConfig.loaderTitleMain}<span>${siteConfig.loaderTitleAccent}</span>${siteConfig.loaderTitleEnd}`;
-    textEl.textContent = siteConfig.loaderText;
+    document.getElementById('loader-title-el').innerHTML = `${siteConfig.loaderTitleMain}<span>${siteConfig.loaderTitleAccent}</span>${siteConfig.loaderTitleEnd}`;
+    document.getElementById('loader-text-el').textContent = siteConfig.loaderText;
     updateLoaderMedia();
   }
 
@@ -471,13 +598,8 @@
     const vid = document.getElementById('loader-bg-vid');
     const m = siteConfig.loaderMedia;
     if (!m) { img.style.display = 'none'; vid.style.display = 'none'; return; }
-    if (m.type === 'video') {
-      img.style.display = 'none';
-      vid.src = m.url; vid.style.display = 'block'; vid.play();
-    } else {
-      vid.style.display = 'none';
-      img.src = m.url; img.style.display = 'block';
-    }
+    if (m.type === 'video') { img.style.display = 'none'; vid.src = m.url; vid.style.display = 'block'; vid.play(); }
+    else { vid.style.display = 'none'; img.src = m.url; img.style.display = 'block'; }
   }
 
   function editLoader() {
@@ -486,83 +608,100 @@
       { key: 'loaderTitleAccent', label: 'Titel deel 2 (geel)', value: siteConfig.loaderTitleAccent },
       { key: 'loaderTitleEnd', label: 'Titel deel 3 (wit)', value: siteConfig.loaderTitleEnd },
       { key: 'loaderText', label: 'Laadtekst', value: siteConfig.loaderText },
-      { key: 'loaderMediaInfo', label: 'Achtergrond — na opslaan wordt upload gevraagd', value: siteConfig.loaderMedia ? '✓ Media ingesteld' : 'Nog geen media' },
+      { key: 'loaderMediaInfo', label: 'Achtergrond — na opslaan wordt upload gevraagd', value: siteConfig.loaderMedia ? '✓ Ingesteld' : 'Nog geen media' },
     ], async () => {
       siteConfig.loaderTitleMain = getEditVal('loaderTitleMain');
       siteConfig.loaderTitleAccent = getEditVal('loaderTitleAccent');
       siteConfig.loaderTitleEnd = getEditVal('loaderTitleEnd');
       siteConfig.loaderText = getEditVal('loaderText') || siteConfig.loaderText;
-      closeEdit();
-      renderLoader();
-      await saveToJsonbin();
+      closeEdit(); renderLoader(); await saveToJsonbin();
       document.getElementById('loader-media-file').click();
     });
   }
 
   async function handleLoaderMediaUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
+    const file = event.target.files[0]; if (!file) return;
     try {
       const result = await uploadToCloudinary(file);
       siteConfig.loaderMedia = { url: result.url, type: result.type };
-      updateLoaderMedia();
-      await saveToJsonbin();
+      updateLoaderMedia(); await saveToJsonbin();
     } catch (e) { alert('Upload mislukt.'); }
     event.target.value = '';
   }
 
-  function updateAdminButtons() {
-    const headerBtn = document.getElementById('header-edit-btn');
-    const footerBtn = document.getElementById('footer-edit-btn');
-    const loaderBtn = document.getElementById('loader-edit-btn');
-    if (headerBtn) headerBtn.style.display = adminUnlocked ? 'block' : 'none';
-    if (footerBtn) footerBtn.style.display = adminUnlocked ? 'block' : 'none';
-    if (loaderBtn) loaderBtn.style.display = adminUnlocked ? 'flex' : 'none';
-  }
-
+  // ── HEADER / FOOTER / LOGO ──
   function renderHeader() {
+    document.getElementById('nav-logo-el').innerHTML = `${siteConfig.logoMain}<span>${siteConfig.logoAccent}</span>`;
     document.getElementById('hero-content').innerHTML = `
-      <p class="header-label">${siteConfig.headerLabel}</p>
-      <h1>${siteConfig.headerTitleMain}<span>${siteConfig.headerTitleAccent}</span>${siteConfig.headerTitleEnd}</h1>
-      <p>${siteConfig.headerSubtitle}</p>
+      <p class="hero-label">${siteConfig.headerLabel}</p>
+      <h1 class="hero-title">${siteConfig.headerTitleMain}<span>${siteConfig.headerTitleAccent}</span>${siteConfig.headerTitleEnd}</h1>
+      <p class="hero-sub">${siteConfig.headerSubtitle}</p>
     `;
   }
 
   function renderFooter() {
-    const text = siteConfig.footerText;
-    document.getElementById('site-footer').textContent = text;
-    const df = document.getElementById('detail-footer');
-    if (df) df.textContent = text;
+    document.getElementById('site-footer').textContent = siteConfig.footerText;
+  }
+
+  function renderInfo() {
+    document.getElementById('info-content').innerHTML = `
+      <div class="editable${adminUnlocked ? ' admin' : ''}" style="position:relative;">
+        <h2 class="info-title">${siteConfig.infoTitle}</h2>
+        <p class="info-text">${siteConfig.infoText}</p>
+        <button class="edit-btn" onclick="editInfo()">✎ Bewerken</button>
+      </div>
+    `;
   }
 
   function editHeader() {
     openEdit('Header bewerken', [
-      { key: 'headerLabel', label: 'Label (klein bovenaan)', value: siteConfig.headerLabel },
-      { key: 'headerTitleMain', label: 'Titel deel 1 (wit)', value: siteConfig.headerTitleMain },
-      { key: 'headerTitleAccent', label: 'Titel deel 2 (geel)', value: siteConfig.headerTitleAccent },
-      { key: 'headerTitleEnd', label: 'Titel deel 3 (wit)', value: siteConfig.headerTitleEnd },
+      { key: 'logoMain', label: 'Logo deel 1 (wit)', value: siteConfig.logoMain },
+      { key: 'logoAccent', label: 'Logo deel 2 (geel)', value: siteConfig.logoAccent },
+      { key: 'headerLabel', label: 'Label (klein)', value: siteConfig.headerLabel },
+      { key: 'headerTitleMain', label: 'Grote titel deel 1 (wit)', value: siteConfig.headerTitleMain },
+      { key: 'headerTitleAccent', label: 'Grote titel deel 2 (geel)', value: siteConfig.headerTitleAccent },
+      { key: 'headerTitleEnd', label: 'Grote titel deel 3 (wit)', value: siteConfig.headerTitleEnd },
       { key: 'headerSubtitle', label: 'Ondertitel', value: siteConfig.headerSubtitle },
     ], async () => {
-      siteConfig.headerLabel = getEditVal('headerLabel') || siteConfig.headerLabel;
+      siteConfig.logoMain = getEditVal('logoMain');
+      siteConfig.logoAccent = getEditVal('logoAccent');
+      siteConfig.headerLabel = getEditVal('headerLabel');
       siteConfig.headerTitleMain = getEditVal('headerTitleMain');
       siteConfig.headerTitleAccent = getEditVal('headerTitleAccent');
       siteConfig.headerTitleEnd = getEditVal('headerTitleEnd');
-      siteConfig.headerSubtitle = getEditVal('headerSubtitle') || siteConfig.headerSubtitle;
-      closeEdit();
-      renderHeader();
-      await saveToJsonbin();
+      siteConfig.headerSubtitle = getEditVal('headerSubtitle');
+      closeEdit(); renderHeader(); await saveToJsonbin();
     });
   }
 
   function editFooter() {
-    openEdit('Footer bewerken', [
-      { key: 'footerText', label: 'Footer tekst', value: siteConfig.footerText },
-    ], async () => {
+    openEdit('Footer bewerken', [{ key: 'footerText', label: 'Footer tekst', value: siteConfig.footerText }], async () => {
       siteConfig.footerText = getEditVal('footerText') || siteConfig.footerText;
-      closeEdit();
-      renderFooter();
-      await saveToJsonbin();
+      closeEdit(); renderFooter(); await saveToJsonbin();
     });
+  }
+
+  function editInfo() {
+    openEdit('Info bewerken', [
+      { key: 'infoTitle', label: 'Titel', value: siteConfig.infoTitle },
+      { key: 'infoText', label: 'Tekst', value: siteConfig.infoText, multiline: true },
+    ], async () => {
+      siteConfig.infoTitle = getEditVal('infoTitle') || siteConfig.infoTitle;
+      siteConfig.infoText = getEditVal('infoText') || siteConfig.infoText;
+      closeEdit(); renderInfo(); await saveToJsonbin();
+    });
+  }
+
+  // ── ADMIN ──
+  function updateAdminButtons() {
+    const hBtn = document.getElementById('header-edit-btn');
+    const fBtn = document.getElementById('footer-edit-btn');
+    const lBtn = document.getElementById('loader-edit-btn');
+    const addBtn = document.getElementById('add-dj-btn');
+    if (hBtn) hBtn.style.display = adminUnlocked ? 'block' : 'none';
+    if (fBtn) fBtn.style.display = adminUnlocked ? 'block' : 'none';
+    if (lBtn) lBtn.style.display = adminUnlocked ? 'flex' : 'none';
+    if (addBtn) addBtn.style.display = adminUnlocked ? 'block' : 'none';
   }
 
   function toggleAdminPopup() {
@@ -571,10 +710,8 @@
       document.getElementById('admin-btn').classList.remove('unlocked');
       document.getElementById('admin-popup').classList.remove('visible');
       updateAdminButtons();
-      if (currentDJId) renderDetail(currentDJId);
-      renderGrid();
-      updateHeroZone();
-      return;
+      renderDJList(); renderDJDetail(activeDJId); renderInfo();
+      updateHeroZone(); return;
     }
     const popup = document.getElementById('admin-popup');
     popup.classList.toggle('visible');
@@ -591,8 +728,7 @@
       document.getElementById('admin-input').value = '';
       err.classList.remove('visible');
       updateAdminButtons();
-      if (currentDJId) renderDetail(currentDJId);
-      renderGrid();
+      renderDJList(); renderDJDetail(activeDJId); renderInfo();
       updateHeroZone();
     } else {
       err.classList.add('visible');
@@ -600,16 +736,14 @@
     }
   }
 
+  // ── EDIT OVERLAY ──
   function openEdit(title, fields, onSave) {
     const box = document.getElementById('edit-box');
     box.innerHTML = `
       <h3>${title}</h3>
       ${fields.map(f => `
         <label>${f.label}</label>
-        ${f.multiline
-          ? `<textarea id="ef-${f.key}" rows="3">${f.value || ''}</textarea>`
-          : `<input type="text" id="ef-${f.key}" value="${(f.value || '').replace(/"/g, '&quot;')}">`
-        }
+        ${f.multiline ? `<textarea id="ef-${f.key}" rows="4">${f.value || ''}</textarea>` : `<input type="text" id="ef-${f.key}" value="${(f.value || '').replace(/"/g, '&quot;')}">`}
       `).join('')}
       <div class="edit-box-btns">
         <button class="edit-cancel" onclick="closeEdit()">Annuleren</button>
@@ -620,18 +754,311 @@
     document.getElementById('edit-overlay').classList.add('visible');
     box.querySelector('input, textarea')?.focus();
   }
+  function closeEdit() { document.getElementById('edit-overlay').classList.remove('visible'); window._editSaveCallback = null; }
+  function saveEdit() { if (window._editSaveCallback) window._editSaveCallback(); }
+  function getEditVal(key) { return document.getElementById(`ef-${key}`)?.value?.trim() || ''; }
 
-  function closeEdit() {
-    document.getElementById('edit-overlay').classList.remove('visible');
-    window._editSaveCallback = null;
+  // ── HERO ──
+  function updateHeroZone() {
+    const zone = document.getElementById('hero-zone');
+    adminUnlocked ? zone.classList.add('admin') : zone.classList.remove('admin');
+  }
+  function handleHeroZoneClick() {
+    if (!adminUnlocked) return;
+    document.getElementById('hero-file').click();
+  }
+  function updateHeroMedia() {
+    const img = document.getElementById('hero-img');
+    const vid = document.getElementById('hero-video');
+    if (!heroMedia) { img.style.display = 'none'; vid.style.display = 'none'; return; }
+    if (heroMedia.type === 'video') { img.style.display = 'none'; vid.src = heroMedia.url; vid.style.display = 'block'; vid.play(); }
+    else { vid.style.display = 'none'; img.src = heroMedia.url; img.style.display = 'block'; }
+  }
+  async function handleHeroUpload(event) {
+    const file = event.target.files[0]; if (!file) return;
+    try { const result = await uploadToCloudinary(file); heroMedia = { url: result.url, type: result.type }; updateHeroMedia(); await saveToJsonbin(); }
+    catch (e) { alert('Upload mislukt.'); }
   }
 
-  function saveEdit() {
-    if (window._editSaveCallback) window._editSaveCallback();
+  // ── CLOUDINARY ──
+  async function uploadToCloudinary(file) {
+    const isVideo = file.type.startsWith('video/');
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    const resourceType = isVideo ? 'video' : 'image';
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`, { method: 'POST', body: formData });
+    const data = await res.json();
+    if (!data.secure_url) throw new Error(data.error?.message || 'Upload mislukt');
+    return { url: data.secure_url, type: resourceType };
   }
 
-  function getEditVal(key) {
-    return document.getElementById(`ef-${key}`)?.value?.trim() || '';
+  // ── JSONBIN ──
+  async function saveToJsonbin() {
+    const data = { heroMedia, siteConfig, djs };
+    await fetch(`${JSONBIN_URL}/${BIN_ID}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
+      body: JSON.stringify(data)
+    });
+  }
+
+  async function loadFromJsonbin() {
+    try {
+      const res = await fetch(`${JSONBIN_URL}/${BIN_ID}/latest`, { headers: { 'X-Master-Key': JSONBIN_KEY } });
+      const json = await res.json();
+      const data = json.record;
+      if (data.heroMedia) heroMedia = data.heroMedia;
+      else if (data.hero) heroMedia = { url: data.hero, type: 'image' };
+      if (data.siteConfig) siteConfig = { ...siteConfig, ...data.siteConfig };
+      if (data.djs && data.djs.length > 0) {
+        djs = data.djs.map(d => ({
+          ...d,
+          photos: d.photos || [null, null, null],
+          gallery: d.gallery || [null, null, null, null, null, null],
+          ervaring: d.ervaring || [],
+          soundcloudUrl: d.soundcloudUrl || ''
+        }));
+      }
+    } catch (e) {}
+  }
+
+  // ── DJ LIST ──
+  function renderDJList() {
+    const list = document.getElementById('dj-list');
+    list.innerHTML = djs.map(dj => `
+      <div class="dj-row${activeDJId === dj.id ? ' active' : ''}" onclick="selectDJ('${dj.id}')">
+        <div class="dj-row-left">
+          <div class="dj-row-num">${dj.number}</div>
+          <div class="dj-row-name">${dj.name}</div>
+          <div class="dj-row-genre">${dj.genre.split(' · ')[0]}</div>
+        </div>
+        <span class="dj-row-arrow">›</span>
+      </div>
+    `).join('');
+
+    const menu = document.getElementById('djs-menu');
+    menu.innerHTML = djs.map(dj => `
+      <a class="nav-dropdown-item" href="#" onclick="selectDJ('${dj.id}'); toggleDropdown('djs-dropdown'); document.getElementById('section-djs').scrollIntoView({behavior:'smooth'}); return false;">${dj.name}</a>
+    `).join('');
+  }
+
+  function selectDJ(id) {
+    activeDJId = id;
+    renderDJList();
+    renderDJDetail(id);
+    if (window.innerWidth <= 900) {
+      document.getElementById('dj-detail-area').scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  // ── DJ DETAIL ──
+  function renderDJDetail(id) {
+    const area = document.getElementById('dj-detail-area');
+    if (!id) {
+      area.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:300px;color:var(--muted);font-size:12px;letter-spacing:3px;text-transform:uppercase;">Selecteer een DJ</div>`;
+      return;
+    }
+    const dj = djs.find(d => d.id === id);
+    if (!dj) return;
+    const ac = adminUnlocked ? ' admin' : '';
+    const iPhoto = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg>`;
+    const iPlay = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.5)"/><polygon points="10,8 18,12 10,16" fill="white"/></svg>`;
+
+    // Gallery grid columns based on filled count
+    const filledGallery = dj.gallery.filter(Boolean);
+    const galleryCount = dj.gallery.length;
+    let galCols = 3;
+    if (galleryCount <= 2) galCols = galleryCount;
+    else if (galleryCount <= 4) galCols = 2;
+    else galCols = 3;
+
+    area.innerHTML = `
+      <div class="dj-detail active">
+        <div class="detail-grid">
+
+          <!-- COL 1: FOTOS -->
+          <div class="detail-photo-col">
+            <div class="detail-photo-main${ac}" id="slot-${dj.id}-0" onclick="triggerUpload('${dj.id}', 0)">
+              ${dj.photos[0] ? `<img src="${dj.photos[0]}" alt="${dj.name}">` : `<div class="photo-placeholder-icon">${iPhoto}<span>Hoofdfoto</span></div>`}
+              <div class="photo-upload-hover"></div>
+              <input type="file" accept="image/*" id="file-${dj.id}-0" onchange="handlePhoto('${dj.id}', 0, event)">
+            </div>
+            <div class="detail-photo-secondary">
+              ${[1,2].map(i => `
+                <div class="detail-photo-sm${ac}" id="slot-${dj.id}-${i}" onclick="triggerUpload('${dj.id}', ${i})">
+                  ${dj.photos[i] ? `<img src="${dj.photos[i]}" alt="Foto ${i+1}">` : `<div class="photo-placeholder-icon">${iPhoto}<span>Foto ${i+1}</span></div>`}
+                  <div class="photo-upload-hover"></div>
+                  <input type="file" accept="image/*" id="file-${dj.id}-${i}" onchange="handlePhoto('${dj.id}', ${i}, event)">
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <!-- COL 2: CONTACT -->
+          <div class="detail-contact-col">
+            <div class="editable${ac}" style="position:relative;">
+              <p class="contact-section-title">Contact</p>
+              <ul class="contact-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg><a href="mailto:${dj.email}">${dj.email}</a></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 12.14 19.79 19.79 0 0 1 1.63 3.56 2 2 0 0 1 3.6 1.37h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.09 6.09l.91-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg><a href="tel:${dj.phone.replace(/\s/g,'')}">${dj.phone}</a></li>
+              </ul>
+              <div class="contact-divider"></div>
+              <p class="contact-section-title">Socials</p>
+              <ul class="contact-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><span>${dj.instagram}</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 2H3l7 9.46V19l4 2v-9.54L21 2z"/></svg><span>${dj.soundcloud}</span></li>
+              </ul>
+              <button class="edit-btn" onclick="editContact('${dj.id}')">✎ Bewerken</button>
+            </div>
+          </div>
+
+          <!-- COL 3: SOUNDCLOUD + INFO + BOOKING -->
+          <div class="detail-info-col">
+            <div class="sc-player">
+              <p class="sc-player-label">SoundCloud</p>
+              ${dj.soundcloudUrl
+                ? `<iframe scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(dj.soundcloudUrl)}&color=%23e8ff00&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" height="80"></iframe>`
+                : `<div class="sc-player-placeholder">${adminUnlocked ? `<button style="background:none;border:1px solid #333;color:var(--muted);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;" onclick="editSoundcloud('${dj.id}')">+ SoundCloud URL instellen</button>` : 'Geen track ingesteld'}</div>`
+              }
+              ${dj.soundcloudUrl && adminUnlocked ? `<button style="margin-top:8px;background:none;border:1px solid #333;color:var(--muted);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;display:block;" onclick="editSoundcloud('${dj.id}')">✎ URL wijzigen</button>` : ''}
+            </div>
+
+            <div class="editable${ac}" style="position:relative;">
+              <h2 class="dj-name-big">${dj.name}</h2>
+              <p class="dj-genre-detail">${dj.genre}</p>
+              <p class="dj-bio-detail">${dj.bio}</p>
+              <div class="dj-tags-detail">${dj.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
+              <button class="edit-btn" onclick="editDJDetail('${dj.id}')">✎ Bewerken</button>
+            </div>
+
+            <div class="editable${ac}" style="position:relative;margin-top:16px;">
+              <p style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Booking</p>
+              <p style="font-size:12px;color:#555;margin-bottom:14px;">${dj.bookingInfo}</p>
+              <a class="booking-btn" href="mailto:${dj.email}">Booking →</a>
+              <button class="edit-btn" onclick="editBooking('${dj.id}')">✎ Bewerken</button>
+            </div>
+
+            ${ervaringHTML(dj.id)}
+          </div>
+        </div>
+
+        ${adminUnlocked ? `
+          <div style="margin-bottom:16px;display:flex;gap:8px;">
+            <button class="delete-dj-btn" style="display:block;" onclick="deleteDJ('${dj.id}')">× DJ verwijderen</button>
+          </div>
+        ` : ''}
+      </div>
+
+      <!-- GALERIJ -->
+      <div class="gallery-section">
+        <div class="gallery-header">
+          <h3 class="gallery-title">In the moment</h3>
+          <span class="gallery-count">${filledGallery.length} / ${galleryCount}</span>
+        </div>
+        <div class="gallery-grid" style="grid-template-columns: repeat(${galCols}, 1fr);">
+          ${dj.gallery.map((item, i) => {
+            const isVideo = item && item.type === 'video';
+            const isImage = item && item.type === 'image';
+            return `
+              <div class="gallery-slot${ac}" id="gslot-${dj.id}-${i}" onclick="triggerGalleryUpload('${dj.id}', ${i})">
+                ${isImage ? `<img src="${item.url}" alt="Foto ${i+1}">` : ''}
+                ${isVideo ? `<video src="${item.url}" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0;"></video><div class="video-play-icon">${iPlay}</div><span class="video-badge">Video</span>` : ''}
+                ${!item ? `<div class="photo-placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg><span>Foto / Video</span></div>` : ''}
+                <div class="upload-overlay"></div>
+                <input type="file" accept="image/*,video/*" id="gfile-${dj.id}-${i}" onchange="handleGalleryMedia('${dj.id}', ${i}, event)">
+              </div>`;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  // ── UPLOAD TRIGGERS ──
+  function triggerUpload(djId, index) {
+    if (!adminUnlocked) return;
+    document.getElementById(`file-${djId}-${index}`).click();
+  }
+  function triggerGalleryUpload(djId, index) {
+    if (!adminUnlocked) return;
+    document.getElementById(`gfile-${djId}-${index}`).click();
+  }
+
+  async function handlePhoto(djId, index, event) {
+    const file = event.target.files[0]; if (!file) return;
+    const slot = document.getElementById(`slot-${djId}-${index}`);
+    slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
+    try {
+      const result = await uploadToCloudinary(file);
+      djs.find(d => d.id === djId).photos[index] = result.url;
+      await saveToJsonbin(); renderDJDetail(djId); renderDJList();
+    } catch (e) { alert('Upload mislukt.'); slot.querySelector('.uploading-overlay')?.remove(); }
+  }
+
+  async function handleGalleryMedia(djId, index, event) {
+    const file = event.target.files[0]; if (!file) return;
+    const slot = document.getElementById(`gslot-${djId}-${index}`);
+    slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
+    try {
+      const result = await uploadToCloudinary(file);
+      djs.find(d => d.id === djId).gallery[index] = { url: result.url, type: result.type };
+      await saveToJsonbin(); renderDJDetail(djId);
+    } catch (e) { alert('Upload mislukt.'); slot.querySelector('.uploading-overlay')?.remove(); }
+  }
+
+  // ── EDIT DJ ──
+  function editDJDetail(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('Naam & bio bewerken', [
+      { key: 'name', label: 'Naam', value: dj.name },
+      { key: 'genre', label: 'Genre', value: dj.genre },
+      { key: 'bio', label: 'Bio', value: dj.bio, multiline: true },
+      { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
+    ], async () => {
+      dj.name = getEditVal('name') || dj.name;
+      dj.genre = getEditVal('genre') || dj.genre;
+      dj.bio = getEditVal('bio') || dj.bio;
+      dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
+      closeEdit(); await saveToJsonbin(); renderDJList(); renderDJDetail(djId);
+    });
+  }
+
+  function editBooking(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('Booking bewerken', [
+      { key: 'bookingInfo', label: 'Booking info', value: dj.bookingInfo },
+      { key: 'email', label: 'Email', value: dj.email },
+    ], async () => {
+      dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo;
+      dj.email = getEditVal('email') || dj.email;
+      closeEdit(); await saveToJsonbin(); renderDJDetail(djId);
+    });
+  }
+
+  function editContact(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('Contact bewerken', [
+      { key: 'email', label: 'Email', value: dj.email },
+      { key: 'phone', label: 'Telefoon', value: dj.phone },
+      { key: 'instagram', label: 'Instagram', value: dj.instagram },
+      { key: 'soundcloud', label: 'SoundCloud gebruikersnaam', value: dj.soundcloud },
+    ], async () => {
+      dj.email = getEditVal('email') || dj.email;
+      dj.phone = getEditVal('phone') || dj.phone;
+      dj.instagram = getEditVal('instagram') || dj.instagram;
+      dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
+      closeEdit(); await saveToJsonbin(); renderDJDetail(djId);
+    });
+  }
+
+  function editSoundcloud(djId) {
+    const dj = djs.find(d => d.id === djId);
+    openEdit('SoundCloud instellen', [
+      { key: 'soundcloudUrl', label: 'SoundCloud track/playlist URL', value: dj.soundcloudUrl },
+    ], async () => {
+      dj.soundcloudUrl = getEditVal('soundcloudUrl');
+      closeEdit(); await saveToJsonbin(); renderDJDetail(djId);
+    });
   }
 
   function editDJ(djId) {
@@ -656,94 +1083,30 @@
       dj.instagram = getEditVal('instagram') || dj.instagram;
       dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
       dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo;
-      closeEdit();
-      await saveToJsonbin();
-      renderGrid();
-      if (currentDJId === djId) renderDetail(djId);
-    });
-  }
-
-  function editDJDetail(djId) {
-    const dj = djs.find(d => d.id === djId);
-    openEdit('Naam & bio bewerken', [
-      { key: 'name', label: 'Naam', value: dj.name },
-      { key: 'genre', label: 'Genre', value: dj.genre },
-      { key: 'bio', label: 'Bio', value: dj.bio, multiline: true },
-      { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
-    ], async () => {
-      dj.name = getEditVal('name') || dj.name;
-      dj.genre = getEditVal('genre') || dj.genre;
-      dj.bio = getEditVal('bio') || dj.bio;
-      dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
-      closeEdit();
-      await saveToJsonbin();
-      renderDetail(djId);
-      renderGrid();
-    });
-  }
-
-  function editBooking(djId) {
-    const dj = djs.find(d => d.id === djId);
-    openEdit('Booking bewerken', [
-      { key: 'bookingInfo', label: 'Booking info', value: dj.bookingInfo },
-      { key: 'email', label: 'Email', value: dj.email },
-    ], async () => {
-      dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo;
-      dj.email = getEditVal('email') || dj.email;
-      closeEdit();
-      await saveToJsonbin();
-      renderDetail(djId);
-    });
-  }
-
-  function editContact(djId) {
-    const dj = djs.find(d => d.id === djId);
-    openEdit('Contact bewerken', [
-      { key: 'email', label: 'Email', value: dj.email },
-      { key: 'phone', label: 'Telefoon', value: dj.phone },
-      { key: 'instagram', label: 'Instagram', value: dj.instagram },
-      { key: 'soundcloud', label: 'SoundCloud', value: dj.soundcloud },
-    ], async () => {
-      dj.email = getEditVal('email') || dj.email;
-      dj.phone = getEditVal('phone') || dj.phone;
-      dj.instagram = getEditVal('instagram') || dj.instagram;
-      dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
-      closeEdit();
-      await saveToJsonbin();
-      renderDetail(djId);
+      closeEdit(); await saveToJsonbin(); renderDJList(); renderDJDetail(djId);
     });
   }
 
   function addDJ() {
     openEdit('Nieuwe DJ toevoegen', [
-      { key: 'name', label: 'Naam' },
-      { key: 'genre', label: 'Genre' },
-      { key: 'bio', label: 'Bio', multiline: true },
-      { key: 'tags', label: 'Tags (komma-gescheiden)' },
-      { key: 'email', label: 'Email' },
-      { key: 'phone', label: 'Telefoon' },
-      { key: 'instagram', label: 'Instagram' },
-      { key: 'soundcloud', label: 'SoundCloud' },
+      { key: 'name', label: 'Naam' }, { key: 'genre', label: 'Genre' },
+      { key: 'bio', label: 'Bio', multiline: true }, { key: 'tags', label: 'Tags (komma-gescheiden)' },
+      { key: 'email', label: 'Email' }, { key: 'phone', label: 'Telefoon' },
+      { key: 'instagram', label: 'Instagram' }, { key: 'soundcloud', label: 'SoundCloud' },
       { key: 'bookingInfo', label: 'Booking info' },
     ], async () => {
-      const name = getEditVal('name');
-      if (!name) return;
+      const name = getEditVal('name'); if (!name) return;
       const id = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
       djs.push({
-        id, number: String(djs.length + 1).padStart(2, '0'),
-        name, genre: getEditVal('genre'),
-        bio: getEditVal('bio'),
+        id, number: String(djs.length + 1).padStart(2, '0'), name,
+        genre: getEditVal('genre'), bio: getEditVal('bio'),
         tags: getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean),
         email: getEditVal('email'), phone: getEditVal('phone'),
         instagram: getEditVal('instagram'), soundcloud: getEditVal('soundcloud'),
-        bookingInfo: getEditVal('bookingInfo'),
-        photos: [null, null, null],
-        gallery: [null, null, null, null, null, null],
-        ervaring: []
+        soundcloudUrl: '', bookingInfo: getEditVal('bookingInfo'),
+        photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: []
       });
-      closeEdit();
-      await saveToJsonbin();
-      renderGrid();
+      closeEdit(); await saveToJsonbin(); renderDJList();
     });
   }
 
@@ -751,138 +1114,50 @@
     if (!confirm('Weet je zeker dat je deze DJ wil verwijderen?')) return;
     djs = djs.filter(d => d.id !== djId);
     djs.forEach((dj, i) => { dj.number = String(i + 1).padStart(2, '0'); });
-    await saveToJsonbin();
-    renderGrid();
+    activeDJId = djs[0]?.id || null;
+    await saveToJsonbin(); renderDJList(); renderDJDetail(activeDJId);
   }
 
-  function updateHeroZone() {
-    const zone = document.getElementById('hero-zone');
-    adminUnlocked ? zone.classList.add('admin') : zone.classList.remove('admin');
+  // ── ERVARING ──
+  function ervaringHTML(djId) {
+    const dj = djs.find(d => d.id === djId);
+    const items = dj.ervaring || [];
+    const ac = adminUnlocked ? ' admin' : '';
+    return `
+      <div class="ervaring-section" id="ervaring-${djId}" style="margin-top:16px;">
+        <div class="ervaring-toggle" onclick="toggleErvaring('${djId}')">
+          <h4>Ervaring${items.length > 0 ? ` · ${items.length}` : ''}</h4>
+          <div class="ervaring-toggle-btn">
+            <svg viewBox="0 0 14 14" fill="none" stroke-width="2"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+          </div>
+        </div>
+        <div class="ervaring-panel">
+          <div class="ervaring-inner">
+            ${items.length === 0 ? `<p class="ervaring-empty">Nog geen ervaring toegevoegd.</p>` :
+              items.map((item, i) => `
+                <div class="ervaring-item">
+                  ${adminUnlocked ? `<div class="ervaring-order-btns"><button class="ervaring-order-btn" onclick="moveErvaring('${djId}', ${i}, -1)" ${i===0?'disabled':''}>▲</button><button class="ervaring-order-btn" onclick="moveErvaring('${djId}', ${i}, 1)" ${i===items.length-1?'disabled':''}>▼</button></div>` : ''}
+                  <div class="ervaring-jaar">${item.jaar}</div>
+                  <div class="ervaring-tekst"><strong>${item.naam}</strong>${item.omschrijving}</div>
+                  ${adminUnlocked ? `<button class="ervaring-delete" onclick="deleteErvaring('${djId}', ${i})">×</button>` : ''}
+                </div>`).join('')
+            }
+            <div class="ervaring-add${ac}">
+              <div class="ervaring-add-row">
+                <input type="text" id="ejaar-${djId}" placeholder="Jaar" style="max-width:70px;">
+                <input type="text" id="enaam-${djId}" placeholder="Naam" style="flex:1;">
+              </div>
+              <div class="ervaring-add-row">
+                <input type="text" id="eomschr-${djId}" placeholder="Omschrijving" style="flex:1;">
+                <button class="ervaring-add-btn" onclick="addErvaring('${djId}')">+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
   }
 
-  function handleHeroZoneClick() {
-    if (!adminUnlocked) return;
-    document.getElementById('hero-file').click();
-  }
-
-  function updateHeroMedia() {
-    const img = document.getElementById('hero-img');
-    const vid = document.getElementById('hero-video');
-    if (!heroMedia) { img.style.display = 'none'; vid.style.display = 'none'; return; }
-    if (heroMedia.type === 'video') {
-      img.style.display = 'none';
-      vid.src = heroMedia.url; vid.style.display = 'block'; vid.play();
-    } else {
-      vid.style.display = 'none';
-      img.src = heroMedia.url; img.style.display = 'block';
-    }
-  }
-
-  async function saveToJsonbin() {
-    const data = { heroMedia, siteConfig, djs };
-    await fetch(`${JSONBIN_URL}/${BIN_ID}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-      body: JSON.stringify(data)
-    });
-  }
-
-  async function loadFromJsonbin() {
-    try {
-      const res = await fetch(`${JSONBIN_URL}/${BIN_ID}/latest`, {
-        headers: { 'X-Master-Key': JSONBIN_KEY }
-      });
-      const json = await res.json();
-      const data = json.record;
-      if (data.heroMedia) heroMedia = data.heroMedia;
-      else if (data.hero) heroMedia = { url: data.hero, type: 'image' };
-      if (data.siteConfig) siteConfig = { ...siteConfig, ...data.siteConfig };
-      if (data.djs && data.djs.length > 0) {
-        djs = data.djs.map(d => ({
-          ...d,
-          photos: d.photos || [null, null, null],
-          gallery: d.gallery || [null, null, null, null, null, null],
-          ervaring: d.ervaring || []
-        }));
-      } else {
-        djs.forEach(dj => {
-          if (data[dj.id]) {
-            if (data[dj.id].photos) dj.photos = data[dj.id].photos.map((p, i) => p || dj.photos[i]);
-            if (data[dj.id].gallery) dj.gallery = data[dj.id].gallery;
-            if (data[dj.id].ervaring) dj.ervaring = data[dj.id].ervaring;
-          }
-        });
-      }
-    } catch (e) {}
-  }
-
-  async function uploadToCloudinary(file) {
-    const isVideo = file.type.startsWith('video/');
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
-    const resourceType = isVideo ? 'video' : 'image';
-    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`, {
-      method: 'POST', body: formData
-    });
-    const data = await res.json();
-    if (!data.secure_url) throw new Error(data.error?.message || 'Upload mislukt');
-    return { url: data.secure_url, type: resourceType };
-  }
-
-  async function handleHeroUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    try {
-      const result = await uploadToCloudinary(file);
-      heroMedia = { url: result.url, type: result.type };
-      updateHeroMedia();
-      await saveToJsonbin();
-    } catch (e) { alert('Upload mislukt.'); }
-  }
-
-  function triggerUpload(djId, index) {
-    if (!adminUnlocked) return;
-    document.getElementById(`file-${djId}-${index}`).click();
-  }
-
-  function triggerGalleryUpload(djId, index) {
-    if (!adminUnlocked) return;
-    document.getElementById(`gfile-${djId}-${index}`).click();
-  }
-
-  async function handlePhoto(djId, index, event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const slot = document.getElementById(`slot-${djId}-${index}`);
-    slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
-    try {
-      const result = await uploadToCloudinary(file);
-      djs.find(d => d.id === djId).photos[index] = result.url;
-      await saveToJsonbin();
-      renderDetail(djId);
-      renderGrid();
-    } catch (e) {
-      alert('Upload mislukt.');
-      slot.querySelector('.uploading-overlay')?.remove();
-    }
-  }
-
-  async function handleGalleryMedia(djId, index, event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const slot = document.getElementById(`gslot-${djId}-${index}`);
-    slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
-    try {
-      const result = await uploadToCloudinary(file);
-      djs.find(d => d.id === djId).gallery[index] = { url: result.url, type: result.type };
-      await saveToJsonbin();
-      renderDetail(djId);
-    } catch (e) {
-      alert('Upload mislukt.');
-      slot.querySelector('.uploading-overlay')?.remove();
-    }
-  }
+  function toggleErvaring(djId) { document.getElementById(`ervaring-${djId}`).classList.toggle('open'); }
 
   async function addErvaring(djId) {
     const jaar = document.getElementById(`ejaar-${djId}`).value.trim();
@@ -892,16 +1167,14 @@
     const dj = djs.find(d => d.id === djId);
     if (!dj.ervaring) dj.ervaring = [];
     dj.ervaring.push({ jaar, naam, omschrijving });
-    await saveToJsonbin();
-    renderDetail(djId);
+    await saveToJsonbin(); renderDJDetail(djId);
     setTimeout(() => document.getElementById(`ervaring-${djId}`)?.classList.add('open'), 50);
   }
 
   async function deleteErvaring(djId, index) {
     const dj = djs.find(d => d.id === djId);
     dj.ervaring.splice(index, 1);
-    await saveToJsonbin();
-    renderDetail(djId);
+    await saveToJsonbin(); renderDJDetail(djId);
     setTimeout(() => document.getElementById(`ervaring-${djId}`)?.classList.add('open'), 50);
   }
 
@@ -909,233 +1182,22 @@
     const dj = djs.find(d => d.id === djId);
     const newIndex = index + direction;
     if (newIndex < 0 || newIndex >= dj.ervaring.length) return;
-    const temp = dj.ervaring[index];
-    dj.ervaring[index] = dj.ervaring[newIndex];
-    dj.ervaring[newIndex] = temp;
-    await saveToJsonbin();
-    renderDetail(djId);
+    const temp = dj.ervaring[index]; dj.ervaring[index] = dj.ervaring[newIndex]; dj.ervaring[newIndex] = temp;
+    await saveToJsonbin(); renderDJDetail(djId);
     setTimeout(() => document.getElementById(`ervaring-${djId}`)?.classList.add('open'), 50);
   }
 
-  function toggleErvaring(djId) {
-    document.getElementById(`ervaring-${djId}`).classList.toggle('open');
-  }
-
-  const iMail = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 4 10 9 10-9"/></svg>`;
-  const iPhone = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.7 12.14 19.79 19.79 0 0 1 1.63 3.56 2 2 0 0 1 3.6 1.37h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.09 6.09l.91-.92a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`;
-  const iIG = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>`;
-  const iSC = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 2H3l7 9.46V19l4 2v-9.54L21 2z"/></svg>`;
-  const iPhoto = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg>`;
-  const iPlay = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.5)"/><polygon points="10,8 18,12 10,16" fill="white"/></svg>`;
-
-  function ervaringHTML(djId) {
-    const dj = djs.find(d => d.id === djId);
-    const items = dj.ervaring || [];
-    const adminClass = adminUnlocked ? ' admin' : '';
-    return `
-      <div class="ervaring-section" id="ervaring-${djId}">
-        <div class="ervaring-toggle" onclick="toggleErvaring('${djId}')">
-          <h4>Ervaring${items.length > 0 ? ` · ${items.length}` : ''}</h4>
-          <div class="ervaring-toggle-btn">
-            <svg viewBox="0 0 14 14" fill="none" stroke-width="2">
-              <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
-            </svg>
-          </div>
-        </div>
-        <div class="ervaring-panel">
-          <div class="ervaring-inner">
-            ${items.length === 0
-              ? `<p class="ervaring-empty">Nog geen ervaring toegevoegd.</p>`
-              : items.map((item, i) => `
-                <div class="ervaring-item">
-                  ${adminUnlocked ? `
-                    <div class="ervaring-order-btns">
-                      <button class="ervaring-order-btn" onclick="moveErvaring('${djId}', ${i}, -1)" ${i === 0 ? 'disabled' : ''}>▲</button>
-                      <button class="ervaring-order-btn" onclick="moveErvaring('${djId}', ${i}, 1)" ${i === items.length - 1 ? 'disabled' : ''}>▼</button>
-                    </div>
-                  ` : ''}
-                  <div class="ervaring-jaar">${item.jaar}</div>
-                  <div class="ervaring-tekst">
-                    <strong>${item.naam}</strong>
-                    ${item.omschrijving}
-                  </div>
-                  ${adminUnlocked ? `<button class="ervaring-delete" onclick="deleteErvaring('${djId}', ${i})">×</button>` : ''}
-                </div>
-              `).join('')
-            }
-            <div class="ervaring-add${adminClass}">
-              <div class="ervaring-add-row">
-                <input type="text" id="ejaar-${djId}" placeholder="Jaar" style="max-width:70px;">
-                <input type="text" id="enaam-${djId}" placeholder="Naam (bijv. Awakenings)" style="flex:1;">
-              </div>
-              <div class="ervaring-add-row">
-                <input type="text" id="eomschr-${djId}" placeholder="Omschrijving" style="flex:1;">
-                <button class="ervaring-add-btn" onclick="addErvaring('${djId}')">Toevoegen</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-  }
-
-  function photoSlotHTML(djId, index, isMain) {
-    const dj = djs.find(d => d.id === djId);
-    const photo = dj.photos[index];
-    const adminClass = adminUnlocked ? ' admin' : '';
-    return `
-      <div class="photo-slot${isMain ? ' photo-main' : ''}${adminClass}" id="slot-${djId}-${index}" onclick="triggerUpload('${djId}', ${index})">
-        ${photo ? `<img src="${photo}" alt="Foto ${index + 1}">` : `${iPhoto}<span>${isMain ? 'Hoofdfoto' : 'Foto ' + (index + 1)}</span>`}
-        <div class="upload-overlay"></div>
-        <input type="file" accept="image/*" id="file-${djId}-${index}" onchange="handlePhoto('${djId}', ${index}, event)">
-      </div>`;
-  }
-
-  function gallerySlotHTML(djId, index, item, adminClass) {
-    const isVideo = item && item.type === 'video';
-    const isImage = item && item.type === 'image';
-    return `
-      <div class="gallery-slot${adminClass}" id="gslot-${djId}-${index}" onclick="triggerGalleryUpload('${djId}', ${index})">
-        ${isImage ? `<img src="${item.url}" alt="Foto ${index + 1}">` : ''}
-        ${isVideo ? `<video src="${item.url}" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0;"></video><div class="video-play-icon">${iPlay}</div><span class="video-badge">Video</span>` : ''}
-        ${!item ? `${iPhoto}<span>Foto / Video</span>` : ''}
-        <div class="upload-overlay"></div>
-        <input type="file" accept="image/*,video/*" id="gfile-${djId}-${index}" onchange="handleGalleryMedia('${djId}', ${index}, event)">
-      </div>`;
-  }
-
-  function galleryHTML(djId) {
-    const dj = djs.find(d => d.id === djId);
-    const filledCount = dj.gallery.filter(Boolean).length;
-    const adminClass = adminUnlocked ? ' admin' : '';
-    return `
-      <div class="gallery-section" id="gallery-${djId}">
-        <div class="gallery-toggle" onclick="toggleGallery('${djId}')">
-          <div class="gallery-toggle-left">
-            <h3>In the moment</h3>
-            <span>${filledCount} / 6</span>
-          </div>
-          <div class="gallery-toggle-btn">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke-width="2">
-              <line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/>
-            </svg>
-          </div>
-        </div>
-        <div class="gallery-panel">
-          <div class="gallery-inner">
-            ${dj.gallery.map((item, i) => gallerySlotHTML(djId, i, item, adminClass)).join('')}
-          </div>
-        </div>
-      </div>`;
-  }
-
-  function toggleGallery(djId) {
-    document.getElementById(`gallery-${djId}`).classList.toggle('open');
-  }
-
-  function renderGrid() {
-    const grid = document.getElementById('dj-grid');
-    grid.innerHTML = djs.map(dj => `
-      <div class="dj-card ${adminUnlocked ? '' : 'dj-card-clickable'}" ${adminUnlocked ? '' : `onclick="openDJ('${dj.id}')"`}>
-        ${adminUnlocked ? `<button class="delete-dj-btn" style="display:flex;" onclick="deleteDJ('${dj.id}')">×</button>` : ''}
-        <div class="dj-photo">
-          ${dj.photos[0] ? `<img src="${dj.photos[0]}" alt="${dj.name}">` : `<div class="photo-placeholder">${iPhoto}<span>Foto</span></div>`}
-        </div>
-        <div class="dj-card-body">
-          <div class="dj-num">${dj.number}</div>
-          <h2>${dj.name}</h2>
-          <div class="dj-genre">${dj.genre}</div>
-          <p class="dj-bio-short">${dj.bio}</p>
-          <div class="dj-tags">${dj.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-          ${adminUnlocked
-            ? `<button class="open-btn" onclick="editDJ('${dj.id}')">
-                Bewerken
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>`
-            : `<button class="open-btn" onclick="openDJ('${dj.id}')">
-                Bekijk profiel
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </button>`
-          }
-        </div>
-      </div>
-    `).join('');
-    if (adminUnlocked) {
-      grid.insertAdjacentHTML('beforeend', `<button class="add-dj-btn" style="display:block;" onclick="addDJ()">+ DJ toevoegen</button>`);
-    }
-  }
-
-  function renderDetail(id) {
-    currentDJId = id;
-    const dj = djs.find(d => d.id === id);
-    document.getElementById('breadcrumb-name').textContent = dj.name;
-    const adminClass = adminUnlocked ? ' admin' : '';
-    document.getElementById('detail-content').innerHTML = `
-      <div class="detail-top">
-        <div class="photo-grid">
-          ${photoSlotHTML(dj.id, 0, true)}
-          ${photoSlotHTML(dj.id, 1, false)}
-          ${photoSlotHTML(dj.id, 2, false)}
-        </div>
-        <div class="detail-info">
-          <div class="dj-num">${dj.number}</div>
-          <div class="editable${adminClass}" style="position:relative;">
-            <h2>${dj.name}</h2>
-            <button class="edit-btn" onclick="editDJDetail('${dj.id}')">✎ Bewerken</button>
-          </div>
-          <div class="detail-genre">${dj.genre}</div>
-          <p class="detail-bio">${dj.bio}</p>
-          <div class="dj-tags">${dj.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
-          <div class="booking-block">
-            <h3>Booking</h3>
-            <div class="editable${adminClass}" style="position:relative;">
-              <p style="font-size:12px;color:#555;margin-bottom:16px;">${dj.bookingInfo}</p>
-              <button class="edit-btn" onclick="editBooking('${dj.id}')">✎ Bewerken</button>
-            </div>
-            <a class="booking-btn" href="mailto:${dj.email}">Boek nu →</a>
-          </div>
-          ${ervaringHTML(dj.id)}
-        </div>
-      </div>
-      <div class="editable${adminClass}" style="position:relative;">
-        <div class="contact-grid">
-          <div class="contact-col">
-            <h3>Contact</h3>
-            <a class="contact-item" href="mailto:${dj.email}">${iMail} ${dj.email}</a>
-            <a class="contact-item" href="tel:${dj.phone.replace(/\s/g,'')}">${iPhone} ${dj.phone}</a>
-          </div>
-          <div class="contact-col">
-            <h3>Socials</h3>
-            <a class="contact-item" href="#">${iIG} ${dj.instagram}</a>
-            <a class="contact-item" href="#">${iSC} SoundCloud: ${dj.soundcloud}</a>
-          </div>
-        </div>
-        <button class="edit-btn" onclick="editContact('${dj.id}')">✎ Bewerken</button>
-      </div>
-      ${galleryHTML(dj.id)}
-    `;
-  }
-
-  function openDJ(id) {
-    renderDetail(id);
-    document.getElementById('page-home').classList.remove('active');
-    document.getElementById('page-detail').classList.add('active');
-    window.scrollTo(0, 0);
-  }
-
-  function goHome() {
-    currentDJId = null;
-    document.getElementById('page-detail').classList.remove('active');
-    document.getElementById('page-home').classList.add('active');
-    window.scrollTo(0, 0);
-  }
-
+  // ── INIT ──
   async function init() {
     await loadFromJsonbin();
     renderLoader();
     renderHeader();
     renderFooter();
+    renderInfo();
     updateHeroMedia();
-    renderGrid();
+    activeDJId = djs[0]?.id || null;
+    renderDJList();
+    renderDJDetail(activeDJId);
     document.getElementById('loader').classList.add('hidden');
   }
 
