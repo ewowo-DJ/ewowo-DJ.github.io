@@ -24,14 +24,8 @@
       font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23111' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23222' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23222' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23e8ff00'/%3E%3C/svg%3E") 16 16, auto;
     }
 
-    a, button, .dj-row, .nav-link {
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer;
-    }
-
-    /* LOADER */
     #loader {
       position: fixed; inset: 0; background: var(--bg);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -39,7 +33,7 @@
     }
     #loader.hidden { opacity: 0; pointer-events: none; }
     #loader-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; display: none; }
-    #loader-bg-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; display: none; }
+    #loader-bg-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; display: none; will-change: transform; transform: translateZ(0); }
     #loader-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.4) 0%, rgba(10,10,10,0.7) 100%); }
     .loader-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 24px; }
     .loader-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 6px; color: var(--text); }
@@ -49,103 +43,49 @@
     @keyframes slide { 0% { left: -100%; } 100% { left: 100%; } }
     .loader-text { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); }
 
-    /* NAVBAR */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      height: 60px;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 40px;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      height: 60px; display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px; background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px); border-bottom: 1px solid var(--border);
     }
-    .nav-logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 28px; letter-spacing: 4px;
-      color: var(--text); text-decoration: none;
-    }
+    .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 4px; color: var(--text); text-decoration: none; cursor: pointer; }
     .nav-logo span { color: var(--accent); }
     .nav-right { display: flex; align-items: center; gap: 8px; }
     .nav-dropdown { position: relative; }
-    .nav-link {
-      display: flex; align-items: center; gap: 6px;
-      background: none; border: 1px solid var(--border);
-      color: var(--text); font-size: 12px; letter-spacing: 2px;
-      text-transform: uppercase; padding: 8px 16px;
-      transition: border-color 0.2s, color 0.2s;
-    }
+    .nav-link { display: flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--border); color: var(--text); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 16px; transition: border-color 0.2s, color 0.2s; cursor: pointer; }
     .nav-link:hover { border-color: var(--accent); color: var(--accent); }
     .nav-link svg { width: 12px; height: 12px; stroke: currentColor; transition: transform 0.2s; }
     .nav-link.open svg { transform: rotate(180deg); }
-    .nav-dropdown-menu {
-      display: none; position: absolute; top: calc(100% + 4px); right: 0;
-      background: #111; border: 1px solid var(--border); min-width: 180px; z-index: 200;
-    }
+    .nav-dropdown-menu { display: none; position: absolute; top: calc(100% + 4px); right: 0; background: #111; border: 1px solid var(--border); min-width: 180px; z-index: 200; }
     .nav-dropdown-menu.open { display: block; }
-    .nav-dropdown-item {
-      display: block; padding: 12px 16px;
-      font-size: 12px; letter-spacing: 1px; text-transform: uppercase;
-      color: var(--muted); text-decoration: none;
-      border-bottom: 1px solid var(--border);
-      transition: color 0.2s, background 0.2s;
-    }
+    .nav-dropdown-item { display: block; padding: 12px 16px; font-size: 12px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--border); transition: color 0.2s, background 0.2s; cursor: pointer; }
     .nav-dropdown-item:last-child { border-bottom: none; }
     .nav-dropdown-item:hover { color: var(--accent); background: #1a1a1a; }
 
-    /* HERO */
-    .hero {
-      position: relative; height: 100vh; min-height: 500px;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-      border-bottom: 1px solid var(--border);
-    }
+    .hero { position: relative; height: 100vh; min-height: 500px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
     .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
-    .hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
+    .hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; will-change: transform; transform: translateZ(0); }
     .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.8) 100%); }
     .hero-upload-zone { position: absolute; inset: 0; z-index: 2; }
-    .hero-upload-zone.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
-    .hero-upload-zone.admin:hover::after {
-      content: 'Achtergrond wijzigen'; position: absolute; bottom: 20px; right: 20px;
-      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 14px;
-    }
+    .hero-upload-zone.admin { cursor: pointer; }
+    .hero-upload-zone.admin:hover::after { content: 'Achtergrond wijzigen'; position: absolute; bottom: 20px; right: 20px; background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 8px 14px; }
     .hero-content { position: relative; z-index: 3; text-align: center; pointer-events: none; }
     .hero-label { font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
     .hero-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(80px, 15vw, 180px); line-height: 0.85; letter-spacing: 6px; }
     .hero-title span { color: var(--accent); }
     .hero-sub { margin-top: 24px; color: var(--muted); font-size: 15px; font-weight: 300; }
-    .header-edit-btn {
-      display: none; position: absolute; top: 80px; left: 20px; z-index: 4;
-      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 7px 14px;
-    }
+    .header-edit-btn { display: none; position: absolute; top: 80px; left: 20px; z-index: 4; background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 7px 14px; cursor: pointer; }
     .header-edit-btn:hover { background: rgba(232,255,0,0.15); }
 
-    /* MAIN LAYOUT */
-    #section-djs {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      min-height: calc(100vh - 60px);
-    }
+    #section-djs { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 60px); }
 
-    /* DJ SIDEBAR */
-    .dj-sidebar {
-      border-right: 1px solid var(--border);
-      position: sticky; top: 60px;
-      height: calc(100vh - 60px);
-      overflow-y: auto;
-    }
+    .dj-sidebar { border-right: 1px solid var(--border); position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
     .dj-sidebar::-webkit-scrollbar { width: 3px; }
     .dj-sidebar::-webkit-scrollbar-track { background: transparent; }
     .dj-sidebar::-webkit-scrollbar-thumb { background: var(--border); }
 
-    .dj-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 24px 28px;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.2s;
-      user-select: none;
-    }
+    .dj-row { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; border-bottom: 1px solid var(--border); transition: background 0.2s; user-select: none; cursor: pointer; }
     .dj-row:hover { background: #1a1a1a; }
     .dj-row.active { background: #1a1a1a; border-left: 2px solid var(--accent); }
     .dj-row-left { display: flex; flex-direction: column; gap: 4px; }
@@ -155,62 +95,29 @@
     .dj-row-arrow { color: var(--muted); font-size: 18px; transition: transform 0.2s, color 0.2s; }
     .dj-row.active .dj-row-arrow { transform: translateX(4px); color: var(--accent); }
 
-    .dj-sidebar-footer {
-      padding: 20px 28px;
-      border-top: 1px solid var(--border);
-    }
-    .add-dj-btn {
-      display: none; width: 100%; background: none; border: 1px dashed #2a2a2a;
-      color: #444; font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      padding: 14px; transition: border-color 0.2s, color 0.2s;
-    }
+    .dj-sidebar-footer { padding: 20px 28px; border-top: 1px solid var(--border); }
+    .add-dj-btn { display: none; width: 100%; background: none; border: 1px dashed #2a2a2a; color: #444; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; padding: 14px; transition: border-color 0.2s, color 0.2s; cursor: pointer; }
     .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* DJ DETAIL */
-    .dj-detail {
-      padding: 40px;
-      display: none;
-    }
+    .dj-detail { padding: 40px; display: none; }
     .dj-detail.active { display: block; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 40px; }
 
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 24px;
-      margin-bottom: 40px;
-    }
-
-    /* COL 1: FOTO */
-    .detail-photo-col {}
-    .detail-photo-main {
-      width: 100%; aspect-ratio: 4/3;
-      background: #141414; border: 1px dashed #2a2a2a;
-      position: relative; overflow: hidden; margin-bottom: 2px;
-    }
+    .detail-photo-main { width: 100%; aspect-ratio: 4/3; background: #141414; border: 1px dashed #2a2a2a; position: relative; overflow: hidden; margin-bottom: 2px; }
     .detail-photo-main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .detail-photo-main.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
+    .detail-photo-main.admin { cursor: pointer; }
     .detail-photo-secondary { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-    .detail-photo-sm {
-      aspect-ratio: 4/3; background: #141414; border: 1px dashed #2a2a2a;
-      position: relative; overflow: hidden;
-    }
+    .detail-photo-sm { aspect-ratio: 4/3; background: #141414; border: 1px dashed #2a2a2a; position: relative; overflow: hidden; }
     .detail-photo-sm img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .detail-photo-sm.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
+    .detail-photo-sm.admin { cursor: pointer; }
     .photo-placeholder-icon { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
     .photo-placeholder-icon svg { width: 24px; height: 24px; stroke: #333; }
     .photo-placeholder-icon span { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
-    .photo-upload-hover {
-      position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 1; transition: background 0.2s;
-    }
+    .photo-upload-hover { position: absolute; inset: 0; background: rgba(0,0,0,0); z-index: 1; transition: background 0.2s; }
     .admin .photo-upload-hover:hover { background: rgba(0,0,0,0.3); }
-    .admin .photo-upload-hover:hover::after {
-      content: 'Wijzigen'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
-      font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap;
-    }
+    .admin .photo-upload-hover:hover::after { content: 'Wijzigen'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
     input[type=file] { display: none; }
 
-    /* COL 2: CONTACT */
-    .detail-contact-col {}
     .contact-section-title { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
     .contact-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
     .contact-list li { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--text); }
@@ -219,64 +126,32 @@
     .contact-list a:hover { color: var(--accent); }
     .contact-divider { height: 1px; background: var(--border); margin: 20px 0; }
 
-    /* COL 3: INFO + SOUNDCLOUD */
-    .detail-info-col {}
-    .sc-player {
-      background: var(--card); border: 1px solid var(--border);
-      padding: 16px; margin-bottom: 20px;
-    }
+    .sc-player { background: var(--card); border: 1px solid var(--border); padding: 16px; margin-bottom: 20px; }
     .sc-player-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
     .sc-player iframe { width: 100%; border: none; display: block; }
-    .sc-player-placeholder {
-      height: 80px; display: flex; align-items: center; justify-content: center;
-      font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
-      border: 1px dashed #2a2a2a;
-    }
+    .sc-player-placeholder { height: 80px; display: flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); border: 1px dashed #2a2a2a; }
+
     .dj-name-big { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 4vw, 52px); letter-spacing: 3px; line-height: 0.9; margin-bottom: 6px; }
     .dj-genre-detail { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2); margin-bottom: 14px; }
     .dj-bio-detail { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
     .dj-tags-detail { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
     .tag { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border: 1px solid #2a2a2a; color: #777; border-radius: 2px; }
-    .booking-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 13px 28px; background: var(--accent); color: #000;
-      font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase;
-      text-decoration: none; border: none; transition: background 0.2s, transform 0.1s;
-    }
+    .booking-btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; background: var(--accent); color: #000; font-size: 12px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; border: none; transition: background 0.2s, transform 0.1s; cursor: pointer; }
     .booking-btn:hover { background: #fff; transform: translateY(-1px); }
 
-    /* EDITABLE */
     .editable { position: relative; }
-    .edit-btn {
-      display: none; position: absolute; top: -8px; right: -8px;
-      background: var(--accent); color: #000; border: none;
-      font-size: 9px; letter-spacing: 1px; text-transform: uppercase;
-      padding: 3px 8px; z-index: 10; white-space: nowrap;
-    }
+    .edit-btn { display: none; position: absolute; top: -8px; right: -8px; background: var(--accent); color: #000; border: none; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; z-index: 10; white-space: nowrap; cursor: pointer; }
     .admin .edit-btn { display: block; }
 
-    /* UPLOADING */
-    .uploading-overlay {
-      position: absolute; inset: 0; background: rgba(0,0,0,0.7);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); z-index: 2;
-    }
+    .uploading-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); z-index: 2; }
 
-    /* GALERIJ — dynamische breedte */
     .gallery-section { margin-top: 0; border-top: 1px solid var(--border); padding: 32px 40px; }
     .gallery-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .gallery-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; }
     .gallery-count { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
-    .gallery-grid {
-      display: grid;
-      gap: 2px;
-    }
-    .gallery-slot {
-      background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s;
-    }
-    .gallery-slot.admin { cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23e8ff00' stroke='%23333' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='11' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23ccd900' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='3' fill='none' stroke='%23aab800' stroke-width='1'/%3E%3Ccircle cx='16' cy='16' r='1.5' fill='%23111'/%3E%3C/svg%3E") 16 16, pointer; }
+    .gallery-grid { display: grid; gap: 2px; }
+    .gallery-slot { background: #141414; border: 1px dashed #2a2a2a; aspect-ratio: 4/3; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; overflow: hidden; position: relative; transition: border-color 0.2s; }
+    .gallery-slot.admin { cursor: pointer; }
     .gallery-slot.admin:hover { border-color: #444; }
     .gallery-slot svg { width: 20px; height: 20px; stroke: #333; }
     .gallery-slot span { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: #333; }
@@ -290,9 +165,8 @@
     .video-play-icon svg { width: 36px; height: 36px; stroke: none; fill: rgba(255,255,255,0.85); }
     .video-badge { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.6); border: 1px solid #333; color: var(--muted); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; padding: 2px 6px; z-index: 2; }
 
-    /* ERVARING */
     .ervaring-section { margin-top: 16px; border: 1px solid var(--border); overflow: hidden; }
-    .ervaring-toggle { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; user-select: none; transition: background 0.2s; }
+    .ervaring-toggle { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; user-select: none; transition: background 0.2s; cursor: pointer; }
     .ervaring-toggle:hover { background: #1a1a1a; }
     .ervaring-toggle h4 { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
     .ervaring-toggle-btn { width: 24px; height: 24px; border: 1px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.3s; }
@@ -305,13 +179,13 @@
     .ervaring-item { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1a1a1a; align-items: center; }
     .ervaring-item:last-child { border-bottom: none; }
     .ervaring-order-btns { display: flex; flex-direction: column; gap: 3px; flex-shrink: 0; }
-    .ervaring-order-btn { background: none; border: 1px solid #2a2a2a; color: #555; font-size: 8px; padding: 2px 4px; line-height: 1; border-radius: 2px; transition: color 0.2s, border-color 0.2s; }
+    .ervaring-order-btn { background: none; border: 1px solid #2a2a2a; color: #555; font-size: 8px; padding: 2px 4px; line-height: 1; border-radius: 2px; transition: color 0.2s, border-color 0.2s; cursor: pointer; }
     .ervaring-order-btn:hover { color: var(--accent); border-color: var(--accent); }
     .ervaring-order-btn:disabled { opacity: 0.2; }
     .ervaring-jaar { font-family: 'Bebas Neue', sans-serif; font-size: 16px; color: var(--accent); min-width: 44px; line-height: 1.2; flex-shrink: 0; }
     .ervaring-tekst { font-size: 12px; color: var(--muted); line-height: 1.5; flex: 1; }
     .ervaring-tekst strong { color: var(--text); font-weight: 500; display: block; margin-bottom: 1px; }
-    .ervaring-delete { background: none; border: none; color: #444; font-size: 14px; padding: 0 4px; line-height: 1; transition: color 0.2s; flex-shrink: 0; }
+    .ervaring-delete { background: none; border: none; color: #444; font-size: 14px; padding: 0 4px; line-height: 1; transition: color 0.2s; flex-shrink: 0; cursor: pointer; }
     .ervaring-delete:hover { color: var(--accent2); }
     .ervaring-add { display: none; margin-top: 12px; flex-direction: column; gap: 8px; }
     .ervaring-add.admin { display: flex; }
@@ -319,62 +193,40 @@
     .ervaring-add input { background: #0a0a0a; border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 6px 10px; outline: none; width: 100%; }
     .ervaring-add input::placeholder { color: #444; }
     .ervaring-add input:focus { border-color: var(--accent); }
-    .ervaring-add-btn { background: var(--accent); color: #000; border: none; padding: 6px 14px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; font-weight: 500; }
+    .ervaring-add-btn { background: var(--accent); color: #000; border: none; padding: 6px 14px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; font-weight: 500; cursor: pointer; }
     .ervaring-add-btn:hover { background: #fff; }
     .ervaring-empty { font-size: 11px; color: #444; padding: 4px 0; }
 
-    /* INFO SECTIE */
     #section-info { padding: 80px 40px; border-top: 1px solid var(--border); display: none; }
     #section-info.active { display: block; }
     .info-content { max-width: 700px; margin: 0 auto; }
     .info-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 4px; margin-bottom: 20px; }
     .info-text { font-size: 15px; color: var(--muted); line-height: 1.8; }
 
-    /* FOOTER */
     .footer-wrap { position: relative; }
     footer { text-align: center; padding: 32px 40px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); letter-spacing: 1px; }
-    .footer-edit-btn {
-      display: none; position: absolute; top: 50%; right: 20px; transform: translateY(-50%);
-      background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 12px;
-    }
+    .footer-edit-btn { display: none; position: absolute; top: 50%; right: 20px; transform: translateY(-50%); background: rgba(0,0,0,0.7); border: 1px solid var(--accent); color: var(--accent); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 12px; cursor: pointer; }
     .footer-edit-btn:hover { background: rgba(232,255,0,0.15); }
 
-    /* ADMIN BUTTONS */
-    #admin-btn {
-      position: fixed; bottom: 20px; left: 20px; z-index: 998;
-      width: 36px; height: 36px; background: rgba(10,10,10,0.8);
-      border: 1px solid #2a2a2a; border-radius: 2px;
-      display: flex; align-items: center; justify-content: center; transition: border-color 0.2s;
-    }
+    #admin-btn { position: fixed; bottom: 20px; left: 20px; z-index: 998; width: 36px; height: 36px; background: rgba(10,10,10,0.8); border: 1px solid #2a2a2a; border-radius: 2px; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s; cursor: pointer; }
     #admin-btn:hover { border-color: #444; }
     #admin-btn.unlocked { border-color: var(--accent); }
     #admin-btn svg { width: 14px; height: 14px; stroke: #444; transition: stroke 0.2s; }
     #admin-btn.unlocked svg { stroke: var(--accent); }
 
-    #loader-edit-btn {
-      display: none; position: fixed; bottom: 20px; left: 66px; z-index: 998;
-      height: 36px; background: rgba(10,10,10,0.8); border: 1px solid #2a2a2a; border-radius: 2px;
-      align-items: center; color: var(--accent); font-size: 10px; letter-spacing: 2px;
-      text-transform: uppercase; padding: 0 12px; white-space: nowrap; transition: border-color 0.2s;
-    }
+    #loader-edit-btn { display: none; position: fixed; bottom: 20px; left: 66px; z-index: 998; height: 36px; background: rgba(10,10,10,0.8); border: 1px solid #2a2a2a; border-radius: 2px; align-items: center; color: var(--accent); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 0 12px; white-space: nowrap; transition: border-color 0.2s; cursor: pointer; }
     #loader-edit-btn:hover { border-color: var(--accent); }
 
-    #admin-popup {
-      position: fixed; bottom: 66px; left: 20px; z-index: 998;
-      background: #111; border: 1px solid var(--border); padding: 16px;
-      display: none; flex-direction: column; gap: 10px; width: 220px;
-    }
+    #admin-popup { position: fixed; bottom: 66px; left: 20px; z-index: 998; background: #111; border: 1px solid var(--border); padding: 16px; display: none; flex-direction: column; gap: 10px; width: 220px; }
     #admin-popup.visible { display: flex; }
     #admin-popup p { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
     #admin-popup input { background: #0a0a0a; border: 1px solid var(--border); color: var(--text); font-size: 13px; padding: 8px 10px; outline: none; width: 100%; }
     #admin-popup input:focus { border-color: var(--accent); }
-    #admin-popup button { background: var(--accent); color: #000; border: none; padding: 8px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; }
+    #admin-popup button { background: var(--accent); color: #000; border: none; padding: 8px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; cursor: pointer; }
     #admin-popup button:hover { background: #fff; }
     #admin-popup .error { color: var(--accent2); font-size: 11px; display: none; }
     #admin-popup .error.visible { display: block; }
 
-    /* EDIT OVERLAY */
     .edit-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; }
     .edit-overlay.visible { display: flex; }
     .edit-box { background: #111; border: 1px solid var(--border); padding: 28px; width: 90%; max-width: 560px; display: flex; flex-direction: column; gap: 14px; max-height: 90vh; overflow-y: auto; }
@@ -383,16 +235,12 @@
     .edit-box input:focus, .edit-box textarea:focus { border-color: var(--accent); }
     .edit-box label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: -8px; }
     .edit-box-btns { display: flex; gap: 8px; }
-    .edit-save { background: var(--accent); color: #000; border: none; padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; flex: 1; }
+    .edit-save { background: var(--accent); color: #000; border: none; padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 500; flex: 1; cursor: pointer; }
     .edit-save:hover { background: #fff; }
-    .edit-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    .edit-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
     .edit-cancel:hover { border-color: #444; color: var(--text); }
 
-    .delete-dj-btn {
-      display: none; background: none; border: 1px solid #333; color: #555;
-      font-size: 12px; padding: 4px 8px; margin-top: 8px; width: 100%;
-      text-transform: uppercase; letter-spacing: 1px; font-size: 10px; transition: color 0.2s, border-color 0.2s;
-    }
+    .delete-dj-btn { display: none; background: none; border: 1px solid #333; color: #555; font-size: 10px; padding: 4px 8px; margin-top: 8px; width: 100%; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s, border-color 0.2s; cursor: pointer; }
     .delete-dj-btn:hover { color: var(--accent2); border-color: var(--accent2); }
 
     @media (max-width: 900px) {
@@ -413,7 +261,7 @@
 
 <div id="loader">
   <img id="loader-bg-img" src="" alt="">
-  <video id="loader-bg-vid" autoplay muted loop playsinline></video>
+  <video id="loader-bg-vid" autoplay muted loop playsinline preload="auto"></video>
   <div id="loader-overlay"></div>
   <div class="loader-content">
     <div class="loader-title" id="loader-title-el"></div>
@@ -434,9 +282,8 @@
   <span class="error" id="admin-error">Incorrect wachtwoord</span>
 </div>
 
-<!-- NAVBAR -->
 <nav>
-  <a class="nav-logo" href="#" onclick="scrollToTop()" id="nav-logo-el"></a>
+  <a class="nav-logo" onclick="scrollToTop()" id="nav-logo-el"></a>
   <div class="nav-right">
     <div class="nav-dropdown" id="djs-dropdown">
       <button class="nav-link" onclick="toggleDropdown('djs-dropdown')">
@@ -445,17 +292,16 @@
       <div class="nav-dropdown-menu" id="djs-menu"></div>
     </div>
     <div class="nav-dropdown" id="info-dropdown">
-      <button class="nav-link" onclick="toggleDropdown('info-dropdown'); showInfo()">
+      <button class="nav-link" onclick="showInfo()">
         Info <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </button>
     </div>
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero" id="hero-section">
   <img class="hero-bg" id="hero-img" src="" alt="" style="display:none;">
-  <video class="hero-bg-video" id="hero-video" autoplay muted loop playsinline style="display:none;"></video>
+  <video class="hero-bg-video" id="hero-video" autoplay muted loop playsinline preload="auto" style="display:none;"></video>
   <div class="hero-overlay"></div>
   <div class="hero-upload-zone" id="hero-zone" onclick="handleHeroZoneClick()"></div>
   <button class="header-edit-btn" id="header-edit-btn" onclick="editHeader()">✎ Header bewerken</button>
@@ -463,7 +309,6 @@
   <input type="file" accept="image/*,video/*" id="hero-file" style="display:none;" onchange="handleHeroUpload(event)">
 </section>
 
-<!-- DJ SECTIE -->
 <div id="section-djs">
   <aside class="dj-sidebar" id="dj-sidebar">
     <div id="dj-list"></div>
@@ -474,12 +319,10 @@
   <main id="dj-detail-area"></main>
 </div>
 
-<!-- INFO SECTIE -->
 <section id="section-info">
   <div class="info-content" id="info-content"></div>
 </section>
 
-<!-- FOOTER -->
 <div class="footer-wrap">
   <footer id="site-footer"></footer>
   <button class="footer-edit-btn" id="footer-edit-btn" onclick="editFooter()">✎</button>
@@ -499,66 +342,22 @@
   let activeDJId = null;
 
   let siteConfig = {
-    logoMain: 'DJ',
-    logoAccent: 'COLLECTIEF',
+    logoMain: 'DJ', logoAccent: 'COLLECTIEF',
     headerLabel: 'Het collectief',
-    headerTitleMain: 'DJ',
-    headerTitleAccent: 'COLLECTIEF',
-    headerTitleEnd: '',
     headerSubtitle: 'Klik op een DJ voor meer info & booking',
     footerText: 'DJ Collectief © 2026 — Alle rechten voorbehouden',
     infoTitle: 'Over ons',
     infoText: 'DJ Collectief is een groep gepassioneerde DJ\'s die samen de dansvloer in vuur en vlam zetten.',
-    loaderTitleMain: 'DJ',
-    loaderTitleAccent: 'COLLECTIEF',
-    loaderTitleEnd: '',
-    loaderText: 'Laden...',
-    loaderMedia: null
+    loaderTitleMain: 'DJ', loaderTitleAccent: 'COLLECTIEF', loaderTitleEnd: '',
+    loaderText: 'Laden...', loaderMedia: null
   };
 
   let djs = [
-    {
-      id: 'ewowo', number: '01', name: 'EWOWO',
-      genre: 'Drum & Bass · Trance · Commercieel',
-      bio: 'Veelzijdig DJ met een scherp gevoel voor energie. Van zware drum & bass tot euforische trance en catchy commerciële bangers.',
-      tags: ['Club', 'Festival', 'Allrounder'],
-      email: 'booking@ewowo.nl', phone: '+31 6 12 34 56 78',
-      instagram: '@ewowo', soundcloud: 'ewowo',
-      soundcloudUrl: '',
-      bookingInfo: 'Fee op aanvraag · Min. 2 uur',
-      photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null],
-      gallery: [null, null, null, null, null, null],
-      ervaring: []
-    },
-    {
-      id: 'jibbe', number: '02', name: 'JIBBE',
-      genre: 'Trance · UKG',
-      bio: 'Meester in de mix van euforische trance en strakke UK garage.',
-      tags: ['Club', 'Trance', 'UKG'],
-      email: 'booking@jibbe.nl', phone: '+31 6 98 76 54 32',
-      instagram: '@jibbe.dj', soundcloud: 'jibbe',
-      soundcloudUrl: '',
-      bookingInfo: 'Beschikbaar NL & BE · 2–4 uur',
-      photos: [null, null, null],
-      gallery: [null, null, null, null, null, null],
-      ervaring: []
-    },
-    {
-      id: 'ewibbe', number: '03', name: 'EWIBBE',
-      genre: 'B2B · Drum & Bass · Trance · UKG · Commercieel',
-      bio: 'Ewowo & Jibbe samen op de decks. Een onvergetelijke b2b set.',
-      tags: ['B2B', 'Festival', 'Club'],
-      email: 'booking@ewibbe.nl', phone: '+31 6 55 44 33 22',
-      instagram: '@ewibbe', soundcloud: 'ewibbe',
-      soundcloudUrl: '',
-      bookingInfo: 'Ewowo × Jibbe · B2B',
-      photos: [null, null, null],
-      gallery: [null, null, null, null, null, null],
-      ervaring: []
-    }
+    { id: 'ewowo', number: '01', name: 'EWOWO', genre: 'Drum & Bass · Trance · Commercieel', bio: 'Veelzijdig DJ met een scherp gevoel voor energie. Van zware drum & bass tot euforische trance en catchy commerciële bangers.', tags: ['Club', 'Festival', 'Allrounder'], email: 'booking@ewowo.nl', phone: '+31 6 12 34 56 78', instagram: '@ewowo', soundcloud: 'ewowo', soundcloudUrl: '', bookingInfo: 'Fee op aanvraag · Min. 2 uur', photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null], gallery: [null, null, null, null, null, null], ervaring: [] },
+    { id: 'jibbe', number: '02', name: 'JIBBE', genre: 'Trance · UKG', bio: 'Meester in de mix van euforische trance en strakke UK garage.', tags: ['Club', 'Trance', 'UKG'], email: 'booking@jibbe.nl', phone: '+31 6 98 76 54 32', instagram: '@jibbe.dj', soundcloud: 'jibbe', soundcloudUrl: '', bookingInfo: 'Beschikbaar NL & BE · 2–4 uur', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [] },
+    { id: 'ewibbe', number: '03', name: 'EWIBBE', genre: 'B2B · Drum & Bass · Trance · UKG · Commercieel', bio: 'Ewowo & Jibbe samen op de decks. Een onvergetelijke b2b set.', tags: ['B2B', 'Festival', 'Club'], email: 'booking@ewibbe.nl', phone: '+31 6 55 44 33 22', instagram: '@ewibbe', soundcloud: 'ewibbe', soundcloudUrl: '', bookingInfo: 'Ewowo × Jibbe · B2B', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [] }
   ];
 
-  // ── DROPDOWN ──
   function toggleDropdown(id) {
     const dd = document.getElementById(id);
     const menu = dd.querySelector('.nav-dropdown-menu');
@@ -577,16 +376,9 @@
     }
   });
 
-  function scrollToTop() {
-    document.getElementById('hero-section').scrollIntoView({ behavior: 'smooth' });
-  }
+  function scrollToTop() { document.getElementById('hero-section').scrollIntoView({ behavior: 'smooth' }); }
+  function showInfo() { document.getElementById('section-info').classList.add('active'); document.getElementById('section-info').scrollIntoView({ behavior: 'smooth' }); }
 
-  function showInfo() {
-    document.getElementById('section-info').classList.add('active');
-    document.getElementById('section-info').scrollIntoView({ behavior: 'smooth' });
-  }
-
-  // ── LOADER ──
   function renderLoader() {
     document.getElementById('loader-title-el').innerHTML = `${siteConfig.loaderTitleMain}<span>${siteConfig.loaderTitleAccent}</span>${siteConfig.loaderTitleEnd}`;
     document.getElementById('loader-text-el').textContent = siteConfig.loaderText;
@@ -621,27 +413,33 @@
 
   async function handleLoaderMediaUpload(event) {
     const file = event.target.files[0]; if (!file) return;
-    try {
-      const result = await uploadToCloudinary(file);
-      siteConfig.loaderMedia = { url: result.url, type: result.type };
-      updateLoaderMedia(); await saveToJsonbin();
-    } catch (e) { alert('Upload mislukt.'); }
+    try { const result = await uploadToCloudinary(file); siteConfig.loaderMedia = { url: result.url, type: result.type }; updateLoaderMedia(); await saveToJsonbin(); }
+    catch (e) { alert('Upload mislukt.'); }
     event.target.value = '';
   }
 
-  // ── HEADER / FOOTER / LOGO ──
+  function updateAdminButtons() {
+    const hBtn = document.getElementById('header-edit-btn');
+    const fBtn = document.getElementById('footer-edit-btn');
+    const lBtn = document.getElementById('loader-edit-btn');
+    const addBtn = document.getElementById('add-dj-btn');
+    if (hBtn) hBtn.style.display = adminUnlocked ? 'block' : 'none';
+    if (fBtn) fBtn.style.display = adminUnlocked ? 'block' : 'none';
+    if (lBtn) lBtn.style.display = adminUnlocked ? 'flex' : 'none';
+    if (addBtn) addBtn.style.display = adminUnlocked ? 'block' : 'none';
+  }
+
   function renderHeader() {
+    // Logo en grote titel zijn altijd hetzelfde
     document.getElementById('nav-logo-el').innerHTML = `${siteConfig.logoMain}<span>${siteConfig.logoAccent}</span>`;
     document.getElementById('hero-content').innerHTML = `
       <p class="hero-label">${siteConfig.headerLabel}</p>
-      <h1 class="hero-title">${siteConfig.headerTitleMain}<span>${siteConfig.headerTitleAccent}</span>${siteConfig.headerTitleEnd}</h1>
+      <h1 class="hero-title">${siteConfig.logoMain}<span>${siteConfig.logoAccent}</span></h1>
       <p class="hero-sub">${siteConfig.headerSubtitle}</p>
     `;
   }
 
-  function renderFooter() {
-    document.getElementById('site-footer').textContent = siteConfig.footerText;
-  }
+  function renderFooter() { document.getElementById('site-footer').textContent = siteConfig.footerText; }
 
   function renderInfo() {
     document.getElementById('info-content').innerHTML = `
@@ -649,26 +447,19 @@
         <h2 class="info-title">${siteConfig.infoTitle}</h2>
         <p class="info-text">${siteConfig.infoText}</p>
         <button class="edit-btn" onclick="editInfo()">✎ Bewerken</button>
-      </div>
-    `;
+      </div>`;
   }
 
   function editHeader() {
     openEdit('Header bewerken', [
-      { key: 'logoMain', label: 'Logo deel 1 (wit)', value: siteConfig.logoMain },
-      { key: 'logoAccent', label: 'Logo deel 2 (geel)', value: siteConfig.logoAccent },
+      { key: 'logoMain', label: 'Logo/Titel deel 1 (wit)', value: siteConfig.logoMain },
+      { key: 'logoAccent', label: 'Logo/Titel deel 2 (geel)', value: siteConfig.logoAccent },
       { key: 'headerLabel', label: 'Label (klein)', value: siteConfig.headerLabel },
-      { key: 'headerTitleMain', label: 'Grote titel deel 1 (wit)', value: siteConfig.headerTitleMain },
-      { key: 'headerTitleAccent', label: 'Grote titel deel 2 (geel)', value: siteConfig.headerTitleAccent },
-      { key: 'headerTitleEnd', label: 'Grote titel deel 3 (wit)', value: siteConfig.headerTitleEnd },
       { key: 'headerSubtitle', label: 'Ondertitel', value: siteConfig.headerSubtitle },
     ], async () => {
       siteConfig.logoMain = getEditVal('logoMain');
       siteConfig.logoAccent = getEditVal('logoAccent');
       siteConfig.headerLabel = getEditVal('headerLabel');
-      siteConfig.headerTitleMain = getEditVal('headerTitleMain');
-      siteConfig.headerTitleAccent = getEditVal('headerTitleAccent');
-      siteConfig.headerTitleEnd = getEditVal('headerTitleEnd');
       siteConfig.headerSubtitle = getEditVal('headerSubtitle');
       closeEdit(); renderHeader(); await saveToJsonbin();
     });
@@ -692,26 +483,12 @@
     });
   }
 
-  // ── ADMIN ──
-  function updateAdminButtons() {
-    const hBtn = document.getElementById('header-edit-btn');
-    const fBtn = document.getElementById('footer-edit-btn');
-    const lBtn = document.getElementById('loader-edit-btn');
-    const addBtn = document.getElementById('add-dj-btn');
-    if (hBtn) hBtn.style.display = adminUnlocked ? 'block' : 'none';
-    if (fBtn) fBtn.style.display = adminUnlocked ? 'block' : 'none';
-    if (lBtn) lBtn.style.display = adminUnlocked ? 'flex' : 'none';
-    if (addBtn) addBtn.style.display = adminUnlocked ? 'block' : 'none';
-  }
-
   function toggleAdminPopup() {
     if (adminUnlocked) {
       adminUnlocked = false;
       document.getElementById('admin-btn').classList.remove('unlocked');
       document.getElementById('admin-popup').classList.remove('visible');
-      updateAdminButtons();
-      renderDJList(); renderDJDetail(activeDJId); renderInfo();
-      updateHeroZone(); return;
+      updateAdminButtons(); renderDJList(); renderDJDetail(activeDJId); renderInfo(); updateHeroZone(); return;
     }
     const popup = document.getElementById('admin-popup');
     popup.classList.toggle('visible');
@@ -727,29 +504,19 @@
       document.getElementById('admin-popup').classList.remove('visible');
       document.getElementById('admin-input').value = '';
       err.classList.remove('visible');
-      updateAdminButtons();
-      renderDJList(); renderDJDetail(activeDJId); renderInfo();
-      updateHeroZone();
-    } else {
-      err.classList.add('visible');
-      document.getElementById('admin-input').value = '';
-    }
+      updateAdminButtons(); renderDJList(); renderDJDetail(activeDJId); renderInfo(); updateHeroZone();
+    } else { err.classList.add('visible'); document.getElementById('admin-input').value = ''; }
   }
 
-  // ── EDIT OVERLAY ──
   function openEdit(title, fields, onSave) {
     const box = document.getElementById('edit-box');
     box.innerHTML = `
       <h3>${title}</h3>
-      ${fields.map(f => `
-        <label>${f.label}</label>
-        ${f.multiline ? `<textarea id="ef-${f.key}" rows="4">${f.value || ''}</textarea>` : `<input type="text" id="ef-${f.key}" value="${(f.value || '').replace(/"/g, '&quot;')}">`}
-      `).join('')}
+      ${fields.map(f => `<label>${f.label}</label>${f.multiline ? `<textarea id="ef-${f.key}" rows="4">${f.value || ''}</textarea>` : `<input type="text" id="ef-${f.key}" value="${(f.value || '').replace(/"/g, '&quot;')}">`}`).join('')}
       <div class="edit-box-btns">
         <button class="edit-cancel" onclick="closeEdit()">Annuleren</button>
         <button class="edit-save" onclick="saveEdit()">Opslaan</button>
-      </div>
-    `;
+      </div>`;
     window._editSaveCallback = onSave;
     document.getElementById('edit-overlay').classList.add('visible');
     box.querySelector('input, textarea')?.focus();
@@ -758,15 +525,11 @@
   function saveEdit() { if (window._editSaveCallback) window._editSaveCallback(); }
   function getEditVal(key) { return document.getElementById(`ef-${key}`)?.value?.trim() || ''; }
 
-  // ── HERO ──
   function updateHeroZone() {
     const zone = document.getElementById('hero-zone');
     adminUnlocked ? zone.classList.add('admin') : zone.classList.remove('admin');
   }
-  function handleHeroZoneClick() {
-    if (!adminUnlocked) return;
-    document.getElementById('hero-file').click();
-  }
+  function handleHeroZoneClick() { if (!adminUnlocked) return; document.getElementById('hero-file').click(); }
   function updateHeroMedia() {
     const img = document.getElementById('hero-img');
     const vid = document.getElementById('hero-video');
@@ -780,12 +543,10 @@
     catch (e) { alert('Upload mislukt.'); }
   }
 
-  // ── CLOUDINARY ──
   async function uploadToCloudinary(file) {
     const isVideo = file.type.startsWith('video/');
     const formData = new FormData();
-    formData.append('file', file);
-    formData.append('upload_preset', CLOUDINARY_PRESET);
+    formData.append('file', file); formData.append('upload_preset', CLOUDINARY_PRESET);
     const resourceType = isVideo ? 'video' : 'image';
     const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`, { method: 'POST', body: formData });
     const data = await res.json();
@@ -793,14 +554,9 @@
     return { url: data.secure_url, type: resourceType };
   }
 
-  // ── JSONBIN ──
   async function saveToJsonbin() {
     const data = { heroMedia, siteConfig, djs };
-    await fetch(`${JSONBIN_URL}/${BIN_ID}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY },
-      body: JSON.stringify(data)
-    });
+    await fetch(`${JSONBIN_URL}/${BIN_ID}`, { method: 'PUT', headers: { 'Content-Type': 'application/json', 'X-Master-Key': JSONBIN_KEY }, body: JSON.stringify(data) });
   }
 
   async function loadFromJsonbin() {
@@ -812,21 +568,13 @@
       else if (data.hero) heroMedia = { url: data.hero, type: 'image' };
       if (data.siteConfig) siteConfig = { ...siteConfig, ...data.siteConfig };
       if (data.djs && data.djs.length > 0) {
-        djs = data.djs.map(d => ({
-          ...d,
-          photos: d.photos || [null, null, null],
-          gallery: d.gallery || [null, null, null, null, null, null],
-          ervaring: d.ervaring || [],
-          soundcloudUrl: d.soundcloudUrl || ''
-        }));
+        djs = data.djs.map(d => ({ ...d, photos: d.photos || [null, null, null], gallery: d.gallery || [null, null, null, null, null, null], ervaring: d.ervaring || [], soundcloudUrl: d.soundcloudUrl || '' }));
       }
     } catch (e) {}
   }
 
-  // ── DJ LIST ──
   function renderDJList() {
-    const list = document.getElementById('dj-list');
-    list.innerHTML = djs.map(dj => `
+    document.getElementById('dj-list').innerHTML = djs.map(dj => `
       <div class="dj-row${activeDJId === dj.id ? ' active' : ''}" onclick="selectDJ('${dj.id}')">
         <div class="dj-row-left">
           <div class="dj-row-num">${dj.number}</div>
@@ -834,50 +582,40 @@
           <div class="dj-row-genre">${dj.genre.split(' · ')[0]}</div>
         </div>
         <span class="dj-row-arrow">›</span>
-      </div>
-    `).join('');
-
-    const menu = document.getElementById('djs-menu');
-    menu.innerHTML = djs.map(dj => `
-      <a class="nav-dropdown-item" href="#" onclick="selectDJ('${dj.id}'); toggleDropdown('djs-dropdown'); document.getElementById('section-djs').scrollIntoView({behavior:'smooth'}); return false;">${dj.name}</a>
-    `).join('');
+      </div>`).join('');
+    document.getElementById('djs-menu').innerHTML = djs.map(dj => `
+      <a class="nav-dropdown-item" href="#" onclick="selectDJ('${dj.id}'); toggleDropdown('djs-dropdown'); document.getElementById('section-djs').scrollIntoView({behavior:'smooth'}); return false;">${dj.name}</a>`).join('');
   }
 
   function selectDJ(id) {
-    activeDJId = id;
-    renderDJList();
-    renderDJDetail(id);
-    if (window.innerWidth <= 900) {
-      document.getElementById('dj-detail-area').scrollIntoView({ behavior: 'smooth' });
-    }
+    activeDJId = id; renderDJList(); renderDJDetail(id);
+    if (window.innerWidth <= 900) document.getElementById('dj-detail-area').scrollIntoView({ behavior: 'smooth' });
   }
 
-  // ── DJ DETAIL ──
+  function buildSoundcloudUrl(url) {
+    if (!url) return '';
+    // Haal de URL op en bouw de embed URL op
+    return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23e8ff00&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
+  }
+
   function renderDJDetail(id) {
     const area = document.getElementById('dj-detail-area');
-    if (!id) {
-      area.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:300px;color:var(--muted);font-size:12px;letter-spacing:3px;text-transform:uppercase;">Selecteer een DJ</div>`;
-      return;
-    }
+    if (!id) { area.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:300px;color:var(--muted);font-size:12px;letter-spacing:3px;text-transform:uppercase;">Selecteer een DJ</div>`; return; }
     const dj = djs.find(d => d.id === id);
     if (!dj) return;
     const ac = adminUnlocked ? ' admin' : '';
     const iPhoto = `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg>`;
     const iPlay = `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="rgba(0,0,0,0.5)"/><polygon points="10,8 18,12 10,16" fill="white"/></svg>`;
-
-    // Gallery grid columns based on filled count
     const filledGallery = dj.gallery.filter(Boolean);
     const galleryCount = dj.gallery.length;
-    let galCols = 3;
-    if (galleryCount <= 2) galCols = galleryCount;
-    else if (galleryCount <= 4) galCols = 2;
-    else galCols = 3;
+    const galCols = galleryCount <= 2 ? galleryCount : galleryCount <= 4 ? 2 : 3;
+
+    // SoundCloud iframe hoogte — 166px voor track met artwork, 80px voor mini
+    const scHeight = dj.soundcloudUrl ? 166 : 80;
 
     area.innerHTML = `
       <div class="dj-detail active">
         <div class="detail-grid">
-
-          <!-- COL 1: FOTOS -->
           <div class="detail-photo-col">
             <div class="detail-photo-main${ac}" id="slot-${dj.id}-0" onclick="triggerUpload('${dj.id}', 0)">
               ${dj.photos[0] ? `<img src="${dj.photos[0]}" alt="${dj.name}">` : `<div class="photo-placeholder-icon">${iPhoto}<span>Hoofdfoto</span></div>`}
@@ -890,12 +628,10 @@
                   ${dj.photos[i] ? `<img src="${dj.photos[i]}" alt="Foto ${i+1}">` : `<div class="photo-placeholder-icon">${iPhoto}<span>Foto ${i+1}</span></div>`}
                   <div class="photo-upload-hover"></div>
                   <input type="file" accept="image/*" id="file-${dj.id}-${i}" onchange="handlePhoto('${dj.id}', ${i}, event)">
-                </div>
-              `).join('')}
+                </div>`).join('')}
             </div>
           </div>
 
-          <!-- COL 2: CONTACT -->
           <div class="detail-contact-col">
             <div class="editable${ac}" style="position:relative;">
               <p class="contact-section-title">Contact</p>
@@ -913,17 +649,15 @@
             </div>
           </div>
 
-          <!-- COL 3: SOUNDCLOUD + INFO + BOOKING -->
           <div class="detail-info-col">
             <div class="sc-player">
               <p class="sc-player-label">SoundCloud</p>
               ${dj.soundcloudUrl
-                ? `<iframe scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=${encodeURIComponent(dj.soundcloudUrl)}&color=%23e8ff00&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false" height="80"></iframe>`
-                : `<div class="sc-player-placeholder">${adminUnlocked ? `<button style="background:none;border:1px solid #333;color:var(--muted);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;" onclick="editSoundcloud('${dj.id}')">+ SoundCloud URL instellen</button>` : 'Geen track ingesteld'}</div>`
+                ? `<iframe scrolling="no" frameborder="no" allow="autoplay; encrypted-media" src="${buildSoundcloudUrl(dj.soundcloudUrl)}" height="${scHeight}" style="width:100%;display:block;border:none;"></iframe>`
+                : `<div class="sc-player-placeholder">${adminUnlocked ? `<button style="background:none;border:1px solid #333;color:var(--muted);font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;cursor:pointer;" onclick="editSoundcloud('${dj.id}')">+ SoundCloud URL instellen</button>` : 'Geen track ingesteld'}</div>`
               }
-              ${dj.soundcloudUrl && adminUnlocked ? `<button style="margin-top:8px;background:none;border:1px solid #333;color:var(--muted);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;display:block;" onclick="editSoundcloud('${dj.id}')">✎ URL wijzigen</button>` : ''}
+              ${dj.soundcloudUrl && adminUnlocked ? `<button style="margin-top:8px;background:none;border:1px solid #333;color:var(--muted);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;display:block;cursor:pointer;" onclick="editSoundcloud('${dj.id}')">✎ URL wijzigen</button>` : ''}
             </div>
-
             <div class="editable${ac}" style="position:relative;">
               <h2 class="dj-name-big">${dj.name}</h2>
               <p class="dj-genre-detail">${dj.genre}</p>
@@ -931,26 +665,17 @@
               <div class="dj-tags-detail">${dj.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>
               <button class="edit-btn" onclick="editDJDetail('${dj.id}')">✎ Bewerken</button>
             </div>
-
             <div class="editable${ac}" style="position:relative;margin-top:16px;">
               <p style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;">Booking</p>
               <p style="font-size:12px;color:#555;margin-bottom:14px;">${dj.bookingInfo}</p>
               <a class="booking-btn" href="mailto:${dj.email}">Booking →</a>
               <button class="edit-btn" onclick="editBooking('${dj.id}')">✎ Bewerken</button>
             </div>
-
             ${ervaringHTML(dj.id)}
           </div>
         </div>
-
-        ${adminUnlocked ? `
-          <div style="margin-bottom:16px;display:flex;gap:8px;">
-            <button class="delete-dj-btn" style="display:block;" onclick="deleteDJ('${dj.id}')">× DJ verwijderen</button>
-          </div>
-        ` : ''}
+        ${adminUnlocked ? `<div style="margin-bottom:16px;"><button class="delete-dj-btn" style="display:block;" onclick="deleteDJ('${dj.id}')">× DJ verwijderen</button></div>` : ''}
       </div>
-
-      <!-- GALERIJ -->
       <div class="gallery-section">
         <div class="gallery-header">
           <h3 class="gallery-title">In the moment</h3>
@@ -960,65 +685,45 @@
           ${dj.gallery.map((item, i) => {
             const isVideo = item && item.type === 'video';
             const isImage = item && item.type === 'image';
-            return `
-              <div class="gallery-slot${ac}" id="gslot-${dj.id}-${i}" onclick="triggerGalleryUpload('${dj.id}', ${i})">
-                ${isImage ? `<img src="${item.url}" alt="Foto ${i+1}">` : ''}
-                ${isVideo ? `<video src="${item.url}" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0;"></video><div class="video-play-icon">${iPlay}</div><span class="video-badge">Video</span>` : ''}
-                ${!item ? `<div class="photo-placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg><span>Foto / Video</span></div>` : ''}
-                <div class="upload-overlay"></div>
-                <input type="file" accept="image/*,video/*" id="gfile-${dj.id}-${i}" onchange="handleGalleryMedia('${dj.id}', ${i}, event)">
-              </div>`;
+            return `<div class="gallery-slot${ac}" id="gslot-${dj.id}-${i}" onclick="triggerGalleryUpload('${dj.id}', ${i})">
+              ${isImage ? `<img src="${item.url}" alt="Foto ${i+1}">` : ''}
+              ${isVideo ? `<video src="${item.url}" muted loop playsinline onmouseenter="this.play()" onmouseleave="this.pause();this.currentTime=0;"></video><div class="video-play-icon">${iPlay}</div><span class="video-badge">Video</span>` : ''}
+              ${!item ? `<div class="photo-placeholder-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M9 5V3h6v2"/></svg><span>Foto / Video</span></div>` : ''}
+              <div class="upload-overlay"></div>
+              <input type="file" accept="image/*,video/*" id="gfile-${dj.id}-${i}" onchange="handleGalleryMedia('${dj.id}', ${i}, event)">
+            </div>`;
           }).join('')}
         </div>
-      </div>
-    `;
+      </div>`;
   }
 
-  // ── UPLOAD TRIGGERS ──
-  function triggerUpload(djId, index) {
-    if (!adminUnlocked) return;
-    document.getElementById(`file-${djId}-${index}`).click();
-  }
-  function triggerGalleryUpload(djId, index) {
-    if (!adminUnlocked) return;
-    document.getElementById(`gfile-${djId}-${index}`).click();
-  }
+  function triggerUpload(djId, index) { if (!adminUnlocked) return; document.getElementById(`file-${djId}-${index}`).click(); }
+  function triggerGalleryUpload(djId, index) { if (!adminUnlocked) return; document.getElementById(`gfile-${djId}-${index}`).click(); }
 
   async function handlePhoto(djId, index, event) {
     const file = event.target.files[0]; if (!file) return;
     const slot = document.getElementById(`slot-${djId}-${index}`);
     slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
-    try {
-      const result = await uploadToCloudinary(file);
-      djs.find(d => d.id === djId).photos[index] = result.url;
-      await saveToJsonbin(); renderDJDetail(djId); renderDJList();
-    } catch (e) { alert('Upload mislukt.'); slot.querySelector('.uploading-overlay')?.remove(); }
+    try { const result = await uploadToCloudinary(file); djs.find(d => d.id === djId).photos[index] = result.url; await saveToJsonbin(); renderDJDetail(djId); renderDJList(); }
+    catch (e) { alert('Upload mislukt.'); slot.querySelector('.uploading-overlay')?.remove(); }
   }
 
   async function handleGalleryMedia(djId, index, event) {
     const file = event.target.files[0]; if (!file) return;
     const slot = document.getElementById(`gslot-${djId}-${index}`);
     slot.insertAdjacentHTML('beforeend', `<div class="uploading-overlay">Uploaden...</div>`);
-    try {
-      const result = await uploadToCloudinary(file);
-      djs.find(d => d.id === djId).gallery[index] = { url: result.url, type: result.type };
-      await saveToJsonbin(); renderDJDetail(djId);
-    } catch (e) { alert('Upload mislukt.'); slot.querySelector('.uploading-overlay')?.remove(); }
+    try { const result = await uploadToCloudinary(file); djs.find(d => d.id === djId).gallery[index] = { url: result.url, type: result.type }; await saveToJsonbin(); renderDJDetail(djId); }
+    catch (e) { alert('Upload mislukt.'); slot.querySelector('.uploading-overlay')?.remove(); }
   }
 
-  // ── EDIT DJ ──
   function editDJDetail(djId) {
     const dj = djs.find(d => d.id === djId);
     openEdit('Naam & bio bewerken', [
-      { key: 'name', label: 'Naam', value: dj.name },
-      { key: 'genre', label: 'Genre', value: dj.genre },
-      { key: 'bio', label: 'Bio', value: dj.bio, multiline: true },
-      { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
+      { key: 'name', label: 'Naam', value: dj.name }, { key: 'genre', label: 'Genre', value: dj.genre },
+      { key: 'bio', label: 'Bio', value: dj.bio, multiline: true }, { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
     ], async () => {
-      dj.name = getEditVal('name') || dj.name;
-      dj.genre = getEditVal('genre') || dj.genre;
-      dj.bio = getEditVal('bio') || dj.bio;
-      dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
+      dj.name = getEditVal('name') || dj.name; dj.genre = getEditVal('genre') || dj.genre;
+      dj.bio = getEditVal('bio') || dj.bio; dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
       closeEdit(); await saveToJsonbin(); renderDJList(); renderDJDetail(djId);
     });
   }
@@ -1026,11 +731,9 @@
   function editBooking(djId) {
     const dj = djs.find(d => d.id === djId);
     openEdit('Booking bewerken', [
-      { key: 'bookingInfo', label: 'Booking info', value: dj.bookingInfo },
-      { key: 'email', label: 'Email', value: dj.email },
+      { key: 'bookingInfo', label: 'Booking info', value: dj.bookingInfo }, { key: 'email', label: 'Email', value: dj.email },
     ], async () => {
-      dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo;
-      dj.email = getEditVal('email') || dj.email;
+      dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo; dj.email = getEditVal('email') || dj.email;
       closeEdit(); await saveToJsonbin(); renderDJDetail(djId);
     });
   }
@@ -1038,15 +741,11 @@
   function editContact(djId) {
     const dj = djs.find(d => d.id === djId);
     openEdit('Contact bewerken', [
-      { key: 'email', label: 'Email', value: dj.email },
-      { key: 'phone', label: 'Telefoon', value: dj.phone },
-      { key: 'instagram', label: 'Instagram', value: dj.instagram },
-      { key: 'soundcloud', label: 'SoundCloud gebruikersnaam', value: dj.soundcloud },
+      { key: 'email', label: 'Email', value: dj.email }, { key: 'phone', label: 'Telefoon', value: dj.phone },
+      { key: 'instagram', label: 'Instagram', value: dj.instagram }, { key: 'soundcloud', label: 'SoundCloud gebruikersnaam', value: dj.soundcloud },
     ], async () => {
-      dj.email = getEditVal('email') || dj.email;
-      dj.phone = getEditVal('phone') || dj.phone;
-      dj.instagram = getEditVal('instagram') || dj.instagram;
-      dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
+      dj.email = getEditVal('email') || dj.email; dj.phone = getEditVal('phone') || dj.phone;
+      dj.instagram = getEditVal('instagram') || dj.instagram; dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
       closeEdit(); await saveToJsonbin(); renderDJDetail(djId);
     });
   }
@@ -1054,58 +753,22 @@
   function editSoundcloud(djId) {
     const dj = djs.find(d => d.id === djId);
     openEdit('SoundCloud instellen', [
-      { key: 'soundcloudUrl', label: 'SoundCloud track/playlist URL', value: dj.soundcloudUrl },
+      { key: 'soundcloudUrl', label: 'Plak hier de volledige SoundCloud track URL', value: dj.soundcloudUrl },
     ], async () => {
       dj.soundcloudUrl = getEditVal('soundcloudUrl');
       closeEdit(); await saveToJsonbin(); renderDJDetail(djId);
     });
   }
 
-  function editDJ(djId) {
-    const dj = djs.find(d => d.id === djId);
-    openEdit('DJ bewerken', [
-      { key: 'name', label: 'Naam', value: dj.name },
-      { key: 'genre', label: 'Genre', value: dj.genre },
-      { key: 'bio', label: 'Bio', value: dj.bio, multiline: true },
-      { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
-      { key: 'email', label: 'Email', value: dj.email },
-      { key: 'phone', label: 'Telefoon', value: dj.phone },
-      { key: 'instagram', label: 'Instagram', value: dj.instagram },
-      { key: 'soundcloud', label: 'SoundCloud', value: dj.soundcloud },
-      { key: 'bookingInfo', label: 'Booking info', value: dj.bookingInfo },
-    ], async () => {
-      dj.name = getEditVal('name') || dj.name;
-      dj.genre = getEditVal('genre') || dj.genre;
-      dj.bio = getEditVal('bio') || dj.bio;
-      dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
-      dj.email = getEditVal('email') || dj.email;
-      dj.phone = getEditVal('phone') || dj.phone;
-      dj.instagram = getEditVal('instagram') || dj.instagram;
-      dj.soundcloud = getEditVal('soundcloud') || dj.soundcloud;
-      dj.bookingInfo = getEditVal('bookingInfo') || dj.bookingInfo;
-      closeEdit(); await saveToJsonbin(); renderDJList(); renderDJDetail(djId);
-    });
-  }
-
   function addDJ() {
     openEdit('Nieuwe DJ toevoegen', [
-      { key: 'name', label: 'Naam' }, { key: 'genre', label: 'Genre' },
-      { key: 'bio', label: 'Bio', multiline: true }, { key: 'tags', label: 'Tags (komma-gescheiden)' },
-      { key: 'email', label: 'Email' }, { key: 'phone', label: 'Telefoon' },
-      { key: 'instagram', label: 'Instagram' }, { key: 'soundcloud', label: 'SoundCloud' },
-      { key: 'bookingInfo', label: 'Booking info' },
+      { key: 'name', label: 'Naam' }, { key: 'genre', label: 'Genre' }, { key: 'bio', label: 'Bio', multiline: true },
+      { key: 'tags', label: 'Tags (komma-gescheiden)' }, { key: 'email', label: 'Email' }, { key: 'phone', label: 'Telefoon' },
+      { key: 'instagram', label: 'Instagram' }, { key: 'soundcloud', label: 'SoundCloud' }, { key: 'bookingInfo', label: 'Booking info' },
     ], async () => {
       const name = getEditVal('name'); if (!name) return;
       const id = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
-      djs.push({
-        id, number: String(djs.length + 1).padStart(2, '0'), name,
-        genre: getEditVal('genre'), bio: getEditVal('bio'),
-        tags: getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean),
-        email: getEditVal('email'), phone: getEditVal('phone'),
-        instagram: getEditVal('instagram'), soundcloud: getEditVal('soundcloud'),
-        soundcloudUrl: '', bookingInfo: getEditVal('bookingInfo'),
-        photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: []
-      });
+      djs.push({ id, number: String(djs.length + 1).padStart(2, '0'), name, genre: getEditVal('genre'), bio: getEditVal('bio'), tags: getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean), email: getEditVal('email'), phone: getEditVal('phone'), instagram: getEditVal('instagram'), soundcloud: getEditVal('soundcloud'), soundcloudUrl: '', bookingInfo: getEditVal('bookingInfo'), photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [] });
       closeEdit(); await saveToJsonbin(); renderDJList();
     });
   }
@@ -1118,7 +781,6 @@
     await saveToJsonbin(); renderDJList(); renderDJDetail(activeDJId);
   }
 
-  // ── ERVARING ──
   function ervaringHTML(djId) {
     const dj = djs.find(d => d.id === djId);
     const items = dj.ervaring || [];
@@ -1127,9 +789,7 @@
       <div class="ervaring-section" id="ervaring-${djId}" style="margin-top:16px;">
         <div class="ervaring-toggle" onclick="toggleErvaring('${djId}')">
           <h4>Ervaring${items.length > 0 ? ` · ${items.length}` : ''}</h4>
-          <div class="ervaring-toggle-btn">
-            <svg viewBox="0 0 14 14" fill="none" stroke-width="2"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
-          </div>
+          <div class="ervaring-toggle-btn"><svg viewBox="0 0 14 14" fill="none" stroke-width="2"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg></div>
         </div>
         <div class="ervaring-panel">
           <div class="ervaring-inner">
@@ -1140,8 +800,7 @@
                   <div class="ervaring-jaar">${item.jaar}</div>
                   <div class="ervaring-tekst"><strong>${item.naam}</strong>${item.omschrijving}</div>
                   ${adminUnlocked ? `<button class="ervaring-delete" onclick="deleteErvaring('${djId}', ${i})">×</button>` : ''}
-                </div>`).join('')
-            }
+                </div>`).join('')}
             <div class="ervaring-add${ac}">
               <div class="ervaring-add-row">
                 <input type="text" id="ejaar-${djId}" placeholder="Jaar" style="max-width:70px;">
@@ -1187,22 +846,16 @@
     setTimeout(() => document.getElementById(`ervaring-${djId}`)?.classList.add('open'), 50);
   }
 
-  // ── INIT ──
   async function init() {
     await loadFromJsonbin();
-    renderLoader();
-    renderHeader();
-    renderFooter();
-    renderInfo();
+    renderLoader(); renderHeader(); renderFooter(); renderInfo();
     updateHeroMedia();
     activeDJId = djs[0]?.id || null;
-    renderDJList();
-    renderDJDetail(activeDJId);
+    renderDJList(); renderDJDetail(activeDJId);
     document.getElementById('loader').classList.add('hidden');
   }
 
   init();
 </script>
-
 </body>
 </html>
