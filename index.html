@@ -63,8 +63,7 @@
     .nav-dropdown-item:last-child { border-bottom: none; }
     .nav-dropdown-item:hover { color: var(--accent); background: #1a1a1a; }
 
-   .hero {
-  position: relative; height: 420px; min-height: 320px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+    .hero { position: relative; height: 420px; min-height: 320px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
     .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.35; }
     .hero-bg-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; opacity: 0.35; will-change: transform; transform: translateZ(0); }
     .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.8) 100%); }
@@ -83,7 +82,6 @@
 
     .dj-sidebar { border-right: 1px solid var(--border); position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
     .dj-sidebar::-webkit-scrollbar { width: 3px; }
-    .dj-sidebar::-webkit-scrollbar-track { background: transparent; }
     .dj-sidebar::-webkit-scrollbar-thumb { background: var(--border); }
 
     .dj-row { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; border-bottom: 1px solid var(--border); transition: background 0.2s; user-select: none; cursor: pointer; }
@@ -104,6 +102,7 @@
     .dj-detail.active { display: block; }
     .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 40px; }
 
+    .detail-photo-col {}
     .detail-photo-main { width: 100%; aspect-ratio: 4/3; background: #141414; border: 1px dashed #2a2a2a; position: relative; overflow: hidden; margin-bottom: 2px; }
     .detail-photo-main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .detail-photo-main.admin { cursor: pointer; }
@@ -118,6 +117,57 @@
     .admin .photo-upload-hover:hover { background: rgba(0,0,0,0.3); }
     .admin .photo-upload-hover:hover::after { content: 'Wijzigen'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
     input[type=file] { display: none; }
+
+    /* COMING UP */
+    .coming-up-box {
+      margin-top: 8px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      overflow: hidden;
+    }
+    .coming-up-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .coming-up-title {
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent);
+    }
+    .coming-up-list { list-style: none; }
+    .coming-up-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 16px; border-bottom: 1px solid #1a1a1a;
+    }
+    .coming-up-item:last-child { border-bottom: none; }
+    .coming-up-date {
+      font-family: 'Bebas Neue', sans-serif; font-size: 15px;
+      color: var(--accent); min-width: 80px; flex-shrink: 0;
+    }
+    .coming-up-info { flex: 1; }
+    .coming-up-naam { font-size: 13px; color: var(--text); font-weight: 500; }
+    .coming-up-locatie { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .coming-up-delete { background: none; border: none; color: #444; font-size: 14px; padding: 0 4px; line-height: 1; transition: color 0.2s; flex-shrink: 0; cursor: pointer; display: none; }
+    .coming-up-delete:hover { color: var(--accent2); }
+    .coming-up-delete.admin { display: block; }
+    .coming-up-empty { padding: 12px 16px; font-size: 11px; color: #444; }
+    .coming-up-add {
+      display: none; padding: 12px 16px; border-top: 1px solid var(--border);
+      flex-direction: column; gap: 8px;
+    }
+    .coming-up-add.admin { display: flex; }
+    .coming-up-add-row { display: flex; gap: 8px; }
+    .coming-up-add input {
+      background: #0a0a0a; border: 1px solid var(--border); color: var(--text);
+      font-size: 12px; padding: 6px 10px; outline: none; width: 100%;
+    }
+    .coming-up-add input::placeholder { color: #444; }
+    .coming-up-add input:focus { border-color: var(--accent); }
+    .coming-up-add-btn {
+      background: var(--accent); color: #000; border: none;
+      padding: 6px 14px; font-size: 10px; letter-spacing: 1px;
+      text-transform: uppercase; white-space: nowrap; font-weight: 500; cursor: pointer;
+    }
+    .coming-up-add-btn:hover { background: #fff; }
 
     .contact-section-title { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
     .contact-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
@@ -354,10 +404,96 @@
   };
 
   let djs = [
-    { id: 'ewowo', number: '01', name: 'EWOWO', genre: 'Drum & Bass · Trance · Commercieel', bio: 'Veelzijdig DJ met een scherp gevoel voor energie. Van zware drum & bass tot euforische trance en catchy commerciële bangers.', tags: ['Club', 'Festival', 'Allrounder'], email: 'booking@ewowo.nl', phone: '+31 6 12 34 56 78', instagram: '@ewowo', soundcloud: 'ewowo', soundcloudUrl: '', bookingInfo: 'Fee op aanvraag · Min. 2 uur', photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null], gallery: [null, null, null, null, null, null], ervaring: [] },
-    { id: 'jibbe', number: '02', name: 'JIBBE', genre: 'Trance · UKG', bio: 'Meester in de mix van euforische trance en strakke UK garage.', tags: ['Club', 'Trance', 'UKG'], email: 'booking@jibbe.nl', phone: '+31 6 98 76 54 32', instagram: '@jibbe.dj', soundcloud: 'jibbe', soundcloudUrl: '', bookingInfo: 'Beschikbaar NL & BE · 2–4 uur', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [] },
-    { id: 'ewibbe', number: '03', name: 'EWIBBE', genre: 'B2B · Drum & Bass · Trance · UKG · Commercieel', bio: 'Ewowo & Jibbe samen op de decks. Een onvergetelijke b2b set.', tags: ['B2B', 'Festival', 'Club'], email: 'booking@ewibbe.nl', phone: '+31 6 55 44 33 22', instagram: '@ewibbe', soundcloud: 'ewibbe', soundcloudUrl: '', bookingInfo: 'Ewowo × Jibbe · B2B', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [] }
+    { id: 'ewowo', number: '01', name: 'EWOWO', genre: 'Drum & Bass · Trance · Commercieel', bio: 'Veelzijdig DJ met een scherp gevoel voor energie. Van zware drum & bass tot euforische trance en catchy commerciële bangers.', tags: ['Club', 'Festival', 'Allrounder'], email: 'booking@ewowo.nl', phone: '+31 6 12 34 56 78', instagram: '@ewowo', soundcloud: 'ewowo', soundcloudUrl: '', bookingInfo: 'Fee op aanvraag · Min. 2 uur', photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] },
+    { id: 'jibbe', number: '02', name: 'JIBBE', genre: 'Trance · UKG', bio: 'Meester in de mix van euforische trance en strakke UK garage.', tags: ['Club', 'Trance', 'UKG'], email: 'booking@jibbe.nl', phone: '+31 6 98 76 54 32', instagram: '@jibbe.dj', soundcloud: 'jibbe', soundcloudUrl: '', bookingInfo: 'Beschikbaar NL & BE · 2–4 uur', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] },
+    { id: 'ewibbe', number: '03', name: 'EWIBBE', genre: 'B2B · Drum & Bass · Trance · UKG · Commercieel', bio: 'Ewowo & Jibbe samen op de decks. Een onvergetelijke b2b set.', tags: ['B2B', 'Festival', 'Club'], email: 'booking@ewibbe.nl', phone: '+31 6 55 44 33 22', instagram: '@ewibbe', soundcloud: 'ewibbe', soundcloudUrl: '', bookingInfo: 'Ewowo × Jibbe · B2B', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] }
   ];
+
+  // Verplaats verlopen events automatisch naar ervaring
+  function processExpiredEvents(dj) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (!dj.comingUp) dj.comingUp = [];
+    if (!dj.ervaring) dj.ervaring = [];
+    const stillComing = [];
+    let changed = false;
+    dj.comingUp.forEach(event => {
+      const eventDate = new Date(event.datum);
+      if (eventDate < today) {
+        // Verplaats naar ervaring
+        dj.ervaring.unshift({
+          jaar: eventDate.getFullYear().toString(),
+          naam: event.naam,
+          omschrijving: event.locatie || ''
+        });
+        changed = true;
+      } else {
+        stillComing.push(event);
+      }
+    });
+    dj.comingUp = stillComing;
+    return changed;
+  }
+
+  function formatDatum(datumStr) {
+    const d = new Date(datumStr);
+    return d.toLocaleDateString('nl-BE', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function comingUpHTML(djId) {
+    const dj = djs.find(d => d.id === djId);
+    const events = (dj.comingUp || []).sort((a, b) => new Date(a.datum) - new Date(b.datum));
+    const ac = adminUnlocked ? ' admin' : '';
+    return `
+      <div class="coming-up-box">
+        <div class="coming-up-header">
+          <span class="coming-up-title">Coming Up${events.length > 0 ? ` · ${events.length}` : ''}</span>
+        </div>
+        <ul class="coming-up-list">
+          ${events.length === 0
+            ? `<li class="coming-up-empty">Geen geplande evenementen.</li>`
+            : events.map((ev, i) => `
+              <li class="coming-up-item">
+                <div class="coming-up-date">${formatDatum(ev.datum)}</div>
+                <div class="coming-up-info">
+                  <div class="coming-up-naam">${ev.naam}</div>
+                  ${ev.locatie ? `<div class="coming-up-locatie">${ev.locatie}</div>` : ''}
+                </div>
+                <button class="coming-up-delete${ac}" onclick="deleteComingUp('${djId}', ${i})">×</button>
+              </li>`).join('')
+          }
+        </ul>
+        <div class="coming-up-add${ac}">
+          <div class="coming-up-add-row">
+            <input type="date" id="cu-datum-${djId}" style="flex:1;">
+            <input type="text" id="cu-naam-${djId}" placeholder="Evenement naam" style="flex:2;">
+          </div>
+          <div class="coming-up-add-row">
+            <input type="text" id="cu-locatie-${djId}" placeholder="Locatie (optioneel)" style="flex:1;">
+            <button class="coming-up-add-btn" onclick="addComingUp('${djId}')">+ Toevoegen</button>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  async function addComingUp(djId) {
+    const datum = document.getElementById(`cu-datum-${djId}`).value;
+    const naam = document.getElementById(`cu-naam-${djId}`).value.trim();
+    const locatie = document.getElementById(`cu-locatie-${djId}`).value.trim();
+    if (!datum || !naam) return;
+    const dj = djs.find(d => d.id === djId);
+    if (!dj.comingUp) dj.comingUp = [];
+    dj.comingUp.push({ datum, naam, locatie });
+    await saveToJsonbin();
+    renderDJDetail(djId);
+  }
+
+  async function deleteComingUp(djId, index) {
+    const dj = djs.find(d => d.id === djId);
+    dj.comingUp.splice(index, 1);
+    await saveToJsonbin();
+    renderDJDetail(djId);
+  }
 
   function toggleDropdown(id) {
     const dd = document.getElementById(id);
@@ -431,7 +567,6 @@
   }
 
   function renderHeader() {
-    // Logo en grote titel zijn altijd hetzelfde
     document.getElementById('nav-logo-el').innerHTML = `${siteConfig.logoMain}<span>${siteConfig.logoAccent}</span>`;
     document.getElementById('hero-content').innerHTML = `
       <p class="hero-label">${siteConfig.headerLabel}</p>
@@ -569,8 +704,19 @@
       else if (data.hero) heroMedia = { url: data.hero, type: 'image' };
       if (data.siteConfig) siteConfig = { ...siteConfig, ...data.siteConfig };
       if (data.djs && data.djs.length > 0) {
-        djs = data.djs.map(d => ({ ...d, photos: d.photos || [null, null, null], gallery: d.gallery || [null, null, null, null, null, null], ervaring: d.ervaring || [], soundcloudUrl: d.soundcloudUrl || '' }));
+        djs = data.djs.map(d => ({
+          ...d,
+          photos: d.photos || [null, null, null],
+          gallery: d.gallery || [null, null, null, null, null, null],
+          ervaring: d.ervaring || [],
+          comingUp: d.comingUp || [],
+          soundcloudUrl: d.soundcloudUrl || ''
+        }));
       }
+      // Verwerk verlopen events voor alle DJ's
+      let changed = false;
+      djs.forEach(dj => { if (processExpiredEvents(dj)) changed = true; });
+      if (changed) await saveToJsonbin();
     } catch (e) {}
   }
 
@@ -595,7 +741,6 @@
 
   function buildSoundcloudUrl(url) {
     if (!url) return '';
-    // Haal de URL op en bouw de embed URL op
     return `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23e8ff00&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false`;
   }
 
@@ -610,13 +755,13 @@
     const filledGallery = dj.gallery.filter(Boolean);
     const galleryCount = dj.gallery.length;
     const galCols = galleryCount <= 2 ? galleryCount : galleryCount <= 4 ? 2 : 3;
-
-    // SoundCloud iframe hoogte — 166px voor track met artwork, 80px voor mini
     const scHeight = dj.soundcloudUrl ? 166 : 80;
 
     area.innerHTML = `
       <div class="dj-detail active">
         <div class="detail-grid">
+
+          <!-- COL 1: FOTOS + COMING UP -->
           <div class="detail-photo-col">
             <div class="detail-photo-main${ac}" id="slot-${dj.id}-0" onclick="triggerUpload('${dj.id}', 0)">
               ${dj.photos[0] ? `<img src="${dj.photos[0]}" alt="${dj.name}">` : `<div class="photo-placeholder-icon">${iPhoto}<span>Hoofdfoto</span></div>`}
@@ -631,8 +776,10 @@
                   <input type="file" accept="image/*" id="file-${dj.id}-${i}" onchange="handlePhoto('${dj.id}', ${i}, event)">
                 </div>`).join('')}
             </div>
+            ${comingUpHTML(dj.id)}
           </div>
 
+          <!-- COL 2: CONTACT -->
           <div class="detail-contact-col">
             <div class="editable${ac}" style="position:relative;">
               <p class="contact-section-title">Contact</p>
@@ -650,6 +797,7 @@
             </div>
           </div>
 
+          <!-- COL 3: SOUNDCLOUD + INFO + BOOKING -->
           <div class="detail-info-col">
             <div class="sc-player">
               <p class="sc-player-label">SoundCloud</p>
@@ -677,6 +825,7 @@
         </div>
         ${adminUnlocked ? `<div style="margin-bottom:16px;"><button class="delete-dj-btn" style="display:block;" onclick="deleteDJ('${dj.id}')">× DJ verwijderen</button></div>` : ''}
       </div>
+
       <div class="gallery-section">
         <div class="gallery-header">
           <h3 class="gallery-title">In the moment</h3>
@@ -769,7 +918,7 @@
     ], async () => {
       const name = getEditVal('name'); if (!name) return;
       const id = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
-      djs.push({ id, number: String(djs.length + 1).padStart(2, '0'), name, genre: getEditVal('genre'), bio: getEditVal('bio'), tags: getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean), email: getEditVal('email'), phone: getEditVal('phone'), instagram: getEditVal('instagram'), soundcloud: getEditVal('soundcloud'), soundcloudUrl: '', bookingInfo: getEditVal('bookingInfo'), photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [] });
+      djs.push({ id, number: String(djs.length + 1).padStart(2, '0'), name, genre: getEditVal('genre'), bio: getEditVal('bio'), tags: getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean), email: getEditVal('email'), phone: getEditVal('phone'), instagram: getEditVal('instagram'), soundcloud: getEditVal('soundcloud'), soundcloudUrl: '', bookingInfo: getEditVal('bookingInfo'), photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] });
       closeEdit(); await saveToJsonbin(); renderDJList();
     });
   }
