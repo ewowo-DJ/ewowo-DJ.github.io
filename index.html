@@ -79,11 +79,9 @@
     .header-edit-btn:hover { background: rgba(232,255,0,0.15); }
 
     #section-djs { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 60px); }
-
     .dj-sidebar { border-right: 1px solid var(--border); position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
     .dj-sidebar::-webkit-scrollbar { width: 3px; }
     .dj-sidebar::-webkit-scrollbar-thumb { background: var(--border); }
-
     .dj-row { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; border-bottom: 1px solid var(--border); transition: background 0.2s; user-select: none; cursor: pointer; }
     .dj-row:hover { background: #1a1a1a; }
     .dj-row.active { background: #1a1a1a; border-left: 2px solid var(--accent); }
@@ -93,7 +91,6 @@
     .dj-row-genre { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
     .dj-row-arrow { color: var(--muted); font-size: 18px; transition: transform 0.2s, color 0.2s; }
     .dj-row.active .dj-row-arrow { transform: translateX(4px); color: var(--accent); }
-
     .dj-sidebar-footer { padding: 20px 28px; border-top: 1px solid var(--border); }
     .add-dj-btn { display: none; width: 100%; background: none; border: 1px dashed #2a2a2a; color: #444; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; padding: 14px; transition: border-color 0.2s, color 0.2s; cursor: pointer; }
     .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -102,7 +99,6 @@
     .dj-detail.active { display: block; }
     .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; margin-bottom: 40px; }
 
-    .detail-photo-col {}
     .detail-photo-main { width: 100%; aspect-ratio: 4/3; background: #141414; border: 1px dashed #2a2a2a; position: relative; overflow: hidden; margin-bottom: 2px; }
     .detail-photo-main img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .detail-photo-main.admin { cursor: pointer; }
@@ -118,31 +114,13 @@
     .admin .photo-upload-hover:hover::after { content: 'Wijzigen'; position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
     input[type=file] { display: none; }
 
-    /* COMING UP */
-    .coming-up-box {
-      margin-top: 8px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      overflow: hidden;
-    }
-    .coming-up-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .coming-up-title {
-      font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent);
-    }
+    .coming-up-box { margin-top: 8px; border: 1px solid var(--border); background: var(--card); overflow: hidden; }
+    .coming-up-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+    .coming-up-title { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
     .coming-up-list { list-style: none; }
-    .coming-up-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 10px 16px; border-bottom: 1px solid #1a1a1a;
-    }
+    .coming-up-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #1a1a1a; }
     .coming-up-item:last-child { border-bottom: none; }
-    .coming-up-date {
-      font-family: 'Bebas Neue', sans-serif; font-size: 15px;
-      color: var(--accent); min-width: 80px; flex-shrink: 0;
-    }
+    .coming-up-date { font-family: 'Bebas Neue', sans-serif; font-size: 15px; color: var(--accent); min-width: 80px; flex-shrink: 0; }
     .coming-up-info { flex: 1; }
     .coming-up-naam { font-size: 13px; color: var(--text); font-weight: 500; }
     .coming-up-locatie { font-size: 11px; color: var(--muted); margin-top: 1px; }
@@ -150,23 +128,13 @@
     .coming-up-delete:hover { color: var(--accent2); }
     .coming-up-delete.admin { display: block; }
     .coming-up-empty { padding: 12px 16px; font-size: 11px; color: #444; }
-    .coming-up-add {
-      display: none; padding: 12px 16px; border-top: 1px solid var(--border);
-      flex-direction: column; gap: 8px;
-    }
+    .coming-up-add { display: none; padding: 12px 16px; border-top: 1px solid var(--border); flex-direction: column; gap: 8px; }
     .coming-up-add.admin { display: flex; }
     .coming-up-add-row { display: flex; gap: 8px; }
-    .coming-up-add input {
-      background: #0a0a0a; border: 1px solid var(--border); color: var(--text);
-      font-size: 12px; padding: 6px 10px; outline: none; width: 100%;
-    }
+    .coming-up-add input { background: #0a0a0a; border: 1px solid var(--border); color: var(--text); font-size: 12px; padding: 6px 10px; outline: none; width: 100%; }
     .coming-up-add input::placeholder { color: #444; }
     .coming-up-add input:focus { border-color: var(--accent); }
-    .coming-up-add-btn {
-      background: var(--accent); color: #000; border: none;
-      padding: 6px 14px; font-size: 10px; letter-spacing: 1px;
-      text-transform: uppercase; white-space: nowrap; font-weight: 500; cursor: pointer;
-    }
+    .coming-up-add-btn { background: var(--accent); color: #000; border: none; padding: 6px 14px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; font-weight: 500; cursor: pointer; }
     .coming-up-add-btn:hover { background: #fff; }
 
     .contact-section-title { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
@@ -193,7 +161,6 @@
     .editable { position: relative; }
     .edit-btn { display: none; position: absolute; top: -8px; right: -8px; background: var(--accent); color: #000; border: none; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; z-index: 10; white-space: nowrap; cursor: pointer; }
     .admin .edit-btn { display: block; }
-
     .uploading-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); z-index: 2; }
 
     .gallery-section { margin-top: 0; border-top: 1px solid var(--border); padding: 32px 40px; }
@@ -264,10 +231,8 @@
     #admin-btn.unlocked { border-color: var(--accent); }
     #admin-btn svg { width: 14px; height: 14px; stroke: #444; transition: stroke 0.2s; }
     #admin-btn.unlocked svg { stroke: var(--accent); }
-
     #loader-edit-btn { display: none; position: fixed; bottom: 20px; left: 66px; z-index: 998; height: 36px; background: rgba(10,10,10,0.8); border: 1px solid #2a2a2a; border-radius: 2px; align-items: center; color: var(--accent); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 0 12px; white-space: nowrap; transition: border-color 0.2s; cursor: pointer; }
     #loader-edit-btn:hover { border-color: var(--accent); }
-
     #admin-popup { position: fixed; bottom: 66px; left: 20px; z-index: 998; background: #111; border: 1px solid var(--border); padding: 16px; display: none; flex-direction: column; gap: 10px; width: 220px; }
     #admin-popup.visible { display: flex; }
     #admin-popup p { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
@@ -290,7 +255,6 @@
     .edit-save:hover { background: #fff; }
     .edit-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 10px 24px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
     .edit-cancel:hover { border-color: #444; color: var(--text); }
-
     .delete-dj-btn { display: none; background: none; border: 1px solid #333; color: #555; font-size: 10px; padding: 4px 8px; margin-top: 8px; width: 100%; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s, border-color 0.2s; cursor: pointer; }
     .delete-dj-btn:hover { color: var(--accent2); border-color: var(--accent2); }
 
@@ -409,7 +373,6 @@
     { id: 'ewibbe', number: '03', name: 'EWIBBE', genre: 'B2B · Drum & Bass · Trance · UKG · Commercieel', bio: 'Ewowo & Jibbe samen op de decks. Een onvergetelijke b2b set.', tags: ['B2B', 'Festival', 'Club'], email: 'booking@ewibbe.nl', phone: '+31 6 55 44 33 22', instagram: '@ewibbe', soundcloud: 'ewibbe', soundcloudUrl: '', bookingInfo: 'Ewowo × Jibbe · B2B', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] }
   ];
 
-  // Verplaats verlopen events automatisch naar ervaring
   function processExpiredEvents(dj) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -420,16 +383,9 @@
     dj.comingUp.forEach(event => {
       const eventDate = new Date(event.datum);
       if (eventDate < today) {
-        // Verplaats naar ervaring
-        dj.ervaring.unshift({
-          jaar: eventDate.getFullYear().toString(),
-          naam: event.naam,
-          omschrijving: event.locatie || ''
-        });
+        dj.ervaring.unshift({ jaar: eventDate.getFullYear().toString(), naam: event.naam, omschrijving: event.locatie || '' });
         changed = true;
-      } else {
-        stillComing.push(event);
-      }
+      } else { stillComing.push(event); }
     });
     dj.comingUp = stillComing;
     return changed;
@@ -484,15 +440,13 @@
     const dj = djs.find(d => d.id === djId);
     if (!dj.comingUp) dj.comingUp = [];
     dj.comingUp.push({ datum, naam, locatie });
-    await saveToJsonbin();
-    renderDJDetail(djId);
+    await saveToJsonbin(); renderDJDetail(djId);
   }
 
   async function deleteComingUp(djId, index) {
     const dj = djs.find(d => d.id === djId);
     dj.comingUp.splice(index, 1);
-    await saveToJsonbin();
-    renderDJDetail(djId);
+    await saveToJsonbin(); renderDJDetail(djId);
   }
 
   function toggleDropdown(id) {
@@ -704,16 +658,8 @@
       else if (data.hero) heroMedia = { url: data.hero, type: 'image' };
       if (data.siteConfig) siteConfig = { ...siteConfig, ...data.siteConfig };
       if (data.djs && data.djs.length > 0) {
-        djs = data.djs.map(d => ({
-          ...d,
-          photos: d.photos || [null, null, null],
-          gallery: d.gallery || [null, null, null, null, null, null],
-          ervaring: d.ervaring || [],
-          comingUp: d.comingUp || [],
-          soundcloudUrl: d.soundcloudUrl || ''
-        }));
+        djs = data.djs.map(d => ({ ...d, photos: d.photos || [null, null, null], gallery: d.gallery || [null, null, null, null, null, null], ervaring: d.ervaring || [], comingUp: d.comingUp || [], soundcloudUrl: d.soundcloudUrl || '' }));
       }
-      // Verwerk verlopen events voor alle DJ's
       let changed = false;
       djs.forEach(dj => { if (processExpiredEvents(dj)) changed = true; });
       if (changed) await saveToJsonbin();
@@ -746,7 +692,10 @@
 
   function renderDJDetail(id) {
     const area = document.getElementById('dj-detail-area');
-    if (!id) { area.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:300px;color:var(--muted);font-size:12px;letter-spacing:3px;text-transform:uppercase;">Selecteer een DJ</div>`; return; }
+    if (!id) {
+      area.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;min-height:400px;color:var(--muted);font-size:12px;letter-spacing:3px;text-transform:uppercase;">Selecteer een DJ</div>`;
+      return;
+    }
     const dj = djs.find(d => d.id === id);
     if (!dj) return;
     const ac = adminUnlocked ? ' admin' : '';
@@ -760,8 +709,6 @@
     area.innerHTML = `
       <div class="dj-detail active">
         <div class="detail-grid">
-
-          <!-- COL 1: FOTOS + COMING UP -->
           <div class="detail-photo-col">
             <div class="detail-photo-main${ac}" id="slot-${dj.id}-0" onclick="triggerUpload('${dj.id}', 0)">
               ${dj.photos[0] ? `<img src="${dj.photos[0]}" alt="${dj.name}">` : `<div class="photo-placeholder-icon">${iPhoto}<span>Hoofdfoto</span></div>`}
@@ -778,8 +725,6 @@
             </div>
             ${comingUpHTML(dj.id)}
           </div>
-
-          <!-- COL 2: CONTACT -->
           <div class="detail-contact-col">
             <div class="editable${ac}" style="position:relative;">
               <p class="contact-section-title">Contact</p>
@@ -796,8 +741,6 @@
               <button class="edit-btn" onclick="editContact('${dj.id}')">✎ Bewerken</button>
             </div>
           </div>
-
-          <!-- COL 3: SOUNDCLOUD + INFO + BOOKING -->
           <div class="detail-info-col">
             <div class="sc-player">
               <p class="sc-player-label">SoundCloud</p>
@@ -825,7 +768,6 @@
         </div>
         ${adminUnlocked ? `<div style="margin-bottom:16px;"><button class="delete-dj-btn" style="display:block;" onclick="deleteDJ('${dj.id}')">× DJ verwijderen</button></div>` : ''}
       </div>
-
       <div class="gallery-section">
         <div class="gallery-header">
           <h3 class="gallery-title">In the moment</h3>
@@ -927,8 +869,8 @@
     if (!confirm('Weet je zeker dat je deze DJ wil verwijderen?')) return;
     djs = djs.filter(d => d.id !== djId);
     djs.forEach((dj, i) => { dj.number = String(i + 1).padStart(2, '0'); });
-    activeDJId = djs[0]?.id || null;
-    await saveToJsonbin(); renderDJList(); renderDJDetail(activeDJId);
+    activeDJId = null;
+    await saveToJsonbin(); renderDJList(); renderDJDetail(null);
   }
 
   function ervaringHTML(djId) {
@@ -1000,8 +942,8 @@
     await loadFromJsonbin();
     renderLoader(); renderHeader(); renderFooter(); renderInfo();
     updateHeroMedia();
-    activeDJId = djs[0]?.id || null;
-    renderDJList(); renderDJDetail(activeDJId);
+    activeDJId = null;
+    renderDJList(); renderDJDetail(null);
     document.getElementById('loader').classList.add('hidden');
   }
 
