@@ -256,11 +256,7 @@
     .delete-dj-btn { display: none; background: none; border: 1px solid #333; color: #555; font-size: 10px; padding: 4px 8px; margin-top: 8px; width: 100%; text-transform: uppercase; letter-spacing: 1px; transition: color 0.2s, border-color 0.2s; cursor: pointer; }
     .delete-dj-btn:hover { color: var(--accent2); border-color: var(--accent2); }
 
-    /* DJ OVERVIEW KAARTEN */
-    .dj-overview-card {
-      border: 1px solid var(--border); background: var(--card);
-      overflow: hidden; transition: border-color 0.2s; cursor: pointer;
-    }
+    .dj-overview-card { border: 1px solid var(--border); background: var(--card); overflow: hidden; transition: border-color 0.2s; cursor: pointer; }
     .dj-overview-card:hover { border-color: var(--accent); }
     .dj-overview-photo { aspect-ratio: 4/3; background: #141414; position: relative; overflow: hidden; }
     .dj-overview-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -270,7 +266,7 @@
     .dj-overview-info { padding: 14px 16px; }
     .dj-overview-num { font-family: 'Bebas Neue', sans-serif; font-size: 11px; letter-spacing: 3px; color: var(--accent); }
     .dj-overview-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; line-height: 1.1; }
-    .dj-overview-genre { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
+    .dj-overview-tagline { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 3px; }
 
     @media (max-width: 900px) {
       #section-djs { grid-template-columns: 1fr; }
@@ -388,9 +384,8 @@
   };
 
   let djs = [
-    { id: 'ewowo', number: '01', name: 'EWOWO', genre: 'Drum & Bass · Trance · Commercieel', bio: 'Veelzijdig DJ met een scherp gevoel voor energie.', tags: ['Club', 'Festival', 'Allrounder'], email: 'booking@ewowo.nl', phone: '+31 6 12 34 56 78', instagram: '@ewowo', instagramUrl: '', soundcloud: 'ewowo', soundcloudUrl: '', bookingInfo: 'Fee op aanvraag · Min. 2 uur', photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] },
-    { id: 'jibbe', number: '02', name: 'JIBBE', genre: 'Trance · UKG', bio: 'Meester in de mix van euforische trance en strakke UK garage.', tags: ['Club', 'Trance', 'UKG'], email: 'booking@jibbe.nl', phone: '+31 6 98 76 54 32', instagram: '@jibbe.dj', instagramUrl: '', soundcloud: 'jibbe', soundcloudUrl: '', bookingInfo: 'Beschikbaar NL & BE · 2–4 uur', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] },
-    { id: 'ewibbe', number: '03', name: 'EWIBBE', genre: 'B2B · Drum & Bass · Trance · UKG · Commercieel', bio: 'Ewowo & Jibbe samen op de decks.', tags: ['B2B', 'Festival', 'Club'], email: 'booking@ewibbe.nl', phone: '+31 6 55 44 33 22', instagram: '@ewibbe', instagramUrl: '', soundcloud: 'ewibbe', soundcloudUrl: '', bookingInfo: 'Ewowo × Jibbe · B2B', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] }
+    { id: 'ewowo', number: '01', name: 'EWOWO', genre: 'Drum & Bass · Trance · Commercieel', tagline: '', bio: 'Veelzijdig DJ met een scherp gevoel voor energie.', tags: ['Club', 'Festival', 'Allrounder'], email: 'booking@ewowo.nl', phone: '+31 6 12 34 56 78', instagram: '@ewowo', instagramUrl: '', soundcloud: 'ewowo', soundcloudUrl: '', bookingInfo: 'Fee op aanvraag · Min. 2 uur', photos: ['https://res.cloudinary.com/devasysdf/image/upload/f_auto,q_auto/lkVfIuJk_ngwkq5', null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] },
+    { id: 'jibbe', number: '02', name: 'JIBBE', genre: 'Trance · UKG', tagline: '', bio: 'Meester in de mix van euforische trance en strakke UK garage.', tags: ['Club', 'Trance', 'UKG'], email: 'booking@jibbe.nl', phone: '+31 6 98 76 54 32', instagram: '@jibbe.dj', instagramUrl: '', soundcloud: 'jibbe', soundcloudUrl: '', bookingInfo: 'Beschikbaar NL & BE · 2–4 uur', photos: [null, null, null], gallery: [null, null, null, null, null, null], ervaring: [], comingUp: [] }
   ];
 
   function processExpiredEvents(dj) {
@@ -515,7 +510,7 @@
               <div class="dj-overview-info">
                 <div class="dj-overview-num">${dj.number}</div>
                 <div class="dj-overview-name">${dj.name}</div>
-                <div class="dj-overview-genre">${dj.genre.split(' · ')[0]}</div>
+                <div class="dj-overview-tagline">${dj.tagline || dj.genre.split(' · ')[0]}</div>
               </div>
             </div>`).join('')}
         </div>
@@ -721,7 +716,8 @@
           ervaring: d.ervaring || [],
           comingUp: d.comingUp || [],
           soundcloudUrl: d.soundcloudUrl || '',
-          instagramUrl: d.instagramUrl || ''
+          instagramUrl: d.instagramUrl || '',
+          tagline: d.tagline || ''
         }));
       }
       let changed = false;
@@ -746,12 +742,9 @@
 
   function selectDJ(id) {
     if (activeDJId === id) {
-      // Deselecteer — ga terug naar overzicht
       activeDJId = null;
       document.getElementById('sidebar-info-block')?.classList.remove('active');
-      renderDJList();
-      renderDJOverview();
-      return;
+      renderDJList(); renderDJOverview(); return;
     }
     activeDJId = id;
     document.getElementById('sidebar-info-block')?.classList.remove('active');
@@ -766,10 +759,7 @@
 
   function renderDJDetail(id) {
     const area = document.getElementById('dj-detail-area');
-    if (!id) {
-      renderDJOverview();
-      return;
-    }
+    if (!id) { renderDJOverview(); return; }
     const dj = djs.find(d => d.id === id);
     if (!dj) return;
     const ac = adminUnlocked ? ' admin' : '';
@@ -779,7 +769,6 @@
     const galleryCount = dj.gallery.length;
     const galCols = galleryCount <= 2 ? galleryCount : galleryCount <= 4 ? 2 : 3;
     const scHeight = dj.soundcloudUrl ? 166 : 80;
-
     const igItem = dj.instagramUrl
       ? `<a href="${dj.instagramUrl}" target="_blank" rel="noopener">${dj.instagram}</a>`
       : `<span>${dj.instagram}</span>`;
@@ -895,11 +884,13 @@
     openEdit('Naam & bio bewerken', [
       { key: 'name', label: 'Naam', value: dj.name },
       { key: 'genre', label: 'Genre', value: dj.genre },
+      { key: 'tagline', label: 'Tekst op overzichtspagina', value: dj.tagline || '' },
       { key: 'bio', label: 'Bio', value: dj.bio, multiline: true },
       { key: 'tags', label: 'Tags (komma-gescheiden)', value: dj.tags.join(', ') },
     ], async () => {
       dj.name = getEditVal('name') || dj.name;
       dj.genre = getEditVal('genre') || dj.genre;
+      dj.tagline = getEditVal('tagline');
       dj.bio = getEditVal('bio') || dj.bio;
       dj.tags = getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean);
       closeEdit(); await saveToJsonbin(); renderDJList(); renderDJDetail(djId);
@@ -949,6 +940,7 @@
   function addDJ() {
     openEdit('Nieuwe DJ toevoegen', [
       { key: 'name', label: 'Naam' }, { key: 'genre', label: 'Genre' },
+      { key: 'tagline', label: 'Tekst op overzichtspagina' },
       { key: 'bio', label: 'Bio', multiline: true }, { key: 'tags', label: 'Tags (komma-gescheiden)' },
       { key: 'email', label: 'Email' }, { key: 'phone', label: 'Telefoon' },
       { key: 'instagram', label: 'Instagram weergavetekst' }, { key: 'instagramUrl', label: 'Instagram URL' },
@@ -958,7 +950,8 @@
       const id = name.toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
       djs.push({
         id, number: String(djs.length + 1).padStart(2, '0'), name,
-        genre: getEditVal('genre'), bio: getEditVal('bio'),
+        genre: getEditVal('genre'), tagline: getEditVal('tagline'),
+        bio: getEditVal('bio'),
         tags: getEditVal('tags').split(',').map(t => t.trim()).filter(Boolean),
         email: getEditVal('email'), phone: getEditVal('phone'),
         instagram: getEditVal('instagram'), instagramUrl: getEditVal('instagramUrl'),
@@ -1023,7 +1016,7 @@
     if (!jaar || !naam) return;
     const dj = djs.find(d => d.id === djId);
     if (!dj.ervaring) dj.ervaring = [];
-    dj.ervaring.push({ jaar, naam, omschrijving });
+    dj.ervaring.unshift({ jaar, naam, omschrijving });
     await saveToJsonbin(); renderDJDetail(djId);
     setTimeout(() => document.getElementById(`ervaring-${djId}`)?.classList.add('open'), 50);
   }
