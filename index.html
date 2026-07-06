@@ -82,6 +82,7 @@
     .dj-sidebar { border-right: 1px solid var(--border); position: sticky; top: 60px; height: calc(100vh - 60px); overflow-y: auto; }
     .dj-sidebar::-webkit-scrollbar { width: 3px; }
     .dj-sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+
     .dj-row { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px; border-bottom: 1px solid var(--border); transition: background 0.2s; user-select: none; cursor: pointer; }
     .dj-row:hover { background: #1a1a1a; }
     .dj-row.active { background: #1a1a1a; border-left: 2px solid var(--accent); }
@@ -91,6 +92,7 @@
     .dj-row-genre { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
     .dj-row-arrow { color: var(--muted); font-size: 18px; transition: transform 0.2s, color 0.2s; }
     .dj-row.active .dj-row-arrow { transform: translateX(4px); color: var(--accent); }
+
     .dj-sidebar-footer { padding: 20px 28px; border-top: 1px solid var(--border); }
     .add-dj-btn { display: none; width: 100%; background: none; border: 1px dashed #2a2a2a; color: #444; font-size: 10px; letter-spacing: 3px; text-transform: uppercase; padding: 14px; transition: border-color 0.2s, color 0.2s; cursor: pointer; }
     .add-dj-btn:hover { border-color: var(--accent); color: var(--accent); }
@@ -215,11 +217,7 @@
     .ervaring-add-btn:hover { background: #fff; }
     .ervaring-empty { font-size: 11px; color: #444; padding: 4px 0; }
 
-    #section-info { padding: 80px 40px; border-top: 1px solid var(--border); display: none; }
-    #section-info.active { display: block; }
-    .info-content { max-width: 700px; margin: 0 auto; }
-    .info-title { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 4px; margin-bottom: 20px; }
-    .info-text { font-size: 15px; color: var(--muted); line-height: 1.8; }
+    #section-info { display: none; }
 
     .footer-wrap { position: relative; }
     footer { text-align: center; padding: 32px 40px; border-top: 1px solid var(--border); font-size: 12px; color: var(--muted); letter-spacing: 1px; }
@@ -307,7 +305,7 @@
       <div class="nav-dropdown-menu" id="djs-menu"></div>
     </div>
     <div class="nav-dropdown" id="info-dropdown">
-      <button class="nav-link" onclick="showInfo()">
+      <button class="nav-link" onclick="selectInfo()">
         Info <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
       </button>
     </div>
@@ -326,6 +324,14 @@
 
 <div id="section-djs">
   <aside class="dj-sidebar" id="dj-sidebar">
+    <div id="sidebar-info-block" onclick="selectInfo()" class="dj-row" style="border-left:none;">
+      <div class="dj-row-left">
+        <div class="dj-row-num">00</div>
+        <div class="dj-row-name">Info</div>
+        <div class="dj-row-genre">Over het collectief</div>
+      </div>
+      <span class="dj-row-arrow">›</span>
+    </div>
     <div id="dj-list"></div>
     <div class="dj-sidebar-footer">
       <button class="add-dj-btn" id="add-dj-btn" onclick="addDJ()">+ DJ toevoegen</button>
@@ -334,9 +340,7 @@
   <main id="dj-detail-area"></main>
 </div>
 
-<section id="section-info">
-  <div class="info-content" id="info-content"></div>
-</section>
+<section id="section-info"></section>
 
 <div class="footer-wrap">
   <footer id="site-footer"></footer>
@@ -374,21 +378,16 @@
   ];
 
   function processExpiredEvents(dj) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = new Date(); today.setHours(0,0,0,0);
     if (!dj.comingUp) dj.comingUp = [];
     if (!dj.ervaring) dj.ervaring = [];
-    const stillComing = [];
-    let changed = false;
+    const stillComing = []; let changed = false;
     dj.comingUp.forEach(event => {
       const eventDate = new Date(event.datum);
-      if (eventDate < today) {
-        dj.ervaring.unshift({ jaar: eventDate.getFullYear().toString(), naam: event.naam, omschrijving: event.locatie || '' });
-        changed = true;
-      } else { stillComing.push(event); }
+      if (eventDate < today) { dj.ervaring.unshift({ jaar: eventDate.getFullYear().toString(), naam: event.naam, omschrijving: event.locatie || '' }); changed = true; }
+      else { stillComing.push(event); }
     });
-    dj.comingUp = stillComing;
-    return changed;
+    dj.comingUp = stillComing; return changed;
   }
 
   function formatDatum(datumStr) {
@@ -406,9 +405,8 @@
           <span class="coming-up-title">Coming Up${events.length > 0 ? ` · ${events.length}` : ''}</span>
         </div>
         <ul class="coming-up-list">
-          ${events.length === 0
-            ? `<li class="coming-up-empty">Geen geplande evenementen.</li>`
-            : events.map((ev, i) => `
+          ${events.length === 0 ? `<li class="coming-up-empty">Geen geplande evenementen.</li>` :
+            events.map((ev, i) => `
               <li class="coming-up-item">
                 <div class="coming-up-date">${formatDatum(ev.datum)}</div>
                 <div class="coming-up-info">
@@ -416,8 +414,7 @@
                   ${ev.locatie ? `<div class="coming-up-locatie">${ev.locatie}</div>` : ''}
                 </div>
                 <button class="coming-up-delete${ac}" onclick="deleteComingUp('${djId}', ${i})">×</button>
-              </li>`).join('')
-          }
+              </li>`).join('')}
         </ul>
         <div class="coming-up-add${ac}">
           <div class="coming-up-add-row">
@@ -468,7 +465,22 @@
   });
 
   function scrollToTop() { document.getElementById('hero-section').scrollIntoView({ behavior: 'smooth' }); }
-  function showInfo() { document.getElementById('section-info').classList.add('active'); document.getElementById('section-info').scrollIntoView({ behavior: 'smooth' }); }
+
+  function selectInfo() {
+    activeDJId = null;
+    renderDJList();
+    document.getElementById('sidebar-info-block').classList.add('active');
+    const area = document.getElementById('dj-detail-area');
+    area.innerHTML = `
+      <div class="dj-detail active">
+        <div class="editable${adminUnlocked ? ' admin' : ''}" style="position:relative;max-width:700px;">
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,64px);letter-spacing:4px;margin-bottom:20px;">${siteConfig.infoTitle}</h2>
+          <p style="font-size:15px;color:var(--muted);line-height:1.8;">${siteConfig.infoText}</p>
+          <button class="edit-btn" onclick="editInfo()">✎ Bewerken</button>
+        </div>
+      </div>`;
+    if (window.innerWidth <= 900) document.getElementById('dj-detail-area').scrollIntoView({ behavior: 'smooth' });
+  }
 
   function renderLoader() {
     document.getElementById('loader-title-el').innerHTML = `${siteConfig.loaderTitleMain}<span>${siteConfig.loaderTitleAccent}</span>${siteConfig.loaderTitleEnd}`;
@@ -532,12 +544,10 @@
   function renderFooter() { document.getElementById('site-footer').textContent = siteConfig.footerText; }
 
   function renderInfo() {
-    document.getElementById('info-content').innerHTML = `
-      <div class="editable${adminUnlocked ? ' admin' : ''}" style="position:relative;">
-        <h2 class="info-title">${siteConfig.infoTitle}</h2>
-        <p class="info-text">${siteConfig.infoText}</p>
-        <button class="edit-btn" onclick="editInfo()">✎ Bewerken</button>
-      </div>`;
+    // Info wordt nu inline in de detail area getoond via selectInfo()
+    // Deze functie updatet de info als die al zichtbaar is
+    const infoBlock = document.getElementById('sidebar-info-block');
+    if (infoBlock?.classList.contains('active')) selectInfo();
   }
 
   function editHeader() {
@@ -569,7 +579,7 @@
     ], async () => {
       siteConfig.infoTitle = getEditVal('infoTitle') || siteConfig.infoTitle;
       siteConfig.infoText = getEditVal('infoText') || siteConfig.infoText;
-      closeEdit(); renderInfo(); await saveToJsonbin();
+      closeEdit(); await saveToJsonbin(); renderInfo();
     });
   }
 
@@ -578,7 +588,7 @@
       adminUnlocked = false;
       document.getElementById('admin-btn').classList.remove('unlocked');
       document.getElementById('admin-popup').classList.remove('visible');
-      updateAdminButtons(); renderDJList(); renderDJDetail(activeDJId); renderInfo(); updateHeroZone(); return;
+      updateAdminButtons(); renderDJList(); renderDJDetail(activeDJId); updateHeroZone(); return;
     }
     const popup = document.getElementById('admin-popup');
     popup.classList.toggle('visible');
@@ -594,7 +604,10 @@
       document.getElementById('admin-popup').classList.remove('visible');
       document.getElementById('admin-input').value = '';
       err.classList.remove('visible');
-      updateAdminButtons(); renderDJList(); renderDJDetail(activeDJId); renderInfo(); updateHeroZone();
+      updateAdminButtons(); renderDJList();
+      if (activeDJId) renderDJDetail(activeDJId);
+      else if (document.getElementById('sidebar-info-block')?.classList.contains('active')) selectInfo();
+      updateHeroZone();
     } else { err.classList.add('visible'); document.getElementById('admin-input').value = ''; }
   }
 
@@ -681,7 +694,9 @@
   }
 
   function selectDJ(id) {
-    activeDJId = id; renderDJList(); renderDJDetail(id);
+    activeDJId = id;
+    document.getElementById('sidebar-info-block')?.classList.remove('active');
+    renderDJList(); renderDJDetail(id);
     if (window.innerWidth <= 900) document.getElementById('dj-detail-area').scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -940,7 +955,7 @@
 
   async function init() {
     await loadFromJsonbin();
-    renderLoader(); renderHeader(); renderFooter(); renderInfo();
+    renderLoader(); renderHeader(); renderFooter();
     updateHeroMedia();
     activeDJId = null;
     renderDJList(); renderDJDetail(null);
